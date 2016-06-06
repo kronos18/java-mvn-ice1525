@@ -15,15 +15,18 @@ public class MainJDBC {
             props.setProperty("user", "postgres");
             props.setProperty("password", "postgres");
             // create a database connection
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost/postgres");
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost/postgres", props);
+//            Statement statement = connection.createStatement();
+            String querySQL = "insert into uga.typeappareil( name ) values( ? )";
+            PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
+            preparedStatement.setObject(1, "test");
+            preparedStatement.executeUpdate();
+//            statement.executeUpdate(querySQL);
 
-            statement.executeUpdate("drop table if exists person");
-            statement.executeUpdate("create table person (id integer, name string)");
-            statement.executeUpdate("insert into person values(1, 'leo')");
-            statement.executeUpdate("insert into person values(2, 'yui')");
-            ResultSet rs = statement.executeQuery("select * from person");
+
+            ResultSet rs;
+            preparedStatement = connection.prepareStatement("select * from uga.typeappareil");
+            rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set
                 System.out.println("name = " + rs.getString("name"));
