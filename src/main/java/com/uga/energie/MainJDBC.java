@@ -6,7 +6,7 @@ import java.util.Properties;
 /**
  * Created by jack on 06/06/16.
  */
-public class Main {
+public class MainJDBC {
     public static void main(String[] args) {
         Connection connection = null;
         try {
