@@ -12,8 +12,36 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.8</junit.version>
         <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
+        <exec-maven-plugin.version>1.5.0</exec-maven-plugin.version>
     </properties>
 
+
+    <!--<build>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<groupId>org.codehaus.mojo</groupId>-->
+    <!--<artifactId>exec-maven-plugin</artifactId>-->
+    <!--<version>${exec-maven-plugin.version}</version>-->
+    <!--<executions>-->
+    <!--<execution>-->
+    <!--<phase>test</phase>-->
+    <!--<goals>-->
+    <!--<goal>java</goal>-->
+    <!--</goals>-->
+    <!--<configuration>-->
+    <!--<mainClass>com.uga.energie.UnZip</mainClass>-->
+    <!--<arguments>-->
+    <!--<argument>/home/jack/SyncUSBFile/UGA/M2 MIAGE/Semestre4/Système d'information energie/Projet/BDD</argument>-->
+    <!--<argument>/home/jack/SyncUSBFile/UGA/M2 MIAGE/Semestre4/Système d'information energie/Projet/BDD/tmp</argument>-->
+    <!--</arguments>-->
+    <!--</configuration>-->
+    <!--</execution>-->
+    <!--</executions>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
+    <!--</build>-->
+
+    <!-- - See more at: http://www.vineetmanohar.com/2009/11/3-ways-to-run-java-main-from-maven/#sthash.WAaDBs46.dpuf-->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -28,6 +56,33 @@
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
         </dependency>
+        <!-- http://mvnrepository.com/artifact/org.codehaus.mojo/exec-maven-plugin -->
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>${exec-maven-plugin.version}</version>
+        </dependency>
 
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.uga.energie.UnZip</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
