@@ -11,14 +11,21 @@ import java.util.zip.ZipInputStream;
 public class UnZip {
 
     List<String> fileList;
-    private static final String INPUT_ZIP_FILE = "C:\\Users\\Artybloc\\Dropbox\\Master\\M2S2\\LinlyBDD\\data.zip";
-    private static final String OUTPUT_FOLDER = "D:\\Temp";
+
 
     public static void main(String[] args) {
         UnZip unZip = new UnZip();
+        System.out.println("Nombre d'argument : " + args.length);
+        System.out.println("les arguments : ");
+        for (int i = 0; i < args.length; i++) {
+            System.out.println(args[i]);
+        }
+
         if (args.length == 2) {
             unZip.unZipIt(args[0], args[1]);
         } else {
+            String INPUT_ZIP_FILE = "C:\\Users\\Artybloc\\Dropbox\\Master\\M2S2\\LinlyBDD\\data.zip";
+            String OUTPUT_FOLDER = "D:\\Temp";
             unZip.unZipIt(INPUT_ZIP_FILE, OUTPUT_FOLDER);
         }
     }
@@ -35,7 +42,7 @@ public class UnZip {
         try {
 
             //create output directory is not exists
-            File folder = new File(OUTPUT_FOLDER);
+            File folder = new File(outputFolder);
             if (!folder.exists()) {
                 folder.mkdir();
             }
