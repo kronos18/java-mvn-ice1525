@@ -10,24 +10,38 @@ import java.io.InputStreamReader;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        System.out.println("=============================");
-        System.out.println("====== Menu =================");
-        System.out.println("=============================");
-        System.out.println("== 1 : Unzip and insert into Database...");
-        System.out.println("=============================");
-        String s = Main.readLine("");
 
-        if (Integer.parseInt(s) == 1)
-            Main.UnzipAndInsertIntoDatanase();
-        else
-            System.out.println("Commande inconnue...");
+        String s = "";
+        do {
+            System.out.println("=============================");
+            System.out.println("====== Menu =================");
+            System.out.println("=============================");
+            System.out.println("== 1 : Unzip");
+            System.out.println("== 2 : Read and insert");
+            System.out.println("== 9 : exit");
+            System.out.println("=============================");
+            s = Main.readLine("");
+
+            if (Integer.parseInt(s) == 1)
+                Main.Unzip();
+            else if (Integer.parseInt(s) == 2)
+                Main.ReadAndInsert();
+            else if (Integer.parseInt(s) == 9)
+                ;
+            else
+                System.out.println("Commande inconnue...");
+        } while (Integer.parseInt(s) != 9);
 
         System.out.println("Press enter to close...");
         Main.readLine("");
     }
 
-    private static void UnzipAndInsertIntoDatanase() {
-        System.out.println("UnzipAndInsertIntoDatanase.......");
+    private static void ReadAndInsert() {
+        System.out.println("todo :)");
+    }
+
+    private static void Unzip() {
+        System.out.println("todo :)");
     }
 
     private static String readLine(String format, Object... args) throws IOException {
