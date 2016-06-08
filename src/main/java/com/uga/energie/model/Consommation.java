@@ -1,41 +1,46 @@
 package com.uga.energie.model;
 
+import com.uga.energie.Parse.p_Consommation;
+
 /**
  * Created by jack on 06/06/16.
  */
 public class Consommation {
-    private Date date;
-    private Heure heure;
-    private Appareil appareil;
+    private int idDate;
+    private int idHeure;
+    private int idAppareil;
     private int etat;
     private int energy_wh;
 
-    public Consommation(Date date, Heure heure, Appareil appareil, int etat, int energy_wh) {
-        this.date = date;
-        this.heure = heure;
-        this.appareil = appareil;
+    public Consommation(int idDate, int idHeure, int idAppareil, int etat, int energy_wh) {
+        this.idDate = idDate;
+        this.idHeure = idHeure;
+        this.idAppareil = idAppareil;
         this.etat = etat;
         this.energy_wh = energy_wh;
     }
 
+    public Consommation(){
 
-    public Date getDate() {
-        return date;
     }
-    public void setDate(Date date){
-        this.date = date;
+
+    public int getIdDate() {
+        return idDate;
     }
-    public Heure getHeure() {
-        return heure;
+    public void setIdDate(int idDate){
+        this.idDate = idDate;
     }
-    public void setHeure(Heure heure){
-        this.heure = heure;
+    public int getIdHeure() {
+        return idHeure;
     }
-    public Appareil getAppareil() {
-        return appareil;
+    public void setIdHeure(int idHeure){
+        this.idHeure = idHeure;
     }
-    public void setAppareil(Appareil appareil){
-        this.appareil = appareil;
+    public int getIdAppareil() {
+        return idAppareil;
+    }
+    public void setIdAppareil(int idAppareil){
+        this.idAppareil = idAppareil;
     }
     public int getEtat() {
         return etat;
@@ -50,12 +55,14 @@ public class Consommation {
         this.energy_wh = energy;
     }
 
+
+
     @Override
     public String toString() {
         return "Consommation{" +
-                "  date=" + date.toString() +
-                "  heure=" + heure.toString() +
-                "  appareil=" + appareil.getId() +
+                "  date=" + idDate +
+                "  heure=" + idHeure +
+                "  appareil=" + idAppareil +
                 "  etat=" + etat +
                 "  energy_wh=" + energy_wh +
                 '}';

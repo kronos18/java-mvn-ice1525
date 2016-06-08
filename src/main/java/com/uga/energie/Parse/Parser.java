@@ -1,4 +1,4 @@
-package com.uga.energie;
+package com.uga.energie.Parse;
 
 import com.uga.energie.model.*;
 
@@ -27,9 +27,9 @@ public class Parser {
         m_sPathToParse = sPath;
     }
 
-    public List<Quartier> Parse()
+    public List<p_Quartier> Parse()
     {
-        List<Quartier> lsRes = new ArrayList<Quartier>();
+        List<p_Quartier> lsRes = new ArrayList<p_Quartier>();
         List<File> lsTXTFiles = new ArrayList<File>();
 
         findFilesInDir(new File(m_sPathToParse), lsTXTFiles);
@@ -41,7 +41,7 @@ public class Parser {
         return lsRes;
     }
 
-    private Quartier getQuartierFromTXTFile(File file)
+    private p_Quartier getQuartierFromTXTFile(File file)
     {
         if (!file.isFile())
             return null;
@@ -56,32 +56,32 @@ public class Parser {
         int iNumAppareil = Integer.parseInt(fileName[2]) - 3000000;
 
         //Quartier
-        Quartier quartier = new Quartier(iNumQuartier);
+        p_Quartier quartier = new p_Quartier(iNumQuartier);
 
         //Maison
-        Maison maison = new Maison(iNumMaison, quartier);
+        p_Maison maison = new p_Maison(iNumMaison, quartier);
         quartier.addMaison(maison);
 
         //Type Appareil : todo voir quels types on pourrait mettre...
-        TypeAppareil typeAppareil = null;
+        p_TypeAppareil typeAppareil = null;
 
         //Appareil
         String sAppName = getAppareilNameFromFile(lsLines);
-        Appareil appareil = new Appareil(iNumAppareil, sAppName, typeAppareil, maison);
+        p_Appareil appareil = new p_Appareil(iNumAppareil, sAppName, typeAppareil, maison);
         maison.addAppareil(appareil);
 //        typeAppareil.addAppareil(appareil);
 
         //Consommation
-        List<Consommation> lsConso = getAllConsommationFromFile(lsLines, appareil);
-        for (Consommation conso : lsConso) {
+        List<p_Consommation> lsConso = getAllConsommationFromFile(lsLines, appareil);
+        for (p_Consommation conso : lsConso) {
             appareil.addConsommation(conso);
         }
 
         return quartier;
     }
 
-    private List<Consommation> getAllConsommationFromFile(List<String> lsFileLines, Appareil appareil){
-        List<Consommation> lsRes = new ArrayList<Consommation>();
+    private List<p_Consommation> getAllConsommationFromFile(List<String> lsFileLines, p_Appareil appareil){
+        List<p_Consommation> lsRes = new ArrayList<p_Consommation>();
 
         for (String sLine : lsFileLines) {
             if (sLine.indexOf("PROJECT ") >= 0 ||
@@ -98,9 +98,7 @@ public class Parser {
             int iState = Integer.parseInt(line[2]);
             int iValue = Integer.parseInt(line[3]);
 
-            Date date = new Date(0, sDate);
-            Heure heure = new Heure(0, sHeure);
-            Consommation conso = new Consommation(date, heure, appareil, iState, iValue);
+            p_Consommation conso = new p_Consommation(sDate, sHeure, appareil, iState, iValue);
             lsRes.add(conso);
         }
 

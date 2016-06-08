@@ -1,7 +1,4 @@
-package com.uga.energie.model;
-
-import com.uga.energie.Parse.p_Quartier;
-import com.uga.energie.Parse.p_TypeAppareil;
+package com.uga.energie.Parse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +6,15 @@ import java.util.List;
 /**
  * Created by jack on 06/06/16.
  */
-public class TypeAppareil {
+public class p_TypeAppareil {
     private int id;
     private String name;
+    private List<p_Appareil> m_lsAppareil;
 
-    public TypeAppareil(int id, String sName) {
+    public p_TypeAppareil(int id, String sName) {
         this.id = id;
         this.name = sName;
+        this.m_lsAppareil = new ArrayList<p_Appareil>();
     }
 
 
@@ -35,17 +34,12 @@ public class TypeAppareil {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object object)
-    {
-        boolean sameSame = false;
+    public List<p_Appareil> getListeAppareil() {
+        return m_lsAppareil;
+    }
 
-        if (object != null && object instanceof p_TypeAppareil)
-        {
-            sameSame = this.id == ((p_TypeAppareil) object).getId();
-        }
-
-        return sameSame;
+    public void addAppareil(p_Appareil appareil) {
+        this.m_lsAppareil.add(appareil);
     }
 
     @Override

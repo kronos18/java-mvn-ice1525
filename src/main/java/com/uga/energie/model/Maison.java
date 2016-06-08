@@ -1,5 +1,8 @@
 package com.uga.energie.model;
 
+import com.uga.energie.Parse.p_Maison;
+import com.uga.energie.Parse.p_TypeAppareil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,15 +11,16 @@ import java.util.List;
  */
 public class Maison {
     private int id;
-    private Quartier quartier;
-    private List<Appareil> m_lsAppareil;
+    private int idquartier;
 
-    public Maison(int id, Quartier quartier) {
+    public Maison(int id, int idquartier) {
         this.id = id;
-        this.quartier = quartier;
-        this.m_lsAppareil = new ArrayList<Appareil>();
+        this.idquartier = idquartier;
     }
 
+    public Maison(){
+
+    }
 
     public int getId() {
         return id;
@@ -26,27 +30,33 @@ public class Maison {
         this.id = id;
     }
 
-    public Quartier getQuartier() {
-        return quartier;
+    public int getIdQuartier() {
+        return idquartier;
     }
 
-    public void setQuartier(Quartier quartier) {
-        this.quartier = quartier;
+    public void setIdQuartier(int idquartier) {
+        this.idquartier = idquartier;
     }
 
-    public List<Appareil> getListeAppareil() {
-        return m_lsAppareil;
-    }
 
-    public void addAppareil(Appareil appareil) {
-        this.m_lsAppareil.add(appareil);
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof p_Maison)
+        {
+            sameSame = this.id == ((p_Maison) object).getId();
+        }
+
+        return sameSame;
     }
 
     @Override
     public String toString() {
         return "Maison{" +
                 "  id=" + id +
-                "  quartier=" + quartier.getId() +
+                "  quartier=" + idquartier +
                 "}";
     }
 }

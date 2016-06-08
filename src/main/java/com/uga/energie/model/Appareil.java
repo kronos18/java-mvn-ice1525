@@ -1,5 +1,8 @@
 package com.uga.energie.model;
 
+import com.uga.energie.Parse.p_Appareil;
+import com.uga.energie.Parse.p_Maison;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,18 +12,19 @@ import java.util.List;
 public class Appareil {
     private int id;
     private String name;
-    private TypeAppareil typeAppareil;
-    private Maison maison;
-    private List<Consommation> m_lsConsommation;
+    private int idTypeAppareil;
+    private int idMaison;
 
-    public Appareil(int id, String sName, TypeAppareil typeAppareil, Maison maison) {
+    public Appareil(int id, String sName, int idtypeAppareil, int idmaison) {
         this.id = id;
         this.name = sName;
-        this.typeAppareil = typeAppareil;
-        this.maison = maison;
-        this.m_lsConsommation = new ArrayList<Consommation>();
+        this.idTypeAppareil = idtypeAppareil;
+        this.idMaison = idmaison;
     }
 
+    public Appareil(){
+
+    }
 
     public int getId() {
         return id;
@@ -38,35 +42,44 @@ public class Appareil {
         this.name = name;
     }
 
-    public Maison getMaison() {
-        return maison;
+    public int getIdMaison() {
+        return idMaison;
     }
 
-    public void setMaison(Maison maison) {
-        this.maison = maison;
+    public void setIdMaison(int idmaison) {
+        this.idMaison = idmaison;
     }
 
-    public TypeAppareil getTypeAppareil() {
-        return typeAppareil;
+    public int getIdTypeAppareil() {
+        return idTypeAppareil;
     }
 
-    public void setTypeAppareil(TypeAppareil typeAppareil) {
-        this.typeAppareil = typeAppareil;
+    public void setIdTypeAppareil(int idtypeAppareil) {
+        this.idTypeAppareil = idtypeAppareil;
     }
-    public List<Consommation> getListeConsommation() {
-        return m_lsConsommation;
+
+
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof p_Appareil)
+        {
+            sameSame = this.id == ((p_Appareil) object).getId();
+        }
+
+        return sameSame;
     }
-    public void addConsommation(Consommation conso){
-        this.m_lsConsommation.add(conso);
-    }
+
 
     @Override
     public String toString() {
         return "Appareil{" +
                 "  id=" + id +
                 "  name=" + name +
-                "  typeAppareil=" + typeAppareil.getId() +
-                "  maison=" + maison.getId() +
+                "  typeAppareil=" + idTypeAppareil +
+                "  maison=" + idMaison +
                 '}';
     }
 }

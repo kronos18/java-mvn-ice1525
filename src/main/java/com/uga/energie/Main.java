@@ -1,9 +1,10 @@
 package com.uga.energie;
 
+import com.uga.energie.Parse.Parser;
+import com.uga.energie.Parse.p_Quartier;
 import com.uga.energie.model.Quartier;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -52,7 +53,7 @@ public class Main {
 
         // parse le dossier dans lequel ont ete dezippees les donnees
         Parser parser = new Parser(sPathToRead);
-        List<Quartier> lsQuartier = parser.Parse();
+        List<p_Quartier> lsQuartier = parser.Parse();
 
         //todo : Executer des algos de compression de donnees
 

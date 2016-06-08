@@ -1,5 +1,7 @@
 package com.uga.energie.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +10,23 @@ import java.util.List;
  */
 public class Date {
     private int id;
-    private String date;
+    private java.sql.Date ddate;
 
     public Date(int id, String date) {
         this.id = id;
-        this.date = date;
+
+        try {
+            SimpleDateFormat parserSDF = new SimpleDateFormat("dd/MM/yy");
+            java.util.Date d = parserSDF.parse(date);
+            this.ddate = new java.sql.Date(d.getTime());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Date (){
+
     }
 
 
@@ -22,15 +36,15 @@ public class Date {
     public void setId(int id){
         this.id = id;
     }
-    public void addDate(String date){
-        this.date = date;
+    public void setDate(java.sql.Date date){
+        this.ddate = date;
     }
-    public String getDate(){
-        return this.date;
+    public java.sql.Date getDate(){
+        return this.ddate;
     }
 
     @Override
     public String toString() {
-        return date;
+        return ddate.toString();
     }
 }
