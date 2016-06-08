@@ -21,19 +21,24 @@ public class TypeAppareil {
     public int getId() {
         return id;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
+
     public List<Appareil> getListeAppareil() {
         return m_lsAppareil;
     }
-    public void addAppareil(Appareil appareil){
+
+    public void addAppareil(Appareil appareil) {
         this.m_lsAppareil.add(appareil);
     }
 

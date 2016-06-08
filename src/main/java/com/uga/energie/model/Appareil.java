@@ -20,25 +20,32 @@ public class Appareil {
     public int getId() {
         return id;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
+
     public Maison getMaison() {
         return maison;
     }
-    public void setMaison(Maison maison){
+
+    public void setMaison(Maison maison) {
         this.maison = maison;
     }
+
     public TypeAppareil getTypeAppareil() {
         return typeAppareil;
     }
-    public void setTypeAppareil(TypeAppareil typeAppareil){
+
+    public void setTypeAppareil(TypeAppareil typeAppareil) {
         this.typeAppareil = typeAppareil;
     }
 

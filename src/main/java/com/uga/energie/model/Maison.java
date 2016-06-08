@@ -21,19 +21,24 @@ public class Maison {
     public int getId() {
         return id;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
+
     public Quartier getQuartier() {
         return quartier;
     }
-    public void setQuartier(Quartier quartier){
+
+    public void setQuartier(Quartier quartier) {
         this.quartier = quartier;
     }
+
     public List<Appareil> getListeAppareil() {
         return m_lsAppareil;
     }
-    public void addAppareil(Appareil appareil){
+
+    public void addAppareil(Appareil appareil) {
         this.m_lsAppareil.add(appareil);
     }
 

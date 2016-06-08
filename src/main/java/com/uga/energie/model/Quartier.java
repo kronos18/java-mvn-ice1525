@@ -19,13 +19,16 @@ public class Quartier {
     public int getId() {
         return id;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
-    public void addMaison(Maison maison){
+
+    public void addMaison(Maison maison) {
         this.m_lsMaison.add(maison);
     }
-    public List<Maison> getListeMaisons(){
+
+    public List<Maison> getListeMaisons() {
         return this.m_lsMaison;
     }
 
