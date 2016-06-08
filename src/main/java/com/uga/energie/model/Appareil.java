@@ -1,5 +1,8 @@
 package com.uga.energie.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by jack on 06/06/16.
  */
@@ -8,12 +11,14 @@ public class Appareil {
     private String name;
     private TypeAppareil typeAppareil;
     private Maison maison;
+    private List<Consommation> m_lsConsommation;
 
     public Appareil(int id, String sName, TypeAppareil typeAppareil, Maison maison) {
         this.id = id;
         this.name = sName;
         this.typeAppareil = typeAppareil;
         this.maison = maison;
+        this.m_lsConsommation = new ArrayList<Consommation>();
     }
 
 
@@ -47,6 +52,12 @@ public class Appareil {
 
     public void setTypeAppareil(TypeAppareil typeAppareil) {
         this.typeAppareil = typeAppareil;
+    }
+    public List<Consommation> getListeConsommation() {
+        return m_lsConsommation;
+    }
+    public void addConsommation(Consommation conso){
+        this.m_lsConsommation.add(conso);
     }
 
     @Override
