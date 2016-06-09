@@ -9,31 +9,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class UnZip {
-
-    List<String> fileList;
-
-
-    public static void main(String[] args) {
-        UnZip unZip = new UnZip();
-
-        /*
-        System.out.println("Nombre d'argument : " + args.length);
-        System.out.println("les arguments : ");
-        for (int i = 0; i < args.length; i++) {
-            System.out.println(args[i]);
-        }
-        */
-
-        if (args.length == 2) {
-            unZip.unZipAllFiles(args[0], args[1]);
-        } else {
-            String INPUT_ZIP_FILE = "C:\\Users\\Artybloc\\Dropbox\\Master\\M2S2\\LinlyBDD\\data.zip";
-            String OUTPUT_FOLDER = "D:\\Temp";
-            unZip.unZipAllFiles(INPUT_ZIP_FILE, OUTPUT_FOLDER);
-        }
-    }
-
-    public void unZipIt(String zipFile, String outputFolder) {
+    public static void unZipIt(String zipFile, String outputFolder) {
 
         byte[] buffer = new byte[1024];
 
@@ -80,11 +56,11 @@ public class UnZip {
         }
     }
 
-    public void UnZipLevelOne(String INPUT_ZIP_FILE, String OUTPUT_FOLDER){
+    public static void UnZipLevelOne(String INPUT_ZIP_FILE, String OUTPUT_FOLDER){
         unZipIt(INPUT_ZIP_FILE, OUTPUT_FOLDER);
     }
 
-    public void UnZipLevelTwo(String OUTPUT_FOLDER){
+    public static void UnZipLevelTwo(String OUTPUT_FOLDER){
         File folder = new File(OUTPUT_FOLDER + "\\data");
         File[] listOfFiles = folder.listFiles();
 
@@ -96,7 +72,7 @@ public class UnZip {
         }
     }
 
-    public void deleteOldZip(String OUTPUT_FOLDER){
+    public static void deleteOldZip(String OUTPUT_FOLDER){
         File directory = new File(OUTPUT_FOLDER + "\\data");
 
         //make sure directory exists
@@ -119,7 +95,7 @@ public class UnZip {
 
     }
 
-    public void unZipAllFiles(String INPUT_ZIP_FILE, String OUTPUT_FOLDER){
+    public static void unZipAllFiles(String INPUT_ZIP_FILE, String OUTPUT_FOLDER){
         System.out.println("-------------------------------- NIVEAU 1 ------------------------------------");
         UnZipLevelOne(INPUT_ZIP_FILE, OUTPUT_FOLDER);
         System.out.println("-------------------------------- NIVEAU 2 ------------------------------------");
@@ -128,8 +104,7 @@ public class UnZip {
         deleteOldZip(OUTPUT_FOLDER);
     }
 
-    public static void delete(File file)
-            throws IOException{
+    public static void delete(File file) throws IOException{
 
         if(file.isDirectory()){
 

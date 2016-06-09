@@ -1,10 +1,8 @@
 
 package com.uga.energie.IHM;
 
-import com.uga.energie.Optimizer;
-import com.uga.energie.Parse.p_Quartier;
 import com.uga.energie.UnZip;
-import com.uga.energie.Parse.Parser;
+import com.uga.energie.Parser;
 import com.uga.energie.model.Quartier;
 
 import javax.swing.*;
@@ -15,11 +13,13 @@ public class MainFrame extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Generated VARIABLE by Netbeans DEMANDE A SEB DE MODIFIER">
     private javax.swing.JButton jButtonDeleteAll;
+    private javax.swing.JButton jButtonDeleteArchives;
     private javax.swing.JButton jButtonParcourirArchive;
     private javax.swing.JButton jButtonParcourirDestination;
     private javax.swing.JButton jButtonReadAll;
     private javax.swing.JButton jButtonReadTen;
     private javax.swing.JButton jButtonUnzip;
+    private javax.swing.JButton jButtonUnzipSousFichier;
     private javax.swing.JLabel jLabelArchive;
     private javax.swing.JLabel jLabelDestination;
     private javax.swing.JLabel jLabelProgress;
@@ -32,6 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldArchive;
     private javax.swing.JTextField jTextFieldDestination;
     //</editor-fold>
+
     UnZip unzip;
     Parser parser;
     JFileChooser fcDestination;
@@ -47,8 +48,9 @@ public class MainFrame extends javax.swing.JFrame {
         jTextFieldDestination.setText(OUTPUT_FOLDER);
     }
 
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
-        // <editor-fold defaultstate="collapsed" desc="Generated Code by Netbeans DEMANDE A SEB DE MODIFIER">
+
         jLabelTitleFrame = new javax.swing.JLabel();
         jProgressBarBottom = new javax.swing.JProgressBar();
         jLabelProgress = new javax.swing.JLabel();
@@ -61,6 +63,8 @@ public class MainFrame extends javax.swing.JFrame {
         jLabelArchive = new javax.swing.JLabel();
         jTextFieldArchive = new javax.swing.JTextField();
         jLabelTitlePanelArchive = new javax.swing.JLabel();
+        jButtonUnzipSousFichier = new javax.swing.JButton();
+        jButtonDeleteArchives = new javax.swing.JButton();
         jPanelData = new javax.swing.JPanel();
         jButtonReadAll = new javax.swing.JButton();
         jButtonReadTen = new javax.swing.JButton();
@@ -108,6 +112,22 @@ public class MainFrame extends javax.swing.JFrame {
         jLabelTitlePanelArchive.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTitlePanelArchive.setText("Gestion de l'archive");
 
+        jButtonUnzipSousFichier.setText("Unzip sous-fichiers");
+        jButtonUnzipSousFichier.setToolTipText("");
+        jButtonUnzipSousFichier.setActionCommand("Unzip sous-fichiers");
+        jButtonUnzipSousFichier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUnzipSousFichierActionPerformed(evt);
+            }
+        });
+
+        jButtonDeleteArchives.setText("Delete archives");
+        jButtonDeleteArchives.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteArchivesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelArchiveLayout = new javax.swing.GroupLayout(jPanelArchive);
         jPanelArchive.setLayout(jPanelArchiveLayout);
         jPanelArchiveLayout.setHorizontalGroup(
@@ -121,7 +141,7 @@ public class MainFrame extends javax.swing.JFrame {
                                         .addGroup(jPanelArchiveLayout.createSequentialGroup()
                                                 .addComponent(jTextFieldDestination, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jButtonParcourirDestination, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                                                .addComponent(jButtonParcourirDestination, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
                                         .addGroup(jPanelArchiveLayout.createSequentialGroup()
                                                 .addComponent(jTextFieldArchive, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
@@ -129,6 +149,8 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addContainerGap())
                         .addComponent(jButtonUnzip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabelTitlePanelArchive, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonUnzipSousFichier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonDeleteArchives, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelArchiveLayout.setVerticalGroup(
                 jPanelArchiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,6 +169,10 @@ public class MainFrame extends javax.swing.JFrame {
                                         .addComponent(jButtonParcourirDestination))
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonUnzip)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonUnzipSousFichier)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonDeleteArchives)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -240,21 +266,21 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addComponent(jLabelTitleFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jPanelArchive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanelArchive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jPanelData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addComponent(jLabelProgress)
                                 .addGap(3, 3, 3)
                                 .addComponent(jProgressBarBottom, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20))
+                                .addContainerGap())
         );
 
         jLabelProgress.getAccessibleContext().setAccessibleName("labelProgression");
 
         pack();
-        // </editor-fold>
-    }
+    }// </editor-fold>
+
 
     //<editor-fold defaultstate="collapsed" desc=" Fonction pour parcourir (JFileChosser)">
     private void jButtonParcourirDestinationActionPerformed(java.awt.event.ActionEvent evt) {
@@ -305,16 +331,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     //<editor-fold defaultstate="collapsed" desc=" Fonction associé aux boutons effectuant une action opérationnelle ">
     private void jButtonReadAllActionPerformed(java.awt.event.ActionEvent evt) {
-        parser = new Parser(jTextFieldDestination.getText());
+        parser = new Parser(jTextFieldDestination.getText()+"\\Enertech\\Campagnes\\Remodece\\Travail\\Files");
         parser.Parse();
-        List<p_Quartier> lsQuartier = parser.Parse();
+        List<Quartier> lsQuartier = parser.Parse();
 
         //todo : Executer des algos de compression de donnees
-        Optimizer opt = new Optimizer(lsQuartier);
-        opt.FromParserToJDBC();
-
-        //Tu peux maintenant acceder aux objets à inserrer en base, par exemple la liste des appareils :
-        opt.getListeAppareil();
 
         //todo : inserer la liste de quartier dans la bdd avec JDBC
     }
@@ -328,11 +349,26 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "champs vides", "Le champs destination ou archive est vide ce qui n'est pas autorisé",JOptionPane.ERROR_MESSAGE);
             return;
         }
-        unzip.unZipAllFiles(jTextFieldArchive.getText(), jTextFieldDestination.getText());
+        System.out.println("-------------------------------- NIVEAU 1 ------------------------------------");
+        ProgressUnZipLevelOne progresserUnZipOne = new ProgressUnZipLevelOne(100,jProgressBarBottom,jTextFieldArchive.getText(),jTextFieldDestination.getText());
+        progresserUnZipOne.start();
     }
 
     private void jButtonDeleteAllActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+    }
+
+
+    private void jButtonUnzipSousFichierActionPerformed(java.awt.event.ActionEvent evt) {
+        System.out.println("-------------------------------- NIVEAU 2 ------------------------------------");
+        ProgressUnZipLevelTwo progresserUnZipTwo = new ProgressUnZipLevelTwo(100,jProgressBarBottom,jTextFieldDestination.getText());
+        progresserUnZipTwo.start();
+    }
+
+    private void jButtonDeleteArchivesActionPerformed(java.awt.event.ActionEvent evt) {
+        System.out.println("-------------------------------- NIVEAU 3 ------------------------------------");
+        ProgressDelete progresserDelete = new ProgressDelete(100,jProgressBarBottom,jTextFieldDestination.getText());
+        progresserDelete.start();
     }
     //</editor-fold>
 
