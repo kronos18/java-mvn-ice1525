@@ -62,14 +62,14 @@ public class Parser {
         p_Maison maison = new p_Maison(iNumMaison, quartier);
         quartier.addMaison(maison);
 
-        //Type Appareil : todo voir quels types on pourrait mettre...
-        p_TypeAppareil typeAppareil = null;
+        //Type Appareil : todo voir quels types on pourrait mettre à la place de inconnu...
+        p_TypeAppareil typeAppareil = new p_TypeAppareil(1, "Inconnu");
 
         //Appareil
         String sAppName = getAppareilNameFromFile(lsLines);
         p_Appareil appareil = new p_Appareil(iNumAppareil, sAppName, typeAppareil, maison);
         maison.addAppareil(appareil);
-//        typeAppareil.addAppareil(appareil);
+        typeAppareil.addAppareil(appareil);
 
         //Consommation
         List<p_Consommation> lsConso = getAllConsommationFromFile(lsLines, appareil);
