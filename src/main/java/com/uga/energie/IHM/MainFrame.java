@@ -1,8 +1,10 @@
 
 package com.uga.energie.IHM;
 
+import com.uga.energie.Optimizer;
+import com.uga.energie.Parse.p_Quartier;
 import com.uga.energie.UnZip;
-import com.uga.energie.Parser;
+import com.uga.energie.Parse.Parser;
 import com.uga.energie.model.Quartier;
 
 import javax.swing.*;
@@ -331,11 +333,16 @@ public class MainFrame extends javax.swing.JFrame {
 
     //<editor-fold defaultstate="collapsed" desc=" Fonction associé aux boutons effectuant une action opérationnelle ">
     private void jButtonReadAllActionPerformed(java.awt.event.ActionEvent evt) {
-        parser = new Parser(jTextFieldDestination.getText()+"\\Enertech\\Campagnes\\Remodece\\Travail\\Files");
+        parser = new Parser(jTextFieldDestination.getText());
         parser.Parse();
-        List<Quartier> lsQuartier = parser.Parse();
+        List<p_Quartier> lsQuartier = parser.Parse();
 
         //todo : Executer des algos de compression de donnees
+        Optimizer opt = new Optimizer(lsQuartier);
+        opt.FromParserToJDBC();
+
+        //Tu peux maintenant acceder aux objets à inserrer en base, par exemple la liste des appareils :
+        opt.getListeAppareil();
 
         //todo : inserer la liste de quartier dans la bdd avec JDBC
     }
