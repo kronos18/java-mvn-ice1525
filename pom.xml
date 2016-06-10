@@ -41,7 +41,7 @@
     <!--</plugins>-->
     <!--</build>-->
 
-    <!-- - See more at: http://www.vineetmanohar.com/2009/11/3-ways-to-run-java-main-from-maven/#sthash.WAaDBs46.dpuf-->
+    <!-- - See more at: http://www.vineetmanohar.com/2009/11/3-ways-to-run-java-mainBak-from-maven/#sthash.WAaDBs46.dpuf-->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -74,7 +74,7 @@
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/mainBak/resources</directory>
             </resource>
         </resources>
         <testResources>
@@ -95,7 +95,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.uga.energie.IHM.MainFrame</mainClass>
+                    <mainClass>com.uga.energie.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

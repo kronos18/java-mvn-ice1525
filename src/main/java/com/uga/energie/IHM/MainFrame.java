@@ -2,16 +2,28 @@
 package com.uga.energie.IHM;
 
 import com.uga.energie.Optimizer;
+import com.uga.energie.Parse.Parser;
 import com.uga.energie.Parse.p_Quartier;
 import com.uga.energie.UnZip;
-import com.uga.energie.Parse.Parser;
-import com.uga.energie.model.Quartier;
+import com.uga.energie.model.*;
+import com.uga.energie.repository.*;
 
 import javax.swing.*;
 import java.io.File;
+import java.sql.Connection;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainFrame extends javax.swing.JFrame {
+
+    private Connection connection;
+    private AppareilRepository appareilRepository;
+    private QuartierRepository quartierRepository;
+    private MaisonRepository maisonRepository;
+    private TypeAppareilRepository typeAppareilRepository;
+    private ConsommationRepository consommationRepository;
+    private DateRepository dateRepository;
+    private HeureRepository heureRepository;
 
     // <editor-fold defaultstate="collapsed" desc="Generated VARIABLE by Netbeans DEMANDE A SEB DE MODIFIER">
     private javax.swing.JButton jButtonDeleteAll;
@@ -35,6 +47,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldDestination;
     //</editor-fold>
 
+
     UnZip unzip;
     Parser parser;
     JFileChooser fcDestination;
@@ -48,7 +61,9 @@ public class MainFrame extends javax.swing.JFrame {
         unzip = new UnZip();
         jTextFieldArchive.setText(INPUT_ZIP_FILE);
         jTextFieldDestination.setText(OUTPUT_FOLDER);
+
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
@@ -297,13 +312,13 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         //Show it.
-        int returnVal = fcDestination.showDialog(MainFrame.this,"Selectionner");
+        int returnVal = fcDestination.showDialog(MainFrame.this, "Selectionner");
 
         //Process the results.
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fcDestination.getSelectedFile();
             jTextFieldDestination.setText(file.getAbsolutePath());
-            System.out.println("Attaching Folder: " + file.getName()+ ".");
+            System.out.println("Attaching Folder: " + file.getName() + ".");
         } else {
             System.out.println("Attachment cancelled by user.");
         }
@@ -317,13 +332,13 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         //Show it.
-        int returnVal = fcArchive.showDialog(MainFrame.this,"Selectionner");
+        int returnVal = fcArchive.showDialog(MainFrame.this, "Selectionner");
 
         //Process the results.
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fcArchive.getSelectedFile();
             jTextFieldArchive.setText(file.getAbsolutePath());
-            System.out.println("Attaching file: " + file.getName()+ ".");
+            System.out.println("Attaching file: " + file.getName() + ".");
         } else {
             System.out.println("Attachment cancelled by user.");
         }
@@ -342,9 +357,53 @@ public class MainFrame extends javax.swing.JFrame {
         opt.FromParserToJDBC();
 
         //Tu peux maintenant acceder aux objets à inserrer en base, par exemple la liste des appareils :
-        opt.getListeAppareil();
+        List<Date> listeDate = opt.getListeDate();
+        List<Heure> listeHeure = opt.getListeHeure();
+        List<Quartier> listeQuartier = opt.getListeQuartier();
+        List<Maison> listeMaison = opt.getListeMaison();
+        List<TypeAppareil> listeTypeAppareil = opt.getListeTypeAppareil();
+        List<Appareil> listeAppareil = opt.getListeAppareil();
+        List<Consommation> listeConsommation = opt.getListeConsommation();
+
+        Iterator iterator = listeDate.iterator();
+        while (iterator.hasNext()) {
+            Date date = (Date) iterator.next();
+            Repository.getDateRepository().create(date);
+        }
+
+        iterator = listeHeure.iterator();
+        while (iterator.hasNext()) {
+            Heure heure = (Heure) iterator.next();
+            Repository.getHeureRepository().create(heure);
+        }
+        iterator = listeQuartier.iterator();
+        while (iterator.hasNext()) {
+            Quartier quartier = (Quartier) iterator.next();
+            Repository.getQuartierRepository().create(quartier);
+        }
+        iterator = listeMaison.iterator();
+        while (iterator.hasNext()) {
+            Maison maison = (Maison) iterator.next();
+            Repository.getMaisonRepository().create(maison);
+        }
+        iterator = listeTypeAppareil.iterator();
+        while (iterator.hasNext()) {
+            TypeAppareil typeAppareil = (TypeAppareil) iterator.next();
+            Repository.getTypeAppareilRepository().create(typeAppareil);
+        }
+        iterator = listeAppareil.iterator();
+        while (iterator.hasNext()) {
+            Appareil appareil = (Appareil) iterator.next();
+            Repository.getAppareilRepository().create(appareil);
+        }
+        iterator = listeConsommation.iterator();
+        while (iterator.hasNext()) {
+            Consommation consommation = (Consommation) iterator.next();
+            Repository.getConsommationRepository().create(consommation);
+        }
 
         //todo : inserer la liste de quartier dans la bdd avec JDBC
+
     }
 
     private void jButtonReadTenActionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,12 +411,12 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void jButtonUnzipActionPerformed(java.awt.event.ActionEvent evt) {
-        if(jTextFieldArchive.getText().isEmpty() || jTextFieldDestination.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "champs vides", "Le champs destination ou archive est vide ce qui n'est pas autorisé",JOptionPane.ERROR_MESSAGE);
+        if (jTextFieldArchive.getText().isEmpty() || jTextFieldDestination.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "champs vides", "Le champs destination ou archive est vide ce qui n'est pas autorisé", JOptionPane.ERROR_MESSAGE);
             return;
         }
         System.out.println("-------------------------------- NIVEAU 1 ------------------------------------");
-        ProgressUnZipLevelOne progresserUnZipOne = new ProgressUnZipLevelOne(100,jProgressBarBottom,jTextFieldArchive.getText(),jTextFieldDestination.getText());
+        ProgressUnZipLevelOne progresserUnZipOne = new ProgressUnZipLevelOne(100, jProgressBarBottom, jTextFieldArchive.getText(), jTextFieldDestination.getText());
         progresserUnZipOne.start();
     }
 
@@ -368,48 +427,16 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButtonUnzipSousFichierActionPerformed(java.awt.event.ActionEvent evt) {
         System.out.println("-------------------------------- NIVEAU 2 ------------------------------------");
-        ProgressUnZipLevelTwo progresserUnZipTwo = new ProgressUnZipLevelTwo(100,jProgressBarBottom,jTextFieldDestination.getText());
+        ProgressUnZipLevelTwo progresserUnZipTwo = new ProgressUnZipLevelTwo(100, jProgressBarBottom, jTextFieldDestination.getText());
         progresserUnZipTwo.start();
     }
 
     private void jButtonDeleteArchivesActionPerformed(java.awt.event.ActionEvent evt) {
         System.out.println("-------------------------------- NIVEAU 3 ------------------------------------");
-        ProgressDelete progresserDelete = new ProgressDelete(100,jProgressBarBottom,jTextFieldDestination.getText());
+        ProgressDelete progresserDelete = new ProgressDelete(100, jProgressBarBottom, jTextFieldDestination.getText());
         progresserDelete.start();
     }
     //</editor-fold>
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainFrame().setVisible(true);
-            }
-        });
-    }
 
 
 }
