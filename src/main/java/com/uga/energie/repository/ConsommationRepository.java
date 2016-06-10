@@ -1,6 +1,6 @@
 package com.uga.energie.repository;
 
-import com.uga.energie.model.Appareil;
+import com.uga.energie.model.Consommation;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,25 +10,25 @@ import java.sql.SQLException;
 /**
  * Created by Lenovo on 08/06/2016.
  */
-public class AppareilRepository implements CRUDInteface<Appareil> {
+public class ConsommationRepository implements CRUDInteface<Consommation> {
 
-    private static final String INSERT = "insert into uga.appareil(id, name,idTypeAppareil,idMaison ) values( ? ,? ,? ,? )";
-    private static final String FIND_BY_ID = "select * from uga.appareil";
-    private final Connection dataSource;
+    private static final String INSERT = "insert into uga.Consommation(iddate, idheure, idappareil, etat, energy_wh ) values( ? ,? ,? ,?, ? )";
+    private static final String FIND_BY_ID = "select * from uga.Consommation";
+    private final Connection connection;
 
-    public AppareilRepository(Connection dataSource) {
-        this.dataSource = dataSource;
+    public ConsommationRepository(Connection dataSource) {
+        this.connection = dataSource;
     }
 
 
-    public void create(Appareil currentModel) {
+    public void create(Consommation currentModel) {
         try {
-            Connection connection = dataSource;
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
-            preparedStatement.setObject(1, currentModel.getId());
-            preparedStatement.setObject(2, currentModel.getName());
-            preparedStatement.setObject(3, currentModel.getIdMaison());
-            preparedStatement.setObject(4, currentModel.getIdTypeAppareil());
+            preparedStatement.setObject(1, currentModel.getIdAppareil());
+            preparedStatement.setObject(2, currentModel.getEnergy_wh());
+            preparedStatement.setObject(3, currentModel.getEtat());
+            preparedStatement.setObject(4, currentModel.getIdDate());
+            preparedStatement.setObject(5, currentModel.getIdHeure());
             preparedStatement.executeUpdate();
         } catch (SQLException e1) {
             e1.printStackTrace();
@@ -38,7 +38,7 @@ public class AppareilRepository implements CRUDInteface<Appareil> {
     //TODO A faire
     public void findById(int id) {
         try {
-            Connection connection = dataSource;
+            Connection connection = this.connection;
             ResultSet rs;
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             rs = preparedStatement.executeQuery();
@@ -52,7 +52,7 @@ public class AppareilRepository implements CRUDInteface<Appareil> {
         }
     }
 
-    public void update(Appareil currentModel) {
+    public void update(Consommation currentModel) {
 
     }
 

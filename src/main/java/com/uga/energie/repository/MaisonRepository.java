@@ -1,6 +1,6 @@
 package com.uga.energie.repository;
 
-import com.uga.energie.model.Appareil;
+import com.uga.energie.model.Maison;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,25 +10,23 @@ import java.sql.SQLException;
 /**
  * Created by Lenovo on 08/06/2016.
  */
-public class AppareilRepository implements CRUDInteface<Appareil> {
+public class MaisonRepository implements CRUDInteface<Maison> {
 
-    private static final String INSERT = "insert into uga.appareil(id, name,idTypeAppareil,idMaison ) values( ? ,? ,? ,? )";
-    private static final String FIND_BY_ID = "select * from uga.appareil";
+    private static final String INSERT = "insert into uga.Maison(id, idquartier) values( ? ,? )";
+    private static final String FIND_BY_ID = "select * from uga.Maison";
     private final Connection dataSource;
 
-    public AppareilRepository(Connection dataSource) {
+    public MaisonRepository(Connection dataSource) {
         this.dataSource = dataSource;
     }
 
 
-    public void create(Appareil currentModel) {
+    public void create(Maison currentModel) {
         try {
             Connection connection = dataSource;
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setObject(1, currentModel.getId());
-            preparedStatement.setObject(2, currentModel.getName());
-            preparedStatement.setObject(3, currentModel.getIdMaison());
-            preparedStatement.setObject(4, currentModel.getIdTypeAppareil());
+            preparedStatement.setObject(2, currentModel.getIdQuartier());
             preparedStatement.executeUpdate();
         } catch (SQLException e1) {
             e1.printStackTrace();
@@ -52,7 +50,7 @@ public class AppareilRepository implements CRUDInteface<Appareil> {
         }
     }
 
-    public void update(Appareil currentModel) {
+    public void update(Maison currentModel) {
 
     }
 

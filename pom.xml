@@ -95,7 +95,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.uga.energie.MainJDBC</mainClass>
+                    <mainClass>com.uga.energie.IHM.MainFrame</mainClass>
                 </configuration>
             </plugin>
         </plugins>

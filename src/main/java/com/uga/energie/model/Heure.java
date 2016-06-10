@@ -1,7 +1,6 @@
 package com.uga.energie.model;
 
-import com.uga.energie.Parse.p_Maison;
-
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -10,21 +9,21 @@ import java.text.SimpleDateFormat;
  */
 public class Heure {
     private int id;
-    private java.sql.Date heure;
+    private Time heure;
 
     public Heure(int id, String heure) {
         this.id = id;
         try {
             SimpleDateFormat parserSDF = new SimpleDateFormat("HH:mm");
             java.util.Date d = parserSDF.parse(heure);
-            this.heure = new java.sql.Date(d.getTime());
+            this.heure = new java.sql.Time(d.getTime());
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
-    public Heure (){
+    public Heure() {
 
     }
 
@@ -32,13 +31,16 @@ public class Heure {
     public int getId() {
         return id;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
-    public void setHeure(java.sql.Date heure){
+
+    public void setHeure(Time heure) {
         this.heure = heure;
     }
-    public java.sql.Date getHeure(){
+
+    public Time getHeure() {
         return this.heure;
     }
 

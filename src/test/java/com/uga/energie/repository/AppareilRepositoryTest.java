@@ -1,6 +1,7 @@
 package com.uga.energie.repository;
 
 import com.uga.energie.dataSource.ConnectionClass;
+import com.uga.energie.model.Appareil;
 import org.junit.Test;
 
 import javax.sql.DataSource;
@@ -13,12 +14,13 @@ import static org.junit.Assert.*;
  * Created by Lenovo on 08/06/2016.
  */
 public class AppareilRepositoryTest {
-    Connection dataSource = ConnectionClass.getDataSource();
-    AppareilRepository appareilRepository = new AppareilRepository(dataSource);
+    private Connection dataSource = ConnectionClass.getDataSource();
+    private AppareilRepository appareilRepository = new AppareilRepository(dataSource);
 
     @Test
     public void create() throws Exception {
-        appareilRepository.create(null);
+        Appareil appareil = new Appareil(1, "whirlpool s545", 1, 1);
+        appareilRepository.create(appareil);
     }
 
     @Test
