@@ -27,15 +27,20 @@ public class Parser {
         m_sPathToParse = sPath;
     }
 
-    public List<p_Quartier> Parse()
+    public List<p_Quartier> Parse(int NbFilesToParse)
     {
         List<p_Quartier> lsRes = new ArrayList<p_Quartier>();
         List<File> lsTXTFiles = new ArrayList<File>();
 
         findFilesInDir(new File(m_sPathToParse), lsTXTFiles);
 
+        int iNbFileParsed = 0;
         for (File file : lsTXTFiles) {
             lsRes.add(getQuartierFromTXTFile(file));
+            iNbFileParsed++;
+
+            if (NbFilesToParse == iNbFileParsed)
+                break;
         }
 
         return lsRes;

@@ -52,7 +52,7 @@ public class Main_bak {
 
         // parse le dossier dans lequel ont ete dezippees les donnees
         Parser parser = new Parser(sPathToRead);
-        List<p_Quartier> lsQuartier = parser.Parse();
+        List<p_Quartier> lsQuartier = parser.Parse(0);
 
         //todo : Executer des algos de compression de donnees
 

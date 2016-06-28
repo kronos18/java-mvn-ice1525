@@ -22,9 +22,14 @@ public class Optimizer {
     List<Heure> m_lsResHeure;
     List<Date> m_lsResDate;
     List<Consommation> m_lsResConsommation;
+    boolean m_bOptiRemoveZero;
+    boolean m_bOptiUseDateAndHeure;
 
-    public Optimizer(List<p_Quartier> lsP_Quartier){
+
+    public Optimizer(List<p_Quartier> lsP_Quartier, boolean bOptiRemoveZero, boolean bOptiUseDateAndHeure){
         this.m_lsP_Quartier = lsP_Quartier;
+        this.m_bOptiRemoveZero = bOptiRemoveZero;
+        this.m_bOptiUseDateAndHeure = bOptiUseDateAndHeure;
     }
 
     public List<Quartier> getListeQuartier(){
@@ -75,13 +80,58 @@ public class Optimizer {
                     if (!m_lsResAppareil.contains(a))
                         m_lsResAppareil.add(new Appareil(a.getId(), a.getName(), iAppareilTypeAppareil, a.getMaison().getId()));
 
+                    int bPreviousConsoStateInserted = -1;
                     for (p_Consommation c : a.getListeConsommation()){
 
                         int iConsoDateID = getDateIDForConsommation(c);
                         int iConsoHeureID = getHeureIDForConsommation(c);
 
-                        //if (!m_lsResConsommation.contains(c))
-                        m_lsResConsommation.add(new Consommation(iConsoDateID, iConsoHeureID, c.getAppareil().getId(), c.getEtat(), c.getEnergy_wh()));
+                        //Si on doit optimiser en supprimant les zéro et en utilisant les tables Heure et Date
+                        if (m_bOptiRemoveZero && m_bOptiUseDateAndHeure)
+                        {
+                            //Algo =
+                            //Si bPreviousConsoStateInserted n'a jamais été configuré, insert l'objet conso.
+                            //Sinon si c.State est différent de bPreviousConsoStateInserted, insert l'objet conso.
+                            //Sinon si c.Energy_wh et > 0, insert l'objet conso.
+                            //Sinon n'insert pas l'objet conso = opti. (le state est égal au précédent inserré en BDD et Energy_wh vaut 0).
+
+                            boolean bCanInsertConso = false;
+
+                            if ((bPreviousConsoStateInserted == -1) || (c.getEtat() != bPreviousConsoStateInserted) || (c.getEnergy_wh() > 0))
+                                bCanInsertConso = true;
+
+                            if (bCanInsertConso)
+                            {
+                                m_lsResConsommation.add(new Consommation(iConsoDateID, iConsoHeureID, c.getAppareil().getId(), c.getEtat(), c.getEnergy_wh()));
+                                bPreviousConsoStateInserted = c.getEtat();
+                            }
+                        }
+                        //Si on ne doit pas optimiser en supprimant les zéro et qu'on doit utiliser les tables Heure et Date
+                        else if (!m_bOptiRemoveZero && m_bOptiUseDateAndHeure)
+                        {
+                            m_lsResConsommation.add(new Consommation(iConsoDateID, iConsoHeureID, c.getAppareil().getId(), c.getEtat(), c.getEnergy_wh()));
+                        }
+                        //Si on doit optimiser en supprimant les zéro et qu'on ne doit pas utiliser les tables Heure et Date
+                        else if (m_bOptiRemoveZero && !m_bOptiUseDateAndHeure)
+                        {
+                            boolean bCanInsertConso = false;
+
+                            if ((bPreviousConsoStateInserted == -1) || (c.getEtat() != bPreviousConsoStateInserted) || (c.getEnergy_wh() > 0))
+                                bCanInsertConso = true;
+
+                            if (bCanInsertConso)
+                            {
+                                //TODO : modifier Consommation pour qu'il accepte une Date et un Time à la place des id
+                                //m_lsResConsommation.add(new Consommation(iConsoDateID, iConsoHeureID, c.getAppareil().getId(), c.getEtat(), c.getEnergy_wh()));
+                                bPreviousConsoStateInserted = c.getEtat();
+                            }
+                        }
+                        //Si on ne doit pas optimiser en supprimant les zéro et qu'on ne doit pas utiliser les tables Heure et Date
+                        else if (!m_bOptiRemoveZero && !m_bOptiUseDateAndHeure)
+                        {
+                            //TODO : modifier Consommation pour qu'il accepte une Date et un Time à la place des id
+                            //m_lsResConsommation.add(new Consommation(iConsoDateID, iConsoHeureID, c.getAppareil().getId(), c.getEtat(), c.getEnergy_wh()));
+                        }
                     }
                 }
             }

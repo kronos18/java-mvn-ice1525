@@ -911,12 +911,21 @@ public class MainFrame extends javax.swing.JFrame {
 
     //<editor-fold defaultstate="collapsed" desc=" Fonction associé aux boutons effectuant une action opérationnelle ">
     private void jButtonReadAllActionPerformed(java.awt.event.ActionEvent evt) {
-        parser = new Parser(jTextFieldDestination.getText());
-        parser.Parse();
-        List<p_Quartier> lsQuartier = parser.Parse();
+        RealdFilesAndInsertIntoDatabase(0);
+    }
 
-        //todo : Executer des algos de compression de donnees
-        Optimizer opt = new Optimizer(lsQuartier);
+    private void jButtonReadTenActionPerformed(java.awt.event.ActionEvent evt) {
+        RealdFilesAndInsertIntoDatabase(10);
+    }
+
+    private void RealdFilesAndInsertIntoDatabase(int iNbFilesToRead)
+    {
+        parser = new Parser(jTextFieldDestination.getText());
+
+        List<p_Quartier> lsQuartier = parser.Parse(iNbFilesToRead);
+
+        //Execute des algos de compression de donnees. On peut choisir d'optimiser ou non en supprimant les zéro et/ou en utilisant ou non les tables Date et Heure
+        Optimizer opt = new Optimizer(lsQuartier, true, true);
         opt.FromParserToJDBC();
 
         //Tu peux maintenant acceder aux objets à inserrer en base, par exemple la liste des appareils :
@@ -965,12 +974,6 @@ public class MainFrame extends javax.swing.JFrame {
             Repository.getConsommationRepository().create(consommation);
         }
 
-        //todo : inserer la liste de quartier dans la bdd avec JDBC
-
-    }
-
-    private void jButtonReadTenActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
     }
 
     private void jButtonUnzipActionPerformed(java.awt.event.ActionEvent evt) {
