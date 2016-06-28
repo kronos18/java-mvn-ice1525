@@ -13,8 +13,9 @@ import java.util.List;
  */
 public class Main_bak {
 
-    String INPUT_ZIP_FILE = "C:\\Temp\\AnalyseFonctionnelleEnergie\\data.zip";
-    String OUTPUT_FOLDER = "C:\\Temp\\AnalyseFonctionnelleEnergie\\output";
+    public static final String PATH_TO_READ = "D:\\Temp\\AnalyseFonctionnelleEnergie\\output\\data";
+    public static final String INPUT_ZIP_FILE = "D:\\Temp\\AnalyseFonctionnelleEnergie\\data.zip";
+    public static final String OUTPUT_FOLDER = "D:\\Temp\\AnalyseFonctionnelleEnergie\\output";
 
 
     public static void main(String[] args) throws IOException {
@@ -48,7 +49,7 @@ public class Main_bak {
     }
 
     private void ReadAndInsert() {
-        String sPathToRead = "C:\\Temp\\AnalyseFonctionnelleEnergie\\output\\data";
+        String sPathToRead = PATH_TO_READ;
 
         // parse le dossier dans lequel ont ete dezippees les donnees
         Parser parser = new Parser(sPathToRead);
@@ -63,7 +64,7 @@ public class Main_bak {
         System.out.println("Start to unzip...");
 
         UnZip unzip = new UnZip();
-        unzip.unZipAllFiles(INPUT_ZIP_FILE, OUTPUT_FOLDER);
+        UnZip.unZipAllFiles(INPUT_ZIP_FILE, OUTPUT_FOLDER);
 
         System.out.println("Unzip done !");
     }
@@ -79,4 +80,4 @@ public class Main_bak {
                 System.in));
         return reader.readLine();
     }
-    }
+}

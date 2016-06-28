@@ -8,7 +8,7 @@ import java.sql.Connection;
  * Created by Lenovo on 10/06/2016.
  */
 public class Repository {
-    private static Connection connection;
+    private static Connection connection = ConnectionClass.getDataSource();
     private static AppareilRepository appareilRepository;
     private static QuartierRepository quartierRepository;
     private static MaisonRepository maisonRepository;
@@ -77,7 +77,6 @@ public class Repository {
     }
 
     private static void initRepository() {
-        connection = ConnectionClass.getDataSource();
         appareilRepository = new AppareilRepository(connection);
         quartierRepository = new QuartierRepository(connection);
         maisonRepository = new MaisonRepository(connection);

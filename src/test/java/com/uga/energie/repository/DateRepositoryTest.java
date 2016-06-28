@@ -15,7 +15,7 @@ public class DateRepositoryTest {
 
     @Test
     public void create() throws Exception {
-        Date date = new Date(1, "18/06/1999");
+        Date date = new Date(3, "18/06/96");
         dateRepository.create(date);
     }
 

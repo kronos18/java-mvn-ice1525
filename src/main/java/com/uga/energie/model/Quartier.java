@@ -17,7 +17,7 @@ public class Quartier {
         this.name = sName;
     }
 
-    public Quartier(){
+    public Quartier() {
 
     }
 
@@ -39,12 +39,10 @@ public class Quartier {
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         boolean sameSame = false;
 
-        if (object != null && object instanceof p_Quartier)
-        {
+        if (object != null && object instanceof p_Quartier) {
             sameSame = this.id == ((p_Quartier) object).getId();
         }
 

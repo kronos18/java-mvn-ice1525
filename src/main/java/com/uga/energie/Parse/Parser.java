@@ -115,7 +115,7 @@ public class Parser {
 
         for (String s : lsFileLines) {
             if (s.indexOf("APPLIANCE") > -1){
-                sAppName = s.split(" : ")[1];;
+                sAppName = s.split(" : ")[1];
                 break;
             }
         }
