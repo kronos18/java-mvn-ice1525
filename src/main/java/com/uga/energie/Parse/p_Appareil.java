@@ -1,5 +1,8 @@
 package com.uga.energie.Parse;
 
+import com.uga.energie.model.Appareil;
+import com.uga.energie.model.Quartier;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +61,19 @@ public class p_Appareil {
     }
     public void addConsommation(p_Consommation conso){
         this.m_lsConsommation.add(conso);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof p_Appareil) {
+            sameSame = this.id == ((p_Appareil) object).getId();
+        }
+        else if (object != null && object instanceof Appareil) {
+            sameSame = this.id == ((Appareil) object).getId();
+        }
+        return sameSame;
     }
 
     @Override

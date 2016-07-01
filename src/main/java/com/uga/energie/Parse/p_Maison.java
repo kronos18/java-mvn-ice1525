@@ -1,5 +1,8 @@
 package com.uga.energie.Parse;
 
+import com.uga.energie.model.Appareil;
+import com.uga.energie.model.Maison;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +43,19 @@ public class p_Maison {
 
     public void addAppareil(p_Appareil appareil) {
         this.m_lsAppareil.add(appareil);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof p_Maison) {
+            sameSame = this.id == ((p_Maison) object).getId();
+        }
+        else if (object != null && object instanceof Maison) {
+            sameSame = this.id == ((Maison) object).getId();
+        }
+        return sameSame;
     }
 
     @Override

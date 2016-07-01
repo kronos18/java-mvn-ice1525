@@ -1,5 +1,7 @@
 package com.uga.energie.Parse;
 
+import com.uga.energie.model.Quartier;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,19 @@ public class p_Quartier {
 
     public List<p_Maison> getListeMaisons() {
         return this.m_lsMaison;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof p_Quartier) {
+            sameSame = this.id == ((p_Quartier) object).getId();
+        }
+        else if (object != null && object instanceof Quartier) {
+            sameSame = this.id == ((Quartier) object).getId();
+        }
+        return sameSame;
     }
 
     @Override

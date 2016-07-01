@@ -45,7 +45,9 @@ public class Quartier {
         if (object != null && object instanceof p_Quartier) {
             sameSame = this.id == ((p_Quartier) object).getId();
         }
-
+        else if (object != null && object instanceof Quartier) {
+            sameSame = this.id == ((Quartier) object).getId();
+        }
         return sameSame;
     }
 

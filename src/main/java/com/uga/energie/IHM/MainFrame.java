@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MainFrame extends JFrame {
-
+    private JButton jButtonTest;
     private Connection connection;
     private AppareilRepository appareilRepository;
     private QuartierRepository quartierRepository;
@@ -133,6 +133,8 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         this.connection = ConnectionClass.getDataSource();
         initComponents();
+        initChronoFTW();
+        initCheckboxOpti();
         unzip = new UnZip();
         jTextFieldArchive.setText(INPUT_ZIP_FILE);
         jTextFieldDestination.setText(OUTPUT_FOLDER);
@@ -1004,76 +1006,51 @@ public class MainFrame extends JFrame {
     //</editor-fold>
 
 
+    private void initCheckboxOpti()
+    {
+        isOptimizeZero = true;
+        isOptimizeDate = true;
+        jCheckBoxDate.setSelected(true);
+        jCheckBoxZero.setSelected(true);
+    }
+
+    private void initChronoFTW()
+    {
+        ChronoActionListener chronoActionListener = new ChronoActionListener(jLabelDisplayChrono);
+        this.timer = new Timer(delais, chronoActionListener);
+
+        jLabelDisplayChrono = new JLabel(chronoActionListener.getHeure() + ":" + chronoActionListener.getMinute() + ":" + chronoActionListener.getSeconde());
+        jLabelDisplayChrono.setHorizontalAlignment(SwingConstants.CENTER);
+
+        jButtonTest = new JButton("Reinitialiser");
+        jButtonTest.addActionListener(new ButtonListener(this.timer, this.jLabelDisplayChrono, chronoActionListener));
+//        jTextFieldChrono.setEditable(false);
+//        jTextFieldChrono.setHorizontalAlignment(JTextField.CENTER);
+
+        this.jPanelChrono.add(jButtonTest);
+    }
+
     //<editor-fold defaultstate="collapsed" desc=" Fonction associé aux boutons effectuant une action opérationnelle ">
     private void jButtonReadAllActionPerformed(java.awt.event.ActionEvent evt) {
         RealdFilesAndInsertIntoDatabase(0);
     }
 
     private void jButtonReadTenActionPerformed(java.awt.event.ActionEvent evt) {
-        RealdFilesAndInsertIntoDatabase(1);
+        RealdFilesAndInsertIntoDatabase(2);
     }
 
     private void RealdFilesAndInsertIntoDatabase(int iNbFilesToRead) {
         this.timer.start();
-        parser = new Parser(jTextFieldDestination.getText());
 
-        List<p_Quartier> lsQuartier = parser.Parse(iNbFilesToRead);
+        ReadAndInsertThreader threader = new ReadAndInsertThreader(jTextFieldDestination.getText(), iNbFilesToRead);
+        threader.start();
 
-        //Execute des algos de compression de donnees. On peut choisir d'optimiser ou non en supprimant les zéro et/ou en utilisant ou non les tables Date et Heure
-        Optimizer opt = new Optimizer(lsQuartier, isOptimizeZero, isOptimizeDate);
-        opt.FromParserToJDBC();
-
-        //Tu peux maintenant acceder aux objets à inserrer en base, par exemple la liste des appareils :
-        List<Date> listeDate = opt.getListeDate();
-        List<Heure> listeHeure = opt.getListeHeure();
-        List<Quartier> listeQuartier = opt.getListeQuartier();
-        List<Maison> listeMaison = opt.getListeMaison();
-        List<TypeAppareil> listeTypeAppareil = opt.getListeTypeAppareil();
-        List<Appareil> listeAppareil = opt.getListeAppareil();
-        List<Consommation> listeConsommation = opt.getListeConsommation();
-        System.out.println("Insertion date");
-        Iterator iterator = listeDate.iterator();
-        while (iterator.hasNext()) {
-            Date date = (Date) iterator.next();
-            Repository.getDateRepository().create(date);
+        try {
+            threader.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
-        System.out.println("Insertion heure");
-        iterator = listeHeure.iterator();
-        while (iterator.hasNext()) {
-            Heure heure = (Heure) iterator.next();
-            Repository.getHeureRepository().create(heure);
-        }
-        System.out.println("Insertion quartier");
-        iterator = listeQuartier.iterator();
-        while (iterator.hasNext()) {
-            Quartier quartier = (Quartier) iterator.next();
-            Repository.getQuartierRepository().create(quartier);
-        }
-        System.out.println("Insertion maison");
-        iterator = listeMaison.iterator();
-        while (iterator.hasNext()) {
-            Maison maison = (Maison) iterator.next();
-            Repository.getMaisonRepository().create(maison);
-        }
-        System.out.println("Insertion type appareil");
-        iterator = listeTypeAppareil.iterator();
-        while (iterator.hasNext()) {
-            TypeAppareil typeAppareil = (TypeAppareil) iterator.next();
-            Repository.getTypeAppareilRepository().create(typeAppareil);
-        }
-        System.out.println("Insertion appareil");
-        iterator = listeAppareil.iterator();
-        while (iterator.hasNext()) {
-            Appareil appareil = (Appareil) iterator.next();
-            Repository.getAppareilRepository().create(appareil);
-        }
-        System.out.println("Insertion consommation");
-        iterator = listeConsommation.iterator();
-        while (iterator.hasNext()) {
-            Consommation consommation = (Consommation) iterator.next();
-            Repository.getConsommationRepository().create(consommation);
-        }
         this.timer.stop();
 
     }

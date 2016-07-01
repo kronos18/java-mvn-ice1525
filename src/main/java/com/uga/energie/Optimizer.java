@@ -167,7 +167,7 @@ public class Optimizer {
         //Verifie si la date a deja ete ajoutee ou non dans la liste precedement.
         Date consoDate = new Date(0, c.getDate());
         for(Date date : m_lsResDate){
-            if (date.getDate() == consoDate.getDate()){
+            if (date.getDate().equals(consoDate.getDate())){
                 iRes = date.getId();
                 break;
             }
@@ -189,7 +189,7 @@ public class Optimizer {
         //Verifie si l'Heure a deja ete ajoutee ou non dans la liste precedement.
         Heure consoHeure = new Heure(0, c.getHeure());
         for(Heure heure : m_lsResHeure){
-            if (heure.getHeure() == consoHeure.getHeure()){
+            if (heure.getHeure().equals(consoHeure.getHeure())){
                 iRes = heure.getId();
                 break;
             }
