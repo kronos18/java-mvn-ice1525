@@ -347,6 +347,7 @@ public class MainFrame extends JFrame {
         jButtonReadAll.setText("Lire et insérer");
         jButtonReadAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+                disableInsertButton();
                 jButtonReadAllActionPerformed(evt);
             }
         });
@@ -354,6 +355,7 @@ public class MainFrame extends JFrame {
         jButtonReadTen.setText("Lire et insérer (10 premiers)");
         jButtonReadTen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+                disableInsertButton();
                 jButtonReadTenActionPerformed(evt);
             }
         });
@@ -461,19 +463,19 @@ public class MainFrame extends JFrame {
         jLabelRechercheAppareil.setText("Recherche de l'appareil :");
 
         jTableRechercheAppareil.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
+                new Object[][]{
 
                 },
-                new String [] {
+                new String[]{
                         "Numero Maison", "Nom Appareil", "Type Appareil"
                 }
         ) {
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean[]{
                     false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jScrollPaneRechercheAppareil.setViewportView(jTableRechercheAppareil);
@@ -718,19 +720,19 @@ public class MainFrame extends JFrame {
         jLabelClassementMaisonRechercheMaison.setText("Sélection de la maison à analyser");
 
         jTableClassementMaisonListeMaison.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
+                new Object[][]{
 
                 },
-                new String [] {
+                new String[]{
                         "Numero maison"
                 }
         ) {
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean[]{
                     false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jScrollPaneClassementMaisonRechercheMaison.setViewportView(jTableClassementMaisonListeMaison);
@@ -808,10 +810,10 @@ public class MainFrame extends JFrame {
         jLabelConsoSemaineTitre.setText("Consommation d'une maison supérieur à la semaine précédente");
 
         jTableConsoSemaine.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
+                new Object[][]{
 
                 },
-                new String [] {
+                new String[]{
                         "Numero maison", "Conso X-1", "Conso X"
                 }
         ));
@@ -973,6 +975,11 @@ public class MainFrame extends JFrame {
         pack();
     }// </editor-fold>
 
+    private void disableInsertButton() {
+        jButtonReadTen.setEnabled(false);
+        jButtonReadAll.setEnabled(false);
+    }
+
     //<editor-fold defaultstate="collapsed" desc=" Fonction pour parcourir (JFileChooser)">
     private void jButtonParcourirDestinationActionPerformed(java.awt.event.ActionEvent evt) {
         //Set up the file chooser.
@@ -1053,20 +1060,21 @@ public class MainFrame extends JFrame {
     }
 
     private void jButtonReadTenActionPerformed(java.awt.event.ActionEvent evt) {
-        RealdFilesAndInsertIntoDatabase(1);
+        RealdFilesAndInsertIntoDatabase(10);
     }
 
     private void RealdFilesAndInsertIntoDatabase(int iNbFilesToRead) {
         this.timer.start();
 
-        ReadAndInsertThreader threader = new ReadAndInsertThreader(jTextFieldDestination.getText(), iNbFilesToRead, true, true, timer);
-        threader.start();
+        ReadAndInsertThreader readAndInsertThreader = new ReadAndInsertThreader(jTextFieldDestination.getText(), iNbFilesToRead, true, true, timer,jButtonReadAll,jButtonReadTen,jProgressBarBottom);
+        Thread thread = new Thread(readAndInsertThreader);
+        thread.start();
 
-        try {
-            threader.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            threader.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
 //        this.timer.stop();
 

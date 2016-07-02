@@ -16,20 +16,15 @@ import java.util.List;
 public class Parser {
 
     private String m_sPathToParse;
+    private int nbFilesToParse;
+    private int nbFilesThreated;
 
     public Parser(String sPathToParse) {
         m_sPathToParse = sPathToParse;
     }
 
-    public String getPathToParse() {
-        return m_sPathToParse;
-    }
-
-    public void setPathToParse(String sPath) {
-        m_sPathToParse = sPath;
-    }
-
-    public List<p_Quartier> Parse(int NbFilesToParse) {
+    public List<p_Quartier> Parse(int nbFilesToParse) {
+        this.nbFilesToParse = nbFilesToParse;
         List<p_Quartier> lsRes = new ArrayList<p_Quartier>();
         List<File> lsTXTFiles = new ArrayList<File>();
 
@@ -37,6 +32,7 @@ public class Parser {
 
         int iNbFileParsed = 0;
         for (File file : lsTXTFiles) {
+            this.nbFilesThreated = iNbFileParsed;
             p_Quartier quartierFromTXTFile = getQuartierFromTXTFile(file);
 
             //Execute des algos de compression de donnees. On peut choisir d'optimiser ou non en supprimant les zéro et/ou en utilisant ou non les tables Date et Heure
@@ -66,11 +62,43 @@ public class Parser {
 //            lsRes.add(quartierFromTXTFile);
             iNbFileParsed++;
 
-            if (NbFilesToParse == iNbFileParsed)
+            if (nbFilesToParse == iNbFileParsed)
                 break;
         }
 
         return lsRes;
+    }
+
+    public String getM_sPathToParse() {
+        return m_sPathToParse;
+    }
+
+    public void setM_sPathToParse(String m_sPathToParse) {
+        this.m_sPathToParse = m_sPathToParse;
+    }
+
+    public int getNbFilesToParse() {
+        return nbFilesToParse;
+    }
+
+    public void setNbFilesToParse(int nbFilesToParse) {
+        this.nbFilesToParse = nbFilesToParse;
+    }
+
+    public int getNbFilesThreated() {
+        return nbFilesThreated;
+    }
+
+    public void setNbFilesThreated(int nbFilesThreated) {
+        this.nbFilesThreated = nbFilesThreated;
+    }
+
+    public String getPathToParse() {
+        return m_sPathToParse;
+    }
+
+    public void setPathToParse(String sPath) {
+        m_sPathToParse = sPath;
     }
 
     private void insertConsommations(List<Consommation> listeConsommation) {

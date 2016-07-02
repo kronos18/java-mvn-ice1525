@@ -73,15 +73,17 @@ public class Optimizer {
 
 
         if (null == Repository.getQuartierRepository().findById(p_quartier.getId())) {
+            System.out.println("Insertion quartier");
             Quartier quartier = new Quartier(p_quartier.getId(), "" + p_quartier.getId());
             Repository.getQuartierRepository().create(quartier);
         }
+        System.out.println("Insertion des maisons");
         for (p_Maison pMaison : p_quartier.getListeMaisons()) {
-
             if (null == Repository.getMaisonRepository().findById(pMaison.getId())) {
                 Maison maison = new Maison(pMaison.getId(), pMaison.getQuartier().getId());
                 Repository.getMaisonRepository().create(maison);
             }
+            System.out.println("Insertion des appareils");
             for (p_Appareil pAppareil : pMaison.getListeAppareil()) {
 
                 int iAppareilTypeAppareil = getTypeAppareilIDForAppareil(pAppareil);
@@ -92,6 +94,7 @@ public class Optimizer {
                 }
 
                 int bPreviousConsoStateInserted = -1;
+                System.out.println("Insertion des consommations");
                 for (p_Consommation pConsommation : pAppareil.getListeConsommation()) {
 
                     int iConsoDateID = getDateIDForConsommation(pConsommation);
