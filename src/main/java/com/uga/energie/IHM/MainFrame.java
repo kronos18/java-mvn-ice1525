@@ -6,10 +6,13 @@ import com.uga.energie.UnZip;
 import com.uga.energie.controllers.ButtonListener;
 import com.uga.energie.controllers.ChronoActionListener;
 import com.uga.energie.dataSource.ConnectionClass;
+import com.uga.energie.model.Appareil;
 import com.uga.energie.repository.*;
 import com.uga.energie.service.ReadAndInsertThreader;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,7 +31,7 @@ public class MainFrame extends JFrame {
 
     private static int heure = 0, minute = 0, seconde = 0;
 
-    // <editor-fold defaultstate="collapsed" desc="Generated VARIABLE by Netbeans DEMANDE A SEB DE MODIFIER">
+    //<editor-fold defaultstate="collapsed" desc="  Variables declaration - do not modify - AUTO GENEREE ">
     private javax.swing.JButton jButtonConsoObjetByDate;
     private javax.swing.JButton jButtonDeleteAll;
     private javax.swing.JButton jButtonDeleteArchives;
@@ -91,6 +94,7 @@ public class MainFrame extends JFrame {
     private javax.swing.JTable jTableConsoSemaine;
     private javax.swing.JTable jTableRechercheAppareil;
     private javax.swing.JTextField jTextFieldArchive;
+    private javax.swing.JTextField jTextFieldChrono;
     private javax.swing.JTextField jTextFieldClassementApareilConsoTotale;
     private javax.swing.JTextField jTextFieldClassementApareilMaison;
     private javax.swing.JTextField jTextFieldClassementApareilNomAppareil;
@@ -106,7 +110,6 @@ public class MainFrame extends JFrame {
     private javax.swing.JTextField jTextFieldTypeAppareil1;
     private javax.swing.JTextField jTextFieldYear;
     //</editor-fold>
-
 
     UnZip unzip;
     Parser parser;
@@ -124,7 +127,7 @@ public class MainFrame extends JFrame {
 
 
     public MainFrame() {
-        this.connection = ConnectionClass.getDataSource();
+        //this.connection = ConnectionClass.getDataSource();
         initChronoFTW();
         initComponents();
         initCheckboxOpti();
@@ -133,7 +136,9 @@ public class MainFrame extends JFrame {
         jTextFieldDestination.setText(OUTPUT_FOLDER);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code, DEMANDE A SEB DE MODIFIER">
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code IHM">
     private void initComponents() {
 
         jLabelTitleFrame = new javax.swing.JLabel();
@@ -161,6 +166,7 @@ public class MainFrame extends JFrame {
         jPanelChrono = new javax.swing.JPanel();
         jLabelTitlePaneChrono = new javax.swing.JLabel();
         jLabelChrono = new javax.swing.JLabel();
+        jTextFieldChrono = new javax.swing.JTextField();
         jPanelRequest = new javax.swing.JPanel();
         jLabelTitlePanelRequest = new javax.swing.JLabel();
         jTabbedPaneRequest = new javax.swing.JTabbedPane();
@@ -400,10 +406,10 @@ public class MainFrame extends JFrame {
 
         jLabelChrono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelChrono.setText("Temps d'execution :");
-        this.jPanelChrono.add(jButtonTest);
-//        jLabelDisplayChrono.setEditable(false);
-        jLabelDisplayChrono.setHorizontalAlignment(javax.swing.JLabel.CENTER);
-//        jLabelDisplayChrono.setText("00:00:00");
+
+        jTextFieldChrono.setEditable(false);
+        jTextFieldChrono.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextFieldChrono.setText("00:00:00");
 
         javax.swing.GroupLayout jPanelChronoLayout = new javax.swing.GroupLayout(jPanelChrono);
         jPanelChrono.setLayout(jPanelChronoLayout);
@@ -416,8 +422,7 @@ public class MainFrame extends JFrame {
                                         .addGroup(jPanelChronoLayout.createSequentialGroup()
                                                 .addComponent(jLabelChrono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabelDisplayChrono, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jButtonTest, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                .addComponent(jTextFieldChrono, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
         );
         jPanelChronoLayout.setVerticalGroup(
@@ -428,8 +433,7 @@ public class MainFrame extends JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanelChronoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabelChrono)
-                                        .addComponent(jLabelDisplayChrono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButtonTest, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jTextFieldChrono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -439,9 +443,12 @@ public class MainFrame extends JFrame {
         jLabelTitlePanelRequest.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTitlePanelRequest.setText("Récupération des données");
 
-        jTabbedPaneRequest.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         jPanelConsoAppareil.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(0, 102, 102)));
+        jPanelConsoAppareil.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanelConsoAppareilComponentShown(evt);
+            }
+        });
 
         jLabelTitleConsoAppareil.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabelTitleConsoAppareil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -450,22 +457,19 @@ public class MainFrame extends JFrame {
         jLabelRechercheAppareil.setText("Recherche de l'appareil :");
 
         jTableRechercheAppareil.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                        {null, null, null},
-                        {null, null, null},
-                        {null, null, null},
-                        {null, null, null}
+                new Object [][] {
+
                 },
-                new String[]{
-                        "Title 1", "Title 2", "Title 3"
+                new String [] {
+                        "Numero Maison", "Nom Appareil", "Type Appareil"
                 }
         ) {
-            boolean[] canEdit = new boolean[]{
+            boolean[] canEdit = new boolean [] {
                     false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         jScrollPaneRechercheAppareil.setViewportView(jTableRechercheAppareil);
@@ -475,7 +479,7 @@ public class MainFrame extends JFrame {
             jTableRechercheAppareil.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        jLabelRechercheConsoAppareil.setText("Recherche de consomation pour l'appariel sélectionné et pour la date : ");
+        jLabelRechercheConsoAppareil.setText("Recherche de consomation pour l'appareil sélectionné et pour la date : ");
 
         jTextFieldDay.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextFieldDay.setText("jour");
@@ -514,19 +518,23 @@ public class MainFrame extends JFrame {
         jLabelNomAppareil2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelNomAppareil2.setText("Nom");
 
-        jTextFieldTypeAppareil1.setText("jTextField1");
+        jTextFieldTypeAppareil1.setEnabled(false);
+        jTextFieldTypeAppareil1.setFocusable(false);
 
-        jTextFieldNomAppareil2.setText("jTextField2");
+        jTextFieldNomAppareil2.setEnabled(false);
+        jTextFieldNomAppareil2.setFocusable(false);
 
         jLabelMaisonAppareil2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelMaisonAppareil2.setText("Consommation totale");
 
-        jTextFieldMaisonAppareil1.setText("jTextField3");
+        jTextFieldMaisonAppareil1.setEnabled(false);
+        jTextFieldMaisonAppareil1.setFocusable(false);
 
         jLabelConsoTotaleAppareil1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelConsoTotaleAppareil1.setText("Maison");
 
-        jTextFieldConsoTotaleAppareil2.setText("jTextField4");
+        jTextFieldConsoTotaleAppareil2.setEnabled(false);
+        jTextFieldConsoTotaleAppareil2.setFocusable(false);
 
         javax.swing.GroupLayout jPanelConsoAppareilLayout = new javax.swing.GroupLayout(jPanelConsoAppareil);
         jPanelConsoAppareil.setLayout(jPanelConsoAppareilLayout);
@@ -536,7 +544,7 @@ public class MainFrame extends JFrame {
                                 .addContainerGap()
                                 .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabelTitleConsoAppareil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jScrollPaneRechercheAppareil, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
+                                        .addComponent(jScrollPaneRechercheAppareil, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
                                         .addGroup(jPanelConsoAppareilLayout.createSequentialGroup()
                                                 .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                         .addComponent(jLabelRechercheAppareil)
@@ -575,7 +583,7 @@ public class MainFrame extends JFrame {
                                 .addComponent(jLabelRechercheAppareil)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPaneRechercheAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                                 .addComponent(jLabelRechercheConsoAppareil)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -606,6 +614,11 @@ public class MainFrame extends JFrame {
         jTabbedPaneRequest.addTab("Conso Appareil", jPanelConsoAppareil);
 
         jPanelClassementApareil.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanelClassementApareil.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanelClassementApareilComponentShown(evt);
+            }
+        });
 
         jLabelTitreClassementAppareil.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabelTitreClassementAppareil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -614,22 +627,26 @@ public class MainFrame extends JFrame {
         jLabelClassementApareilTypeAppareil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelClassementApareilTypeAppareil.setText("Type");
 
-        jTextFieldClassementApareilTypeAppareil.setText("jTextField1");
+        jTextFieldClassementApareilTypeAppareil.setEnabled(false);
+        jTextFieldClassementApareilTypeAppareil.setFocusable(false);
 
         jLabelClassementApareilNomAppareil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelClassementApareilNomAppareil.setText("Nom");
 
-        jTextFieldClassementApareilNomAppareil.setText("jTextField2");
+        jTextFieldClassementApareilNomAppareil.setEnabled(false);
+        jTextFieldClassementApareilNomAppareil.setFocusable(false);
 
         jLabelClassementApareilMaisonAppareil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelClassementApareilMaisonAppareil.setText("Consommation totale");
 
-        jTextFieldClassementApareilMaison.setText("jTextField3");
+        jTextFieldClassementApareilMaison.setEnabled(false);
+        jTextFieldClassementApareilMaison.setFocusable(false);
 
         jLabelClassementApareilConsoTotaleAppareil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelClassementApareilConsoTotaleAppareil.setText("Maison");
 
-        jTextFieldClassementApareilConsoTotale.setText("jTextField4");
+        jTextFieldClassementApareilConsoTotale.setEnabled(false);
+        jTextFieldClassementApareilConsoTotale.setFocusable(false);
 
         javax.swing.GroupLayout jPanelClassementApareilLayout = new javax.swing.GroupLayout(jPanelClassementApareil);
         jPanelClassementApareil.setLayout(jPanelClassementApareilLayout);
@@ -638,7 +655,7 @@ public class MainFrame extends JFrame {
                         .addGroup(jPanelClassementApareilLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabelTitreClassementAppareil, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
+                                        .addComponent(jLabelTitreClassementAppareil, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
                                         .addGroup(jPanelClassementApareilLayout.createSequentialGroup()
                                                 .addGroup(jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(jLabelClassementApareilTypeAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -684,6 +701,11 @@ public class MainFrame extends JFrame {
         jTabbedPaneRequest.addTab("Classement Appareil", jPanelClassementApareil);
 
         jPanelConsoMaisonTotal.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanelConsoMaisonTotal.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanelConsoMaisonTotalComponentShown(evt);
+            }
+        });
 
         jLabelClassementMaisonTitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabelClassementMaisonTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -692,37 +714,35 @@ public class MainFrame extends JFrame {
         jLabelClassementMaisonRechercheMaison.setText("Sélection de la maison à analyser");
 
         jTableClassementMaisonListeMaison.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                        {null, null},
-                        {null, null},
-                        {null, null},
-                        {null, null}
+                new Object [][] {
+
                 },
-                new String[]{
-                        "Title 1", "Title 2"
+                new String [] {
+                        "Numero maison"
                 }
         ) {
-            boolean[] canEdit = new boolean[]{
-                    false, false
+            boolean[] canEdit = new boolean [] {
+                    false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         jScrollPaneClassementMaisonRechercheMaison.setViewportView(jTableClassementMaisonListeMaison);
         if (jTableClassementMaisonListeMaison.getColumnModel().getColumnCount() > 0) {
             jTableClassementMaisonListeMaison.getColumnModel().getColumn(0).setResizable(false);
-            jTableClassementMaisonListeMaison.getColumnModel().getColumn(1).setResizable(false);
         }
 
         jLabelClassementMaisonNom.setText("Nom");
 
-        jTextFieldClassementMaisonNomMaison.setText("jTextField2");
+        jTextFieldClassementMaisonNomMaison.setEnabled(false);
+        jTextFieldClassementMaisonNomMaison.setFocusable(false);
 
         jLabelClassementMaisonMaison.setText("Consommation totale");
 
-        jTextFieldClassementMaisonConsoTotalMaison.setText("jTextField4");
+        jTextFieldClassementMaisonConsoTotalMaison.setEnabled(false);
+        jTextFieldClassementMaisonConsoTotalMaison.setFocusable(false);
 
         jLabelClassementMaisonConsomation.setText("Consomation durant la dernière heure :");
 
@@ -745,7 +765,7 @@ public class MainFrame extends JFrame {
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsoMaisonTotalLayout.createSequentialGroup()
                                                 .addGroup(jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(jLabelClassementMaisonTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jScrollPaneClassementMaisonRechercheMaison, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE))
+                                                        .addComponent(jScrollPaneClassementMaisonRechercheMaison, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE))
                                                 .addGap(14, 14, 14))
                                         .addGroup(jPanelConsoMaisonTotalLayout.createSequentialGroup()
                                                 .addGroup(jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -761,7 +781,7 @@ public class MainFrame extends JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabelClassementMaisonRechercheMaison)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPaneClassementMaisonRechercheMaison, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
+                                .addComponent(jScrollPaneClassementMaisonRechercheMaison, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabelClassementMaisonConsomation)
                                 .addGap(18, 18, 18)
@@ -784,14 +804,11 @@ public class MainFrame extends JFrame {
         jLabelConsoSemaineTitre.setText("Consommation d'une maison supérieur à la semaine précédente");
 
         jTableConsoSemaine.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null}
+                new Object [][] {
+
                 },
-                new String[]{
-                        "Title 1", "Title 2", "Title 3", "Title 4"
+                new String [] {
+                        "Numero maison", "Conso X-1", "Conso X"
                 }
         ));
         jScrollPaneConsoSemaine.setViewportView(jTableConsoSemaine);
@@ -803,7 +820,7 @@ public class MainFrame extends JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsoSemaineLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanelConsoSemaineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jScrollPaneConsoSemaine, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
+                                        .addComponent(jScrollPaneConsoSemaine, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
                                         .addComponent(jLabelConsoSemaineTitre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
         );
@@ -813,7 +830,7 @@ public class MainFrame extends JFrame {
                                 .addContainerGap()
                                 .addComponent(jLabelConsoSemaineTitre)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPaneConsoSemaine, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+                                .addComponent(jScrollPaneConsoSemaine, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
                                 .addContainerGap())
         );
 
@@ -952,7 +969,6 @@ public class MainFrame extends JFrame {
         pack();
     }// </editor-fold>
 
-
     //<editor-fold defaultstate="collapsed" desc=" Fonction pour parcourir (JFileChooser)">
     private void jButtonParcourirDestinationActionPerformed(java.awt.event.ActionEvent evt) {
         //Set up the file chooser.
@@ -1021,6 +1037,7 @@ public class MainFrame extends JFrame {
 //        jLabelDisplayChrono.setHorizontalAlignment(JTextField.CENTER);
 
 //        this.jPanelChrono.add(jButtonTest);
+
     }
 
     //<editor-fold defaultstate="collapsed" desc=" Fonction associé aux boutons effectuant une action opérationnelle ">
@@ -1084,15 +1101,15 @@ public class MainFrame extends JFrame {
     }
 
     private void jTextFieldYearActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        jTextFieldYear.setText("");
     }
 
     private void jTextFieldMonthActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        jTextFieldMonth.setText("");
     }
 
     private void jTextFieldDayActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        jTextFieldDay.setText("");
     }
 
     private void jCheckBoxZeroActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1101,6 +1118,24 @@ public class MainFrame extends JFrame {
 
     private void jCheckBoxDateActionPerformed(java.awt.event.ActionEvent evt) {
         isOptimizeDate = jCheckBoxDate.isSelected();
+    }
+
+    private void jPanelConsoAppareilComponentShown(java.awt.event.ComponentEvent evt) {
+        // APPEL MOI MAXIME !!!!
+        // DefaultTableModel newModel = ModelMAXIME_FONCTION((DefaultTableModel) jTableRechercheAppareil.getModel());
+        // jTableRechercheAppareil.setModel(newModel);
+    }
+
+    private void jPanelClassementApareilComponentShown(java.awt.event.ComponentEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void jPanelConsoMaisonTotalComponentShown(java.awt.event.ComponentEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    private void jPanelConsoSemaineComponentShown(java.awt.event.ComponentEvent evt) {
+        // TODO add your handling code here:
     }
 
 
