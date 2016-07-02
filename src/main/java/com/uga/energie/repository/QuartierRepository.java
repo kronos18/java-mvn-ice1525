@@ -1,5 +1,6 @@
 package com.uga.energie.repository;
 
+import com.uga.energie.model.Date;
 import com.uga.energie.model.Quartier;
 
 import java.sql.Connection;
@@ -22,8 +23,8 @@ public class QuartierRepository implements CRUDInteface<Quartier> {
 
 
     public void create(Quartier currentModel) {
+        Connection connection = dataSource;
         try {
-            Connection connection = dataSource;
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setObject(1, currentModel.getId());
             preparedStatement.setObject(2, currentModel.getName());
@@ -34,7 +35,7 @@ public class QuartierRepository implements CRUDInteface<Quartier> {
     }
 
     //TODO A faire
-    public void findById(int id) {
+    public Date findById(int id) {
         try {
             Connection connection = dataSource;
             ResultSet rs;
@@ -48,6 +49,7 @@ public class QuartierRepository implements CRUDInteface<Quartier> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void update(Quartier currentModel) {

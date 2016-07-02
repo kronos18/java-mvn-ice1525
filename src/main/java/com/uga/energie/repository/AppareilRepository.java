@@ -1,6 +1,7 @@
 package com.uga.energie.repository;
 
 import com.uga.energie.model.Appareil;
+import com.uga.energie.model.Date;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,13 +23,13 @@ public class AppareilRepository implements CRUDInteface<Appareil> {
 
 
     public void create(Appareil currentModel) {
+        Connection connection = dataSource;
         try {
-            Connection connection = dataSource;
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setObject(1, currentModel.getId());
             preparedStatement.setObject(2, currentModel.getName());
-            preparedStatement.setObject(3, currentModel.getIdMaison());
-            preparedStatement.setObject(4, currentModel.getIdTypeAppareil());
+            preparedStatement.setObject(3, currentModel.getIdTypeAppareil());
+            preparedStatement.setObject(4, currentModel.getIdMaison());
             preparedStatement.executeUpdate();
         } catch (SQLException e1) {
             e1.printStackTrace();
@@ -36,7 +37,7 @@ public class AppareilRepository implements CRUDInteface<Appareil> {
     }
 
     //TODO A faire
-    public void findById(int id) {
+    public Date findById(int id) {
         try {
             Connection connection = dataSource;
             ResultSet rs;
@@ -50,6 +51,7 @@ public class AppareilRepository implements CRUDInteface<Appareil> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void update(Appareil currentModel) {

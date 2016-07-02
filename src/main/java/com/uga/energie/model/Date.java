@@ -25,7 +25,9 @@ public class Date {
         }
     }
 
-    public Date (){
+    public Date(int id, java.sql.Date date) {
+        this.ddate = date;
+        this.id = id;
 
     }
 
@@ -33,13 +35,16 @@ public class Date {
     public int getId() {
         return id;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
-    public void setDate(java.sql.Date date){
+
+    public void setDate(java.sql.Date date) {
         this.ddate = date;
     }
-    public java.sql.Date getDate(){
+
+    public java.sql.Date getDate() {
         return this.ddate;
     }
 

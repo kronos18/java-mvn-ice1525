@@ -1,7 +1,6 @@
 package com.uga.energie.repository;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import com.uga.energie.model.Date;
 
 /**
  * Created by Lenovo on 08/06/2016.
@@ -11,7 +10,7 @@ public interface CRUDInteface<T> {
     void create(T currentModel);
 
 
-    void findById(int id);
+    Date findById(int id);
 
 
     void update(T currentModel);

@@ -34,20 +34,21 @@ public class DateRepository implements CRUDInteface<Date> {
     }
 
     //TODO A faire
-    public void findById(int id) {
+    public Date findById(int id) {
+        Date date = null;
+        Connection connection = dataSource;
         try {
-            Connection connection = dataSource;
             ResultSet rs;
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set
-                System.out.println("name = " + rs.getString("name"));
-                System.out.println("id = " + rs.getInt("id"));
+                date = new Date(rs.getInt("id"), rs.getDate("ddate"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return date;
     }
 
     public void update(Date currentModel) {

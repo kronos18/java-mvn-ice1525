@@ -1,25 +1,19 @@
 
 package com.uga.energie.IHM;
 
-import com.uga.energie.Optimizer;
 import com.uga.energie.Parse.Parser;
-import com.uga.energie.Parse.p_Quartier;
 import com.uga.energie.UnZip;
 import com.uga.energie.controllers.ButtonListener;
 import com.uga.energie.controllers.ChronoActionListener;
 import com.uga.energie.dataSource.ConnectionClass;
-import com.uga.energie.model.*;
 import com.uga.energie.repository.*;
+import com.uga.energie.service.ReadAndInsertThreader;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Iterator;
-import java.util.List;
 
 public class MainFrame extends JFrame {
     private JButton jButtonTest;
@@ -97,7 +91,6 @@ public class MainFrame extends JFrame {
     private javax.swing.JTable jTableConsoSemaine;
     private javax.swing.JTable jTableRechercheAppareil;
     private javax.swing.JTextField jTextFieldArchive;
-    private javax.swing.JTextField jTextFieldChrono;
     private javax.swing.JTextField jTextFieldClassementApareilConsoTotale;
     private javax.swing.JTextField jTextFieldClassementApareilMaison;
     private javax.swing.JTextField jTextFieldClassementApareilNomAppareil;
@@ -132,8 +125,8 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         this.connection = ConnectionClass.getDataSource();
-        initComponents();
         initChronoFTW();
+        initComponents();
         initCheckboxOpti();
         unzip = new UnZip();
         jTextFieldArchive.setText(INPUT_ZIP_FILE);
@@ -168,7 +161,6 @@ public class MainFrame extends JFrame {
         jPanelChrono = new javax.swing.JPanel();
         jLabelTitlePaneChrono = new javax.swing.JLabel();
         jLabelChrono = new javax.swing.JLabel();
-        jTextFieldChrono = new javax.swing.JTextField();
         jPanelRequest = new javax.swing.JPanel();
         jLabelTitlePanelRequest = new javax.swing.JLabel();
         jTabbedPaneRequest = new javax.swing.JTabbedPane();
@@ -408,10 +400,10 @@ public class MainFrame extends JFrame {
 
         jLabelChrono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelChrono.setText("Temps d'execution :");
-
-        jTextFieldChrono.setEditable(false);
-        jTextFieldChrono.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldChrono.setText("00:00:00");
+        this.jPanelChrono.add(jButtonTest);
+//        jLabelDisplayChrono.setEditable(false);
+        jLabelDisplayChrono.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+//        jLabelDisplayChrono.setText("00:00:00");
 
         javax.swing.GroupLayout jPanelChronoLayout = new javax.swing.GroupLayout(jPanelChrono);
         jPanelChrono.setLayout(jPanelChronoLayout);
@@ -424,7 +416,8 @@ public class MainFrame extends JFrame {
                                         .addGroup(jPanelChronoLayout.createSequentialGroup()
                                                 .addComponent(jLabelChrono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jTextFieldChrono, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(jLabelDisplayChrono, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jButtonTest, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
         jPanelChronoLayout.setVerticalGroup(
@@ -435,7 +428,8 @@ public class MainFrame extends JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanelChronoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabelChrono)
-                                        .addComponent(jTextFieldChrono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabelDisplayChrono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonTest, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -456,22 +450,22 @@ public class MainFrame extends JFrame {
         jLabelRechercheAppareil.setText("Recherche de l'appareil :");
 
         jTableRechercheAppareil.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
+                new Object[][]{
                         {null, null, null},
                         {null, null, null},
                         {null, null, null},
                         {null, null, null}
                 },
-                new String [] {
+                new String[]{
                         "Title 1", "Title 2", "Title 3"
                 }
         ) {
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean[]{
                     false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jScrollPaneRechercheAppareil.setViewportView(jTableRechercheAppareil);
@@ -698,22 +692,22 @@ public class MainFrame extends JFrame {
         jLabelClassementMaisonRechercheMaison.setText("Sélection de la maison à analyser");
 
         jTableClassementMaisonListeMaison.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
+                new Object[][]{
                         {null, null},
                         {null, null},
                         {null, null},
                         {null, null}
                 },
-                new String [] {
+                new String[]{
                         "Title 1", "Title 2"
                 }
         ) {
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean[]{
                     false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jScrollPaneClassementMaisonRechercheMaison.setViewportView(jTableClassementMaisonListeMaison);
@@ -790,13 +784,13 @@ public class MainFrame extends JFrame {
         jLabelConsoSemaineTitre.setText("Consommation d'une maison supérieur à la semaine précédente");
 
         jTableConsoSemaine.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
+                new Object[][]{
                         {null, null, null, null},
                         {null, null, null, null},
                         {null, null, null, null},
                         {null, null, null, null}
                 },
-                new String [] {
+                new String[]{
                         "Title 1", "Title 2", "Title 3", "Title 4"
                 }
         ));
@@ -1006,28 +1000,27 @@ public class MainFrame extends JFrame {
     //</editor-fold>
 
 
-    private void initCheckboxOpti()
-    {
+    private void initCheckboxOpti() {
         isOptimizeZero = true;
         isOptimizeDate = true;
         jCheckBoxDate.setSelected(true);
         jCheckBoxZero.setSelected(true);
     }
 
-    private void initChronoFTW()
-    {
-        ChronoActionListener chronoActionListener = new ChronoActionListener(jLabelDisplayChrono);
+    private void initChronoFTW() {
+        ChronoActionListener chronoActionListener = new ChronoActionListener();
         this.timer = new Timer(delais, chronoActionListener);
 
         jLabelDisplayChrono = new JLabel(chronoActionListener.getHeure() + ":" + chronoActionListener.getMinute() + ":" + chronoActionListener.getSeconde());
         jLabelDisplayChrono.setHorizontalAlignment(SwingConstants.CENTER);
+        chronoActionListener.setjLabel(jLabelDisplayChrono);
 
         jButtonTest = new JButton("Reinitialiser");
         jButtonTest.addActionListener(new ButtonListener(this.timer, this.jLabelDisplayChrono, chronoActionListener));
-//        jTextFieldChrono.setEditable(false);
-//        jTextFieldChrono.setHorizontalAlignment(JTextField.CENTER);
+//        jLabelDisplayChrono.setEditable(false);
+//        jLabelDisplayChrono.setHorizontalAlignment(JTextField.CENTER);
 
-        this.jPanelChrono.add(jButtonTest);
+//        this.jPanelChrono.add(jButtonTest);
     }
 
     //<editor-fold defaultstate="collapsed" desc=" Fonction associé aux boutons effectuant une action opérationnelle ">
@@ -1036,13 +1029,13 @@ public class MainFrame extends JFrame {
     }
 
     private void jButtonReadTenActionPerformed(java.awt.event.ActionEvent evt) {
-        RealdFilesAndInsertIntoDatabase(2);
+        RealdFilesAndInsertIntoDatabase(1);
     }
 
     private void RealdFilesAndInsertIntoDatabase(int iNbFilesToRead) {
         this.timer.start();
 
-        ReadAndInsertThreader threader = new ReadAndInsertThreader(jTextFieldDestination.getText(), iNbFilesToRead);
+        ReadAndInsertThreader threader = new ReadAndInsertThreader(jTextFieldDestination.getText(), iNbFilesToRead, true, true, timer);
         threader.start();
 
         try {
@@ -1051,7 +1044,7 @@ public class MainFrame extends JFrame {
             e.printStackTrace();
         }
 
-        this.timer.stop();
+//        this.timer.stop();
 
     }
 

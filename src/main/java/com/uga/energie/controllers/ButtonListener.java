@@ -25,6 +25,7 @@ public class ButtonListener implements ActionListener {
 
 
         if (e.getActionCommand().equals("Reinitialiser")) {
+//            this.timer.start();
             if (this.isRunning) {
                 this.timer.stop();
                 this.isRunning = false;

@@ -1,10 +1,13 @@
 package com.uga.energie.Parse;
 
+import com.uga.energie.Optimizer;
 import com.uga.energie.model.*;
+import com.uga.energie.repository.Repository;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -14,21 +17,19 @@ public class Parser {
 
     private String m_sPathToParse;
 
-    public Parser(String sPathToParse)
-    {
+    public Parser(String sPathToParse) {
         m_sPathToParse = sPathToParse;
     }
 
-    public String getPathToParse(){
+    public String getPathToParse() {
         return m_sPathToParse;
     }
-    public void setPathToParse(String sPath)
-    {
+
+    public void setPathToParse(String sPath) {
         m_sPathToParse = sPath;
     }
 
-    public List<p_Quartier> Parse(int NbFilesToParse)
-    {
+    public List<p_Quartier> Parse(int NbFilesToParse) {
         List<p_Quartier> lsRes = new ArrayList<p_Quartier>();
         List<File> lsTXTFiles = new ArrayList<File>();
 
@@ -36,7 +37,33 @@ public class Parser {
 
         int iNbFileParsed = 0;
         for (File file : lsTXTFiles) {
-            lsRes.add(getQuartierFromTXTFile(file));
+            p_Quartier quartierFromTXTFile = getQuartierFromTXTFile(file);
+
+            //Execute des algos de compression de donnees. On peut choisir d'optimiser ou non en supprimant les zéro et/ou en utilisant ou non les tables Date et Heure
+            Optimizer opt = new Optimizer(quartierFromTXTFile, true, true);
+            opt.FromParserToJDBC();
+
+            /*Respect des insertions en base*/
+            /*Ordre:
+            * 1 : Toutes les dates
+            * 2 : Toutes les heures
+            * 3 : Toutes les quartiers
+            * 4 : Toutes les maisons
+            * 5 : Toutes les types d'appareil
+            * 6 : Toutes les appareils
+            * 7 : Toutes les consommations
+            * */
+
+            /*Insertion des elements*/
+            insertDates(opt.getListeDate());
+            insertHeures(opt.getListeHeure());
+            insertQuartiers(opt.getListeQuartier());
+            insertMaisons(opt.getListeMaison());
+            insertTypesAppareil(opt.getListeTypeAppareil());
+            insertAppareils(opt.getListeAppareil());
+            insertConsommations(opt.getListeConsommation());
+            
+//            lsRes.add(quartierFromTXTFile);
             iNbFileParsed++;
 
             if (NbFilesToParse == iNbFileParsed)
@@ -46,8 +73,75 @@ public class Parser {
         return lsRes;
     }
 
-    private p_Quartier getQuartierFromTXTFile(File file)
-    {
+    private void insertConsommations(List<Consommation> listeConsommation) {
+        Iterator iterator;
+        System.out.println("Insertion consommation");
+        iterator = listeConsommation.iterator();
+        while (iterator.hasNext()) {
+            Consommation consommation = (Consommation) iterator.next();
+            Repository.getConsommationRepository().create(consommation);
+        }
+    }
+
+    private void insertAppareils(List<Appareil> listeAppareil) {
+        Iterator iterator;
+        System.out.println("Insertion appareil");
+        iterator = listeAppareil.iterator();
+        while (iterator.hasNext()) {
+            Appareil appareil = (Appareil) iterator.next();
+            Repository.getAppareilRepository().create(appareil);
+        }
+    }
+
+    private void insertTypesAppareil(List<TypeAppareil> listeTypeAppareil) {
+        Iterator iterator;
+        System.out.println("Insertion type appareil");
+        iterator = listeTypeAppareil.iterator();
+        while (iterator.hasNext()) {
+            TypeAppareil typeAppareil = (TypeAppareil) iterator.next();
+            Repository.getTypeAppareilRepository().create(typeAppareil);
+        }
+    }
+
+    private void insertMaisons(List<Maison> listeMaison) {
+        Iterator iterator;
+        System.out.println("Insertion maison");
+        iterator = listeMaison.iterator();
+        while (iterator.hasNext()) {
+            Maison maison = (Maison) iterator.next();
+            Repository.getMaisonRepository().create(maison);
+        }
+    }
+
+    private void insertQuartiers(List<Quartier> listeQuartier) {
+        Iterator iterator;
+        System.out.println("Insertion quartier");
+        iterator = listeQuartier.iterator();
+        while (iterator.hasNext()) {
+            Quartier quartier = (Quartier) iterator.next();
+            Repository.getQuartierRepository().create(quartier);
+        }
+    }
+
+    private void insertHeures(List<Heure> listeHeure) {
+        Iterator iterator;
+        System.out.println("Insertion heure");
+        iterator = listeHeure.iterator();
+        while (iterator.hasNext()) {
+            Heure heure = (Heure) iterator.next();
+            Repository.getHeureRepository().create(heure);
+        }
+    }
+
+    private void insertDates(List<Date> listeDate) {
+        Iterator iterator = listeDate.iterator();
+        while (iterator.hasNext()) {
+            Date date = (Date) iterator.next();
+            Repository.getDateRepository().create(date);
+        }
+    }
+
+    private p_Quartier getQuartierFromTXTFile(File file) {
         if (!file.isFile())
             return null;
 
@@ -85,7 +179,7 @@ public class Parser {
         return quartier;
     }
 
-    private List<p_Consommation> getAllConsommationFromFile(List<String> lsFileLines, p_Appareil appareil){
+    private List<p_Consommation> getAllConsommationFromFile(List<String> lsFileLines, p_Appareil appareil) {
         List<p_Consommation> lsRes = new ArrayList<p_Consommation>();
 
         for (String sLine : lsFileLines) {
@@ -93,7 +187,7 @@ public class Parser {
                     sLine.indexOf("HOUSEHOLD") >= 0 ||
                     sLine.indexOf("APPLIANCE") >= 0 ||
                     sLine.length() <= 1 ||
-                    sLine.indexOf("DATE(dd/mm/yy)") >= 0 )
+                    sLine.indexOf("DATE(dd/mm/yy)") >= 0)
                 continue;
 
             //      22/01/98	15:50	0	000000
@@ -110,11 +204,11 @@ public class Parser {
         return lsRes;
     }
 
-    private String getAppareilNameFromFile(List<String> lsFileLines){
+    private String getAppareilNameFromFile(List<String> lsFileLines) {
         String sAppName = null;
 
         for (String s : lsFileLines) {
-            if (s.indexOf("APPLIANCE") > -1){
+            if (s.indexOf("APPLIANCE") > -1) {
                 sAppName = s.split(" : ")[1];
                 break;
             }
@@ -123,11 +217,11 @@ public class Parser {
         return sAppName;
     }
 
-    private List<String> readFile(File file){
+    private List<String> readFile(File file) {
         List<String> lsLines = new ArrayList<String>();
         BufferedReader br = null;
 
-        try{
+        try {
             br = new BufferedReader(new FileReader(file));
             String line;
             while ((line = br.readLine()) != null) {
@@ -137,8 +231,7 @@ public class Parser {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 if (br != null)
                     br.close();
@@ -149,8 +242,7 @@ public class Parser {
         return lsLines;
     }
 
-    private void findFilesInDir(File dirToParse, List<File> allTXTFiles)
-    {
+    private void findFilesInDir(File dirToParse, List<File> allTXTFiles) {
         if (dirToParse.isFile()) {
             allTXTFiles.add(dirToParse);
 

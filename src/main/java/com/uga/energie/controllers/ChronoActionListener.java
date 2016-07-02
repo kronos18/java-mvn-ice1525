@@ -9,10 +9,15 @@ import java.awt.event.ActionListener;
  */
 public class ChronoActionListener implements ActionListener {
     private static int heure = 0, minute = 0, seconde = 0;
-    private final JLabel jLabel;
+    private JLabel jLabel;
 
     public ChronoActionListener(JLabel jLabel) {
         this.jLabel = jLabel;
+    }
+
+    public ChronoActionListener() {
+
+        jLabel = null;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -57,5 +62,9 @@ public class ChronoActionListener implements ActionListener {
 
     public JLabel getjLabel() {
         return jLabel;
+    }
+
+    public void setjLabel(JLabel jLabelText) {
+        this.jLabel = jLabelText;
     }
 }
