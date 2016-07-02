@@ -43,21 +43,21 @@ create
 create
 	table
 		uga.Date(
-			id bigint primary key not null,
+			id BIGSERIAL primary key not null,
 			ddate date not null
 		);
 
 create
 	table
 		uga.Heure(
-			id bigint primary key not null,
+			id BIGSERIAL primary key not null,
 			heure time not null
 		);
 
 create
 	table
 		uga.TypeAppareil(
-			id bigint primary key not null,
+			id BIGSERIAL primary key not null,
 			name varchar(30)
 		);
 
