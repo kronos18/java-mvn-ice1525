@@ -71,30 +71,24 @@ public class Optimizer {
         m_lsResDate = new ArrayList<Date>();
         m_lsResConsommation = new ArrayList<Consommation>();
 
-//        for (p_Quartier q : p_quartier) {
 
-        if (!m_lsResQuartier.contains(p_quartier)) {
+        if (null == Repository.getQuartierRepository().findById(p_quartier.getId())) {
             Quartier quartier = new Quartier(p_quartier.getId(), "" + p_quartier.getId());
-            m_lsResQuartier.add(quartier);
-//                Repository.getQuartierRepository().create(quartier);
+            Repository.getQuartierRepository().create(quartier);
         }
-
         for (p_Maison pMaison : p_quartier.getListeMaisons()) {
 
-            if (!m_lsResMaison.contains(pMaison)) {
+            if (null == Repository.getMaisonRepository().findById(pMaison.getId())) {
                 Maison maison = new Maison(pMaison.getId(), pMaison.getQuartier().getId());
                 Repository.getMaisonRepository().create(maison);
-//                m_lsResMaison.add(maison);
             }
-
             for (p_Appareil pAppareil : pMaison.getListeAppareil()) {
 
                 int iAppareilTypeAppareil = getTypeAppareilIDForAppareil(pAppareil);
 
-                if (!m_lsResAppareil.contains(pAppareil)) {
+                if (null == Repository.getAppareilRepository().findById(pAppareil.getId())) {
                     Appareil appareil = new Appareil(pAppareil.getId(), pAppareil.getName(), iAppareilTypeAppareil, pAppareil.getMaison().getId());
                     Repository.getAppareilRepository().create(appareil);
-//                    m_lsResAppareil.add(appareil);
                 }
 
                 int bPreviousConsoStateInserted = -1;
@@ -102,6 +96,7 @@ public class Optimizer {
 
                     int iConsoDateID = getDateIDForConsommation(pConsommation);
                     int iConsoHeureID = getHeureIDForConsommation(pConsommation);
+
 
                     //Si on doit optimiser en supprimant les zéro et en utilisant les tables Heure et Date
                     Consommation consommation = new Consommation(iConsoDateID, iConsoHeureID, pConsommation.getAppareil().getId(), pConsommation.getEtat(), pConsommation.getEnergy_wh());
@@ -118,15 +113,13 @@ public class Optimizer {
                             bCanInsertConso = true;
 
                         if (bCanInsertConso) {
-//                                Repository.getConsommationRepository().create(consommation);
-                            m_lsResConsommation.add(consommation);
+                            Repository.getConsommationRepository().create(consommation);
                             bPreviousConsoStateInserted = pConsommation.getEtat();
                         }
                     }
                     //Si on ne doit pas optimiser en supprimant les zéro et qu'on doit utiliser les tables Heure et Date
                     else if (!m_bOptiRemoveZero && m_bOptiUseDateAndHeure) {
-//                            Repository.getConsommationRepository().create(consommation);
-                        m_lsResConsommation.add(consommation);
+                        Repository.getConsommationRepository().create(consommation);
                     }
                     //Si on doit optimiser en supprimant les zéro et qu'on ne doit pas utiliser les tables Heure et Date
                     else if (m_bOptiRemoveZero && !m_bOptiUseDateAndHeure) {
@@ -149,8 +142,6 @@ public class Optimizer {
                 }
             }
         }
-
-//        }
     }
 
     private int getTypeAppareilIDForAppareil(p_Appareil a) {
@@ -158,62 +149,36 @@ public class Optimizer {
 
         //Verifie si le TypeAppareil a deja ete ajoute ou non dans la liste precedement.
         TypeAppareil appTypeAppareil = new TypeAppareil(0, a.getTypeAppareil().getName());
-        for (TypeAppareil typeApp : m_lsResTypeAppareil) {
-            if (typeApp.getName() == appTypeAppareil.getName()) {
-                iRes = typeApp.getId();
-                break;
-            }
+
+        int id = Repository.getTypeAppareilRepository().getId(appTypeAppareil.getName());
+        if (-1 != id) {
+            iRes = id;
         }
 
+
         //Le TypeAppareil n'a pas ete trouve, on l'ajoute à la liste.
-        if (iRes == 0) {
-            iRes = m_lsResTypeAppareil.size() + 1;
-            appTypeAppareil.setId(iRes);
-            m_lsResTypeAppareil.add(appTypeAppareil);
+        else {
+            iRes = Repository.getTypeAppareilRepository().createAndGetId(appTypeAppareil);
         }
 
         return iRes;
     }
 
-    //    private int getDateIDForConsommation(p_Consommation c) {
-//        int iRes = 0;
-//
-//        //Verifie si la date a deja ete ajoutee ou non dans la liste precedement.
-//        Date consoDate = new Date(0, c.getDate());
-//
-//
-//        for (Date date : m_lsResDate) {
-//            if (date.getDate().equals(consoDate.getDate())) {
-//                iRes = date.getId();
-//                break;
-//            }
-//        }
-//
-//        //La date n'a pas ete trouvee, on l'ajoute à la liste.
-//        if (iRes == 0) {
-//            iRes = m_lsResDate.size() + 1;
-//            consoDate.setId(iRes);
-//            m_lsResDate.add(consoDate);
-//        }
-//
-//        return iRes;
-//    }
     private int getDateIDForConsommation(p_Consommation c) {
         int iRes = 0;
 
         //Verifie si la date a deja ete ajoutee ou non dans la liste precedement.
         Date consoDate = new Date(0, c.getDate());
 
-        Date dateInRepo = Repository.getDateRepository().findById(consoDate.getId());
-        if (null != dateInRepo) {
-            iRes = dateInRepo.getId();
+        int id = Repository.getDateRepository().getId(consoDate.getDate());
+        if (-1 != id) {
+            iRes = id;
         }
 
-        //La date n'a pas ete trouvee, on l'ajoute à la liste.
+        //La date n'a pas ete trouvee, on l'ajoute à la base.
         else {
-            iRes = m_lsResDate.size() + 1;
-            consoDate.setId(iRes);
-            m_lsResDate.add(consoDate);
+            /*INSERTION DES DATES ET HEURES*/
+            iRes = Repository.getDateRepository().createAndGetId(consoDate);
         }
 
         return iRes;
@@ -224,21 +189,19 @@ public class Optimizer {
 
         //Verifie si l'Heure a deja ete ajoutee ou non dans la liste precedement.
         Heure consoHeure = new Heure(0, c.getHeure());
-        for (Heure heure : m_lsResHeure) {
-            if (heure.getHeure().equals(consoHeure.getHeure())) {
-                iRes = heure.getId();
-                break;
-            }
+        int id = Repository.getHeureRepository().getId(consoHeure.getHeure());
+
+        if (-1 != id) {
+            iRes = id;
         }
 
         //L'heure n'a pas ete trouvee, on l'ajoute à la liste.
-        if (iRes == 0) {
-            iRes = m_lsResHeure.size() + 1;
-            consoHeure.setId(iRes);
-            m_lsResHeure.add(consoHeure);
+        else {
+             /*INSERTION DES DATES ET HEURES*/
+            iRes = Repository.getHeureRepository().createAndGetId(consoHeure);
+            //            m_lsResHeure.add(consoHeure);
         }
 
         return iRes;
     }
-
 }

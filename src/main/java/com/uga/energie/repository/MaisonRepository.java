@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class MaisonRepository implements CRUDInteface<Maison> {
 
     private static final String INSERT = "insert into uga.Maison(id, idquartier) values( ? ,? )";
-    private static final String FIND_BY_ID = "select * from uga.Maison";
+    private static final String FIND_BY_ID = "select * from uga.Maison where id = ?";
     private final Connection dataSource;
 
     public MaisonRepository(Connection dataSource) {
@@ -42,6 +42,7 @@ public class MaisonRepository implements CRUDInteface<Maison> {
         try {
             ResultSet rs;
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            preparedStatement.setObject(1, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set

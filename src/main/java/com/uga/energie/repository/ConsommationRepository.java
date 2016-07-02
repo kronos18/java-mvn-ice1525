@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class ConsommationRepository implements CRUDInteface<Consommation> {
 
     private static final String INSERT = "insert into uga.Consommation(iddate, idheure, idappareil, etat, energy_wh ) values( ? ,? ,? ,?, ? )";
-    private static final String FIND_BY_ID = "select * from uga.Consommation";
+    private static final String FIND_BY_ID = "select * from uga.Consommation where id = ?";
     private final Connection connection;
 
     public ConsommationRepository(Connection dataSource) {
@@ -42,6 +42,7 @@ public class ConsommationRepository implements CRUDInteface<Consommation> {
         try {
             ResultSet rs;
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            preparedStatement.setObject(1, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set

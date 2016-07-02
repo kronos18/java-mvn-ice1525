@@ -17,7 +17,7 @@ public class HeureRepositoryTest {
 
     @Test
     public void create() throws Exception {
-        Heure heure = new Heure(1, "00:00");
+        Heure heure = new Heure(0, "00:00");
         heureRepository.create(heure);
     }
 

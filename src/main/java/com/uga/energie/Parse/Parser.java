@@ -55,13 +55,13 @@ public class Parser {
             * */
 
             /*Insertion des elements*/
-            insertDates(opt.getListeDate());
-            insertHeures(opt.getListeHeure());
-            insertQuartiers(opt.getListeQuartier());
-            insertMaisons(opt.getListeMaison());
-            insertTypesAppareil(opt.getListeTypeAppareil());
-            insertAppareils(opt.getListeAppareil());
-            insertConsommations(opt.getListeConsommation());
+//            insertDates(opt.getListeDate());
+//            insertHeures(opt.getListeHeure());
+//            insertQuartiers(opt.getListeQuartier());
+//            insertMaisons(opt.getListeMaison());
+//            insertTypesAppareil(opt.getListeTypeAppareil());
+//            insertAppareils(opt.getListeAppareil());
+//            insertConsommations(opt.getListeConsommation());
 
 //            lsRes.add(quartierFromTXTFile);
             iNbFileParsed++;
