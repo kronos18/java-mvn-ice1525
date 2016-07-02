@@ -3,6 +3,7 @@ package com.uga.energie.repository;
 import com.uga.energie.dataSource.ConnectionClass;
 
 import java.sql.Connection;
+import java.sql.Date;
 
 /**
  * Created by Lenovo on 10/06/2016.

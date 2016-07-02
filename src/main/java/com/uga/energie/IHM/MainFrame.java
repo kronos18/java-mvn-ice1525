@@ -5,6 +5,7 @@ import com.uga.energie.Parse.Parser;
 import com.uga.energie.UnZip;
 import com.uga.energie.controllers.ButtonListener;
 import com.uga.energie.controllers.ChronoActionListener;
+import com.uga.energie.controlleursRestitutionDesDonnees.Controller_ConsoAppareilParDate;
 import com.uga.energie.dataSource.ConnectionClass;
 import com.uga.energie.model.Appareil;
 import com.uga.energie.repository.*;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.text.ParseException;
 
 public class MainFrame extends JFrame {
     private JButton jButtonTest;
@@ -119,6 +121,7 @@ public class MainFrame extends JFrame {
     String OUTPUT_FOLDER = "D:\\Temp\\AnalyseFonctionnelleEnergie\\output";
     Boolean isOptimizeZero = false;
     Boolean isOptimizeDate = false;
+    Controller_ConsoAppareilParDate m_ControllerConsoAppareilParDate;
 
     private int delais = 1000;
 
@@ -131,6 +134,7 @@ public class MainFrame extends JFrame {
         initChronoFTW();
         initComponents();
         initCheckboxOpti();
+        initControllers();
         unzip = new UnZip();
         jTextFieldArchive.setText(INPUT_ZIP_FILE);
         jTextFieldDestination.setText(OUTPUT_FOLDER);
@@ -1015,6 +1019,9 @@ public class MainFrame extends JFrame {
     }
     //</editor-fold>
 
+    private void initControllers(){
+        m_ControllerConsoAppareilParDate = new Controller_ConsoAppareilParDate();
+    }
 
     private void initCheckboxOpti() {
         isOptimizeZero = true;
@@ -1097,7 +1104,35 @@ public class MainFrame extends JFrame {
     }
 
     private void jButtonConsoObjetByDateActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        int iRowSelected = jTableRechercheAppareil.getSelectedRow();
+
+        // If nothing is selected
+        if (iRowSelected == -1)
+            return;
+
+        this.jTextFieldNomAppareil2.setText("");
+        this.jTextFieldTypeAppareil1.setText("");
+        this.jTextFieldMaisonAppareil1.setText("");
+        this.jTextFieldConsoTotaleAppareil2.setText("");
+
+        int iModelIndexOfRowSelected = jTableRechercheAppareil.convertRowIndexToModel(iRowSelected);
+        String sJour = this.jTextFieldDay.getText();
+        String sMois = this.jTextFieldMonth.getText();
+        String sAnnee = this.jTextFieldYear.getText();
+
+        String sConso = null;
+        try {
+            sConso = m_ControllerConsoAppareilParDate.getConsommationOfItem(iModelIndexOfRowSelected, sJour, sMois, sAnnee);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Syntaxe de la date incorrecte.", "Syntaxe incorrecte", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        this.jTextFieldNomAppareil2.setText(m_ControllerConsoAppareilParDate.getItemSelected(iModelIndexOfRowSelected).getAppareilName());
+        this.jTextFieldTypeAppareil1.setText(m_ControllerConsoAppareilParDate.getItemSelected(iModelIndexOfRowSelected).getAppareilType());
+        this.jTextFieldMaisonAppareil1.setText(m_ControllerConsoAppareilParDate.getItemSelected(iModelIndexOfRowSelected).getAppareilMaison());
+        this.jTextFieldConsoTotaleAppareil2.setText(sConso);
     }
 
     private void jTextFieldYearActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1121,9 +1156,8 @@ public class MainFrame extends JFrame {
     }
 
     private void jPanelConsoAppareilComponentShown(java.awt.event.ComponentEvent evt) {
-        // APPEL MOI MAXIME !!!!
-        // DefaultTableModel newModel = ModelMAXIME_FONCTION((DefaultTableModel) jTableRechercheAppareil.getModel());
-        // jTableRechercheAppareil.setModel(newModel);
+        DefaultTableModel newModel = m_ControllerConsoAppareilParDate.getTableModel((DefaultTableModel) jTableRechercheAppareil.getModel());
+        jTableRechercheAppareil.setModel(newModel);
     }
 
     private void jPanelClassementApareilComponentShown(java.awt.event.ComponentEvent evt) {
