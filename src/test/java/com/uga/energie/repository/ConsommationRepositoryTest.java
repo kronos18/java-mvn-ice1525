@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import java.sql.Connection;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Created by Lenovo on 10/06/2016.
  */
@@ -22,7 +24,8 @@ public class ConsommationRepositoryTest {
 
     @Test
     public void findById() throws Exception {
-
+        Consommation consommation = consommationRepository.findById(1);
+        assertNotNull(consommation);
     }
 
     @Test

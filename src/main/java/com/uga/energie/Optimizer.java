@@ -83,8 +83,8 @@ public class Optimizer {
 
             if (!m_lsResMaison.contains(pMaison)) {
                 Maison maison = new Maison(pMaison.getId(), pMaison.getQuartier().getId());
-//                    Repository.getMaisonRepository().create(maison);
-                m_lsResMaison.add(maison);
+                Repository.getMaisonRepository().create(maison);
+//                m_lsResMaison.add(maison);
             }
 
             for (p_Appareil pAppareil : pMaison.getListeAppareil()) {
@@ -93,8 +93,8 @@ public class Optimizer {
 
                 if (!m_lsResAppareil.contains(pAppareil)) {
                     Appareil appareil = new Appareil(pAppareil.getId(), pAppareil.getName(), iAppareilTypeAppareil, pAppareil.getMaison().getId());
-//                        Repository.getAppareilRepository().create(appareil);
-                    m_lsResAppareil.add(appareil);
+                    Repository.getAppareilRepository().create(appareil);
+//                    m_lsResAppareil.add(appareil);
                 }
 
                 int bPreviousConsoStateInserted = -1;

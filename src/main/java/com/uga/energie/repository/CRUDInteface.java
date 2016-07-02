@@ -10,7 +10,7 @@ public interface CRUDInteface<T> {
     void create(T currentModel);
 
 
-    Date findById(int id);
+    T findById(int id);
 
 
     void update(T currentModel);

@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.sql.Connection;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Created by Lenovo on 10/06/2016.
  */
@@ -21,7 +23,8 @@ public class HeureRepositoryTest {
 
     @Test
     public void findById() throws Exception {
-
+        Heure heure = heureRepository.findById(1);
+        assertNotNull(heure);
     }
 
     @Test

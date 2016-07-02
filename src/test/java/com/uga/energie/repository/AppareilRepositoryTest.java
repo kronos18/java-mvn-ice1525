@@ -25,7 +25,8 @@ public class AppareilRepositoryTest {
 
     @Test
     public void findById() throws Exception {
-
+        Appareil appareilRepositoryById = appareilRepository.findById(1);
+        assertNotNull(appareilRepositoryById);
     }
 
     @Test

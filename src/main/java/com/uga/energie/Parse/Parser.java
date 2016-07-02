@@ -62,7 +62,7 @@ public class Parser {
             insertTypesAppareil(opt.getListeTypeAppareil());
             insertAppareils(opt.getListeAppareil());
             insertConsommations(opt.getListeConsommation());
-            
+
 //            lsRes.add(quartierFromTXTFile);
             iNbFileParsed++;
 

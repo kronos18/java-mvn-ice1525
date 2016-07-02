@@ -1,7 +1,7 @@
 package com.uga.energie.repository;
 
+import com.uga.energie.model.Appareil;
 import com.uga.energie.model.Consommation;
-import com.uga.energie.model.Date;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,21 +37,20 @@ public class ConsommationRepository implements CRUDInteface<Consommation> {
     }
 
     //TODO A faire
-    public Date findById(int id) {
+    public Consommation findById(int id) {
+        Consommation consommation = null;
         try {
-            Connection connection = this.connection;
             ResultSet rs;
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set
-                System.out.println("name = " + rs.getString("name"));
-                System.out.println("id = " + rs.getInt("id"));
+                consommation = new Consommation(rs.getInt("iddate"), rs.getInt("idheure"), rs.getInt("idappareil"), rs.getInt("etat"), rs.getInt("energy_wh"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return consommation;
     }
 
     public void update(Consommation currentModel) {

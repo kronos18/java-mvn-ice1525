@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.sql.Connection;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Created by Lenovo on 10/06/2016.
  */
@@ -21,6 +23,8 @@ public class DateRepositoryTest {
 
     @Test
     public void findById() throws Exception {
+        Date dateRepositoryById = dateRepository.findById(1);
+        assertNotNull(dateRepositoryById);
 
     }
 

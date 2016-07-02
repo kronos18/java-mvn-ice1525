@@ -1,6 +1,5 @@
 package com.uga.energie.repository;
 
-import com.uga.energie.model.Date;
 import com.uga.energie.model.TypeAppareil;
 
 import java.sql.Connection;
@@ -35,21 +34,22 @@ public class TypeAppareilRepository implements CRUDInteface<TypeAppareil> {
     }
 
     //TODO A faire
-    public Date findById(int id) {
+    public TypeAppareil findById(int id) {
+        TypeAppareil typeAppareil = null;
+        Connection connection = dataSource;
+
         try {
-            Connection connection = dataSource;
             ResultSet rs;
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set
-                System.out.println("name = " + rs.getString("name"));
-                System.out.println("id = " + rs.getInt("id"));
+                typeAppareil = new TypeAppareil(rs.getInt("id"), rs.getString("name"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return typeAppareil;
     }
 
     public void update(TypeAppareil currentModel) {

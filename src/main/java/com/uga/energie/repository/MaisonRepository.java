@@ -1,6 +1,6 @@
 package com.uga.energie.repository;
 
-import com.uga.energie.model.Date;
+import com.uga.energie.model.Consommation;
 import com.uga.energie.model.Maison;
 
 import java.sql.Connection;
@@ -35,21 +35,22 @@ public class MaisonRepository implements CRUDInteface<Maison> {
     }
 
     //TODO A faire
-    public Date findById(int id) {
+    public Maison findById(int id) {
+        Maison maison = null;
+        Connection connection = dataSource;
+
         try {
-            Connection connection = dataSource;
             ResultSet rs;
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set
-                System.out.println("name = " + rs.getString("name"));
-                System.out.println("id = " + rs.getInt("id"));
+                maison = new Maison(rs.getInt("id"), rs.getInt("idquartier"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return maison;
     }
 
     public void update(Maison currentModel) {

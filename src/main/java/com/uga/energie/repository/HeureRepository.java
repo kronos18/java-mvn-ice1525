@@ -35,22 +35,23 @@ public class HeureRepository implements CRUDInteface<Heure> {
     }
 
     //TODO A faire
-    public Date findById(int id) {
+    public Heure findById(int id) {
+        Heure heure = null;
+        Connection connection = dataSource;
         try {
-            Connection connection = dataSource;
             ResultSet rs;
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set
-                System.out.println("name = " + rs.getString("name"));
-                System.out.println("id = " + rs.getInt("id"));
+                heure = new Heure(rs.getInt("id"), rs.getString("heure"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return heure;
     }
+
 
     public void update(Heure currentModel) {
 

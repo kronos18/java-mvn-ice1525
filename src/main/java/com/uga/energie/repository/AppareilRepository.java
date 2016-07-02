@@ -37,21 +37,21 @@ public class AppareilRepository implements CRUDInteface<Appareil> {
     }
 
     //TODO A faire
-    public Date findById(int id) {
+    public Appareil findById(int id) {
+        Appareil appareil = null;
+        Connection connection = dataSource;
         try {
-            Connection connection = dataSource;
             ResultSet rs;
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set
-                System.out.println("name = " + rs.getString("name"));
-                System.out.println("id = " + rs.getInt("id"));
+                appareil = new Appareil(rs.getInt("id"), rs.getString("name"), rs.getInt("idTypeAppareil"), rs.getInt("idMaison"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return appareil;
     }
 
     public void update(Appareil currentModel) {
