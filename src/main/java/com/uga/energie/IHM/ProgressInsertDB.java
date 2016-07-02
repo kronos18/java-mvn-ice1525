@@ -25,15 +25,20 @@ public class ProgressInsertDB extends Timer implements ActionListener {
 
         if (null != this.parser) {
             Double pourcentageActuel = ((double) parser.getNbFilesThreated() / (double) parser.getNbFilesToParse()) * 100;
-//            System.out.println("Progress bar : OK | nbCurr : " + parser.getNbFilesThreated() + "  | nbTotal : " + parser
-//                    .getNbFilesToParse() + " | pourcentage : " + pourcentageActuel);
+            System.out.println("Progress bar : OK | nbCurr : " + parser.getNbFilesThreated() + "  | nbTotal : " + parser
+                    .getNbFilesToParse() + " | pourcentage : " + pourcentageActuel);
 
             bar.setValue(pourcentageActuel.intValue());
             bar.setString("Insertion des fichiers " + pourcentageActuel.intValue() + " %");
-//            bar.revalidate();
             if (parser.getNbFilesThreated() == parser.getNbFilesToParse()) {
+                bar.setValue(pourcentageActuel.intValue());
+                bar.setString("Insertion des fichiers " + pourcentageActuel.intValue() + " %");
                 this.stop();
             }
+//            bar.revalidate();
+        } else {
+            System.out.println("parser : NULL");
         }
+
     }
 }

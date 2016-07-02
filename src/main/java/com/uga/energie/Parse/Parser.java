@@ -24,15 +24,16 @@ public class Parser {
     }
 
     public List<p_Quartier> Parse(int nbFilesToParse) {
-        this.nbFilesToParse = nbFilesToParse;
         List<p_Quartier> lsRes = new ArrayList<p_Quartier>();
         List<File> lsTXTFiles = new ArrayList<File>();
 
         findFilesInDir(new File(m_sPathToParse), lsTXTFiles);
+        this.nbFilesToParse = lsTXTFiles.size();
 
         int iNbFileParsed = 0;
+        this.nbFilesThreated = iNbFileParsed;
+
         for (File file : lsTXTFiles) {
-            this.nbFilesThreated = iNbFileParsed;
             p_Quartier quartierFromTXTFile = getQuartierFromTXTFile(file);
 
             //Execute des algos de compression de donnees. On peut choisir d'optimiser ou non en supprimant les zéro et/ou en utilisant ou non les tables Date et Heure
@@ -61,6 +62,7 @@ public class Parser {
 
 //            lsRes.add(quartierFromTXTFile);
             iNbFileParsed++;
+            this.nbFilesThreated = iNbFileParsed;
 
             if (nbFilesToParse == iNbFileParsed)
                 break;

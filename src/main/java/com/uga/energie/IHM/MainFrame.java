@@ -127,6 +127,8 @@ public class MainFrame extends JFrame {
 
     private JLabel jLabelDisplayChrono;
     private Timer timer;
+    private ReadAndInsertThreader readAndInsertThreader;
+    private Thread thread;
 
 
     public MainFrame() {
@@ -283,55 +285,108 @@ public class MainFrame extends JFrame {
         jPanelArchive.setLayout(jPanelArchiveLayout);
         jPanelArchiveLayout.setHorizontalGroup(
                 jPanelArchiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelArchiveLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelArchiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabelTitlePanelArchive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(jPanelArchiveLayout.createSequentialGroup()
-                                                .addComponent(jLabelDestination)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jTextFieldDestination))
-                                        .addGroup(jPanelArchiveLayout.createSequentialGroup()
-                                                .addComponent(jLabelArchive)
-                                                .addGap(8, 8, 8)
-                                                .addComponent(jTextFieldArchive))
-                                        .addComponent(jButtonParcourirArchive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButtonParcourirDestination, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jSeparator2)
-                                        .addComponent(jButtonDeleteArchives, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButtonUnzipSousFichier, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
-                                        .addComponent(jButtonUnzip, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addContainerGap())
+                                   .addGroup(jPanelArchiveLayout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addGroup(jPanelArchiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                             .addComponent(
+                                                                                                     jLabelTitlePanelArchive,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     Short.MAX_VALUE)
+                                                                                             .addGroup(
+                                                                                                     jPanelArchiveLayout
+                                                                                                             .createSequentialGroup()
+                                                                                                             .addComponent(
+                                                                                                                     jLabelDestination)
+                                                                                                             .addGap(18,
+                                                                                                                     18,
+                                                                                                                     18)
+                                                                                                             .addComponent(
+                                                                                                                     jTextFieldDestination))
+                                                                                             .addGroup(
+                                                                                                     jPanelArchiveLayout
+                                                                                                             .createSequentialGroup()
+                                                                                                             .addComponent(
+                                                                                                                     jLabelArchive)
+                                                                                                             .addGap(8,
+                                                                                                                     8,
+                                                                                                                     8)
+                                                                                                             .addComponent(
+                                                                                                                     jTextFieldArchive))
+                                                                                             .addComponent(
+                                                                                                     jButtonParcourirArchive,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     Short.MAX_VALUE)
+                                                                                             .addComponent(
+                                                                                                     jButtonParcourirDestination,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     Short.MAX_VALUE)
+                                                                                             .addComponent(jSeparator2)
+                                                                                             .addComponent(
+                                                                                                     jButtonDeleteArchives,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     Short.MAX_VALUE)
+                                                                                             .addComponent(
+                                                                                                     jButtonUnzipSousFichier,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     390,
+                                                                                                     Short.MAX_VALUE)
+                                                                                             .addComponent(jButtonUnzip,
+                                                                                                           javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                                           javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                           javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                           Short.MAX_VALUE)
+                                                                                             .addComponent(jSeparator3,
+                                                                                                           javax.swing.GroupLayout.Alignment.TRAILING))
+                                                                .addContainerGap())
         );
         jPanelArchiveLayout.setVerticalGroup(
                 jPanelArchiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelArchiveLayout.createSequentialGroup()
-                                .addGap(7, 7, 7)
-                                .addComponent(jLabelTitlePanelArchive)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanelArchiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jTextFieldArchive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelArchive))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonParcourirArchive)
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanelArchiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelDestination)
-                                        .addComponent(jTextFieldDestination, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonParcourirDestination)
-                                .addGap(18, 18, 18)
-                                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonUnzip)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonUnzipSousFichier)
-                                .addGap(18, 18, 18)
-                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonDeleteArchives)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                   .addGroup(jPanelArchiveLayout.createSequentialGroup()
+                                                                .addGap(7, 7, 7)
+                                                                .addComponent(jLabelTitlePanelArchive)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addGroup(jPanelArchiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                             .addComponent(
+                                                                                                     jTextFieldArchive,
+                                                                                                     javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                             .addComponent(jLabelArchive))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(jButtonParcourirArchive)
+                                                                .addGap(18, 18, 18)
+                                                                .addGroup(jPanelArchiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                             .addComponent(
+                                                                                                     jLabelDestination)
+                                                                                             .addComponent(
+                                                                                                     jTextFieldDestination,
+                                                                                                     javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(jButtonParcourirDestination)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(jSeparator3,
+                                                                              javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                              10,
+                                                                              javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(jButtonUnzip)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(jButtonUnzipSousFichier)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(jSeparator2,
+                                                                              javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                              10,
+                                                                              javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(jButtonDeleteArchives)
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                 Short.MAX_VALUE))
         );
 
         jButtonParcourirDestination.getAccessibleContext().setAccessibleName("boutonParcourirDestination");
@@ -375,30 +430,47 @@ public class MainFrame extends JFrame {
         jPanelData.setLayout(jPanelDataLayout);
         jPanelDataLayout.setHorizontalGroup(
                 jPanelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelDataLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jButtonDeleteAll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButtonReadTen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButtonReadAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jSeparator1)
-                                        .addComponent(jLabelTitleManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap())
+                                .addGroup(jPanelDataLayout.createSequentialGroup()
+                                                          .addContainerGap()
+                                                          .addGroup(jPanelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                    .addComponent(jButtonDeleteAll,
+                                                                                                  javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  Short.MAX_VALUE)
+                                                                                    .addComponent(jButtonReadTen,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  Short.MAX_VALUE)
+                                                                                    .addComponent(jButtonReadAll,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  Short.MAX_VALUE)
+                                                                                    .addComponent(jSeparator1)
+                                                                                    .addComponent(jLabelTitleManager,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  Short.MAX_VALUE))
+                                                          .addContainerGap())
         );
         jPanelDataLayout.setVerticalGroup(
                 jPanelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelDataLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelTitleManager)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonReadAll)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonReadTen)
-                                .addGap(18, 18, 18)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonDeleteAll)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanelDataLayout.createSequentialGroup()
+                                                          .addContainerGap()
+                                                          .addComponent(jLabelTitleManager)
+                                                          .addGap(18, 18, 18)
+                                                          .addComponent(jButtonReadAll)
+                                                          .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                          .addComponent(jButtonReadTen)
+                                                          .addGap(18, 18, 18)
+                                                          .addComponent(jSeparator1,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        10,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                          .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                          .addComponent(jButtonDeleteAll)
+                                                          .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                           Short.MAX_VALUE))
         );
 
         jButtonReadAll.getAccessibleContext().setAccessibleName("boutonRead");
@@ -421,26 +493,52 @@ public class MainFrame extends JFrame {
         jPanelChrono.setLayout(jPanelChronoLayout);
         jPanelChronoLayout.setHorizontalGroup(
                 jPanelChronoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelChronoLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelChronoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabelTitlePaneChrono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(jPanelChronoLayout.createSequentialGroup()
-                                                .addComponent(jLabelChrono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jTextFieldChrono, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap())
+                                  .addGroup(jPanelChronoLayout.createSequentialGroup()
+                                                              .addContainerGap()
+                                                              .addGroup(jPanelChronoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                          .addComponent(
+                                                                                                  jLabelTitlePaneChrono,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  Short.MAX_VALUE)
+                                                                                          .addGroup(jPanelChronoLayout.createSequentialGroup()
+                                                                                                                      .addComponent(
+                                                                                                                              jLabelChrono,
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              Short.MAX_VALUE)
+                                                                                                                      .addPreferredGap(
+                                                                                                                              javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                                      .addComponent(
+                                                                                                                              jLabelDisplayChrono,
+                                                                                                                              javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                              180,
+                                                                                                                              javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                      .addComponent(
+                                                                                                                              jButtonTest,
+                                                                                                                              GroupLayout.DEFAULT_SIZE,
+                                                                                                                              GroupLayout.DEFAULT_SIZE,
+                                                                                                                              Short.MAX_VALUE)))
+                                                              .addContainerGap())
         );
         jPanelChronoLayout.setVerticalGroup(
                 jPanelChronoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelChronoLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelTitlePaneChrono)
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanelChronoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelChrono)
-                                        .addComponent(jTextFieldChrono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(30, Short.MAX_VALUE))
+                                  .addGroup(jPanelChronoLayout.createSequentialGroup()
+                                                              .addContainerGap()
+                                                              .addComponent(jLabelTitlePaneChrono)
+                                                              .addGap(18, 18, 18)
+                                                              .addGroup(jPanelChronoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                          .addComponent(jLabelChrono)
+                                                                                          .addComponent(
+                                                                                                  jLabelDisplayChrono,
+                                                                                                  javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                  javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                  javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                          .addComponent(jButtonTest,
+                                                                                                        GroupLayout.DEFAULT_SIZE,
+                                                                                                        GroupLayout.DEFAULT_SIZE,
+                                                                                                        Short.MAX_VALUE))
+                                                              .addContainerGap(30, Short.MAX_VALUE))
         );
 
         jPanelRequest.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -449,7 +547,8 @@ public class MainFrame extends JFrame {
         jLabelTitlePanelRequest.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTitlePanelRequest.setText("Récupération des données");
 
-        jPanelConsoAppareil.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(0, 102, 102)));
+        jPanelConsoAppareil.setBorder(javax.swing.BorderFactory.createEtchedBorder(null,
+                                                                                   new java.awt.Color(0, 102, 102)));
         jPanelConsoAppareil.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 jPanelConsoAppareilComponentShown(evt);
@@ -546,75 +645,215 @@ public class MainFrame extends JFrame {
         jPanelConsoAppareil.setLayout(jPanelConsoAppareilLayout);
         jPanelConsoAppareilLayout.setHorizontalGroup(
                 jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelConsoAppareilLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabelTitleConsoAppareil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jScrollPaneRechercheAppareil, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
-                                        .addGroup(jPanelConsoAppareilLayout.createSequentialGroup()
-                                                .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(jLabelRechercheAppareil)
-                                                        .addGroup(jPanelConsoAppareilLayout.createSequentialGroup()
-                                                                .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                        .addComponent(jLabelTypeAppareil1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                .addComponent(jLabelNomAppareil2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                        .addComponent(jLabelConsoTotaleAppareil1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                        .addComponent(jLabelMaisonAppareil2, javax.swing.GroupLayout.Alignment.LEADING))))
-                                                                .addGap(31, 31, 31)
-                                                                .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jTextFieldNomAppareil2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(jTextFieldMaisonAppareil1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(jTextFieldConsoTotaleAppareil2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(jTextFieldTypeAppareil1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                        .addGroup(jPanelConsoAppareilLayout.createSequentialGroup()
-                                                                .addComponent(jTextFieldDay, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(jTextFieldMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(jTextFieldYear, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(jButtonConsoObjetByDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                        .addComponent(jLabelRechercheConsoAppareil))
-                                                .addGap(0, 0, Short.MAX_VALUE)))
-                                .addContainerGap())
+                                         .addGroup(jPanelConsoAppareilLayout.createSequentialGroup()
+                                                                            .addContainerGap()
+                                                                            .addGroup(jPanelConsoAppareilLayout.createParallelGroup(
+                                                                                    javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                               .addComponent(
+                                                                                                                       jLabelTitleConsoAppareil,
+                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                       Short.MAX_VALUE)
+                                                                                                               .addComponent(
+                                                                                                                       jScrollPaneRechercheAppareil,
+                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                       540,
+                                                                                                                       Short.MAX_VALUE)
+                                                                                                               .addGroup(
+                                                                                                                       jPanelConsoAppareilLayout
+                                                                                                                               .createSequentialGroup()
+                                                                                                                               .addGroup(
+                                                                                                                                       jPanelConsoAppareilLayout
+                                                                                                                                               .createParallelGroup(
+                                                                                                                                                       javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                                                                       false)
+                                                                                                                                               .addComponent(
+                                                                                                                                                       jLabelRechercheAppareil)
+                                                                                                                                               .addGroup(
+                                                                                                                                                       jPanelConsoAppareilLayout
+                                                                                                                                                               .createSequentialGroup()
+                                                                                                                                                               .addGroup(
+                                                                                                                                                                       jPanelConsoAppareilLayout
+                                                                                                                                                                               .createParallelGroup(
+                                                                                                                                                                                       javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                                                                                               .addComponent(
+                                                                                                                                                                                       jLabelTypeAppareil1,
+                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                                       101,
+                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                               .addGroup(
+                                                                                                                                                                                       javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                                                                                                       jPanelConsoAppareilLayout
+                                                                                                                                                                                               .createParallelGroup(
+                                                                                                                                                                                                       javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                                                                                                               .addComponent(
+                                                                                                                                                                                                       jLabelNomAppareil2,
+                                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                                                       101,
+                                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                                               .addGroup(
+                                                                                                                                                                                                       javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                                                                                                                       jPanelConsoAppareilLayout
+                                                                                                                                                                                                               .createParallelGroup(
+                                                                                                                                                                                                                       javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                                                                                                                               .addComponent(
+                                                                                                                                                                                                                       jLabelConsoTotaleAppareil1,
+                                                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                                                                       101,
+                                                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                                                               .addComponent(
+                                                                                                                                                                                                                       jLabelMaisonAppareil2,
+                                                                                                                                                                                                                       javax.swing.GroupLayout.Alignment.LEADING))))
+                                                                                                                                                               .addGap(31,
+                                                                                                                                                                       31,
+                                                                                                                                                                       31)
+                                                                                                                                                               .addGroup(
+                                                                                                                                                                       jPanelConsoAppareilLayout
+                                                                                                                                                                               .createParallelGroup(
+                                                                                                                                                                                       javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                                                                               .addComponent(
+                                                                                                                                                                                       jTextFieldNomAppareil2,
+                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                                       125,
+                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                               .addComponent(
+                                                                                                                                                                                       jTextFieldMaisonAppareil1,
+                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                                       125,
+                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                               .addComponent(
+                                                                                                                                                                                       jTextFieldConsoTotaleAppareil2,
+                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                                       125,
+                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                               .addComponent(
+                                                                                                                                                                                       jTextFieldTypeAppareil1,
+                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                                       125,
+                                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                                                                                               .addGroup(
+                                                                                                                                                       jPanelConsoAppareilLayout
+                                                                                                                                                               .createSequentialGroup()
+                                                                                                                                                               .addComponent(
+                                                                                                                                                                       jTextFieldDay,
+                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                       45,
+                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                               .addPreferredGap(
+                                                                                                                                                                       javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                                                                                                               .addComponent(
+                                                                                                                                                                       jTextFieldMonth,
+                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                       45,
+                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                               .addPreferredGap(
+                                                                                                                                                                       javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                                                                               .addComponent(
+                                                                                                                                                                       jTextFieldYear,
+                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                       45,
+                                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                               .addPreferredGap(
+                                                                                                                                                                       javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                                                                                                               .addComponent(
+                                                                                                                                                                       jButtonConsoObjetByDate,
+                                                                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                                                       Short.MAX_VALUE))
+                                                                                                                                               .addComponent(
+                                                                                                                                                       jLabelRechercheConsoAppareil))
+                                                                                                                               .addGap(0,
+                                                                                                                                       0,
+                                                                                                                                       Short.MAX_VALUE)))
+                                                                            .addContainerGap())
         );
         jPanelConsoAppareilLayout.setVerticalGroup(
                 jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelConsoAppareilLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelTitleConsoAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabelRechercheAppareil)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPaneRechercheAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                                .addComponent(jLabelRechercheConsoAppareil)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jTextFieldDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButtonConsoObjetByDate))
-                                .addGap(23, 23, 23)
-                                .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelTypeAppareil1)
-                                        .addComponent(jTextFieldTypeAppareil1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(30, 30, 30)
-                                .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelNomAppareil2)
-                                        .addComponent(jTextFieldNomAppareil2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(31, 31, 31)
-                                .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanelConsoAppareilLayout.createSequentialGroup()
-                                                .addComponent(jLabelConsoTotaleAppareil1)
-                                                .addGap(31, 31, 31)
-                                                .addGroup(jPanelConsoAppareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabelMaisonAppareil2)
-                                                        .addComponent(jTextFieldConsoTotaleAppareil2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addComponent(jTextFieldMaisonAppareil1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap())
+                                         .addGroup(jPanelConsoAppareilLayout.createSequentialGroup()
+                                                                            .addContainerGap()
+                                                                            .addComponent(jLabelTitleConsoAppareil,
+                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                          20,
+                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addGap(18, 18, 18)
+                                                                            .addComponent(jLabelRechercheAppareil)
+                                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                            .addComponent(jScrollPaneRechercheAppareil,
+                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                          280,
+                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                                                             64,
+                                                                                             Short.MAX_VALUE)
+                                                                            .addComponent(jLabelRechercheConsoAppareil)
+                                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                            .addGroup(jPanelConsoAppareilLayout.createParallelGroup(
+                                                                                    javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                               .addComponent(
+                                                                                                                       jTextFieldDay,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                               .addComponent(
+                                                                                                                       jTextFieldMonth,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                               .addComponent(
+                                                                                                                       jTextFieldYear,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                               .addComponent(
+                                                                                                                       jButtonConsoObjetByDate))
+                                                                            .addGap(23, 23, 23)
+                                                                            .addGroup(jPanelConsoAppareilLayout.createParallelGroup(
+                                                                                    javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                               .addComponent(
+                                                                                                                       jLabelTypeAppareil1)
+                                                                                                               .addComponent(
+                                                                                                                       jTextFieldTypeAppareil1,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                            .addGap(30, 30, 30)
+                                                                            .addGroup(jPanelConsoAppareilLayout.createParallelGroup(
+                                                                                    javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                               .addComponent(
+                                                                                                                       jLabelNomAppareil2)
+                                                                                                               .addComponent(
+                                                                                                                       jTextFieldNomAppareil2,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                            .addGap(31, 31, 31)
+                                                                            .addGroup(jPanelConsoAppareilLayout.createParallelGroup(
+                                                                                    javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                               .addGroup(
+                                                                                                                       jPanelConsoAppareilLayout
+                                                                                                                               .createSequentialGroup()
+                                                                                                                               .addComponent(
+                                                                                                                                       jLabelConsoTotaleAppareil1)
+                                                                                                                               .addGap(31,
+                                                                                                                                       31,
+                                                                                                                                       31)
+                                                                                                                               .addGroup(
+                                                                                                                                       jPanelConsoAppareilLayout
+                                                                                                                                               .createParallelGroup(
+                                                                                                                                                       javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                                                               .addComponent(
+                                                                                                                                                       jLabelMaisonAppareil2)
+                                                                                                                                               .addComponent(
+                                                                                                                                                       jTextFieldConsoTotaleAppareil2,
+                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                                                               .addComponent(
+                                                                                                                       jTextFieldMaisonAppareil1,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                       javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                       javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                            .addContainerGap())
         );
 
         jTabbedPaneRequest.addTab("Conso Appareil", jPanelConsoAppareil);
@@ -658,50 +897,148 @@ public class MainFrame extends JFrame {
         jPanelClassementApareil.setLayout(jPanelClassementApareilLayout);
         jPanelClassementApareilLayout.setHorizontalGroup(
                 jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelClassementApareilLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabelTitreClassementAppareil, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
-                                        .addGroup(jPanelClassementApareilLayout.createSequentialGroup()
-                                                .addGroup(jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jLabelClassementApareilTypeAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                .addComponent(jLabelClassementApareilNomAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                        .addComponent(jLabelClassementApareilConsoTotaleAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(jLabelClassementApareilMaisonAppareil, javax.swing.GroupLayout.Alignment.LEADING))))
-                                                .addGap(31, 31, 31)
-                                                .addGroup(jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jTextFieldClassementApareilTypeAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextFieldClassementApareilNomAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextFieldClassementApareilMaison, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextFieldClassementApareilConsoTotale, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(0, 0, Short.MAX_VALUE)))
-                                .addContainerGap())
+                                             .addGroup(jPanelClassementApareilLayout.createSequentialGroup()
+                                                                                    .addContainerGap()
+                                                                                    .addGroup(
+                                                                                            jPanelClassementApareilLayout
+                                                                                                    .createParallelGroup(
+                                                                                                            javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                    .addComponent(
+                                                                                                            jLabelTitreClassementAppareil,
+                                                                                                            javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                            540,
+                                                                                                            Short.MAX_VALUE)
+                                                                                                    .addGroup(
+                                                                                                            jPanelClassementApareilLayout
+                                                                                                                    .createSequentialGroup()
+                                                                                                                    .addGroup(
+                                                                                                                            jPanelClassementApareilLayout
+                                                                                                                                    .createParallelGroup(
+                                                                                                                                            javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                                                    .addComponent(
+                                                                                                                                            jLabelClassementApareilTypeAppareil,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                            101,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                    .addGroup(
+                                                                                                                                            javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                                                            jPanelClassementApareilLayout
+                                                                                                                                                    .createParallelGroup(
+                                                                                                                                                            javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                                                                    .addComponent(
+                                                                                                                                                            jLabelClassementApareilNomAppareil,
+                                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                            101,
+                                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                    .addGroup(
+                                                                                                                                                            javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                                                                            jPanelClassementApareilLayout
+                                                                                                                                                                    .createParallelGroup(
+                                                                                                                                                                            javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                                                                                    .addComponent(
+                                                                                                                                                                            jLabelClassementApareilConsoTotaleAppareil,
+                                                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                            101,
+                                                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                    .addComponent(
+                                                                                                                                                                            jLabelClassementApareilMaisonAppareil,
+                                                                                                                                                                            javax.swing.GroupLayout.Alignment.LEADING))))
+                                                                                                                    .addGap(31,
+                                                                                                                            31,
+                                                                                                                            31)
+                                                                                                                    .addGroup(
+                                                                                                                            jPanelClassementApareilLayout
+                                                                                                                                    .createParallelGroup(
+                                                                                                                                            javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                                    .addComponent(
+                                                                                                                                            jTextFieldClassementApareilTypeAppareil,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                            125,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                    .addComponent(
+                                                                                                                                            jTextFieldClassementApareilNomAppareil,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                            125,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                    .addComponent(
+                                                                                                                                            jTextFieldClassementApareilMaison,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                            125,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                    .addComponent(
+                                                                                                                                            jTextFieldClassementApareilConsoTotale,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                            125,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                                    .addGap(0,
+                                                                                                                            0,
+                                                                                                                            Short.MAX_VALUE)))
+                                                                                    .addContainerGap())
         );
         jPanelClassementApareilLayout.setVerticalGroup(
                 jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelClassementApareilLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelTitreClassementAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21)
-                                .addGroup(jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelClassementApareilTypeAppareil)
-                                        .addComponent(jTextFieldClassementApareilTypeAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(30, 30, 30)
-                                .addGroup(jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelClassementApareilNomAppareil)
-                                        .addComponent(jTextFieldClassementApareilNomAppareil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(31, 31, 31)
-                                .addGroup(jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanelClassementApareilLayout.createSequentialGroup()
-                                                .addComponent(jLabelClassementApareilConsoTotaleAppareil)
-                                                .addGap(31, 31, 31)
-                                                .addGroup(jPanelClassementApareilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabelClassementApareilMaisonAppareil)
-                                                        .addComponent(jTextFieldClassementApareilConsoTotale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addComponent(jTextFieldClassementApareilMaison, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                             .addGroup(jPanelClassementApareilLayout.createSequentialGroup()
+                                                                                    .addContainerGap()
+                                                                                    .addComponent(
+                                                                                            jLabelTitreClassementAppareil,
+                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                            20,
+                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                    .addGap(21, 21, 21)
+                                                                                    .addGroup(
+                                                                                            jPanelClassementApareilLayout
+                                                                                                    .createParallelGroup(
+                                                                                                            javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                    .addComponent(
+                                                                                                            jLabelClassementApareilTypeAppareil)
+                                                                                                    .addComponent(
+                                                                                                            jTextFieldClassementApareilTypeAppareil,
+                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                            javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                    .addGap(30, 30, 30)
+                                                                                    .addGroup(
+                                                                                            jPanelClassementApareilLayout
+                                                                                                    .createParallelGroup(
+                                                                                                            javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                    .addComponent(
+                                                                                                            jLabelClassementApareilNomAppareil)
+                                                                                                    .addComponent(
+                                                                                                            jTextFieldClassementApareilNomAppareil,
+                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                            javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                    .addGap(31, 31, 31)
+                                                                                    .addGroup(
+                                                                                            jPanelClassementApareilLayout
+                                                                                                    .createParallelGroup(
+                                                                                                            javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                    .addGroup(
+                                                                                                            jPanelClassementApareilLayout
+                                                                                                                    .createSequentialGroup()
+                                                                                                                    .addComponent(
+                                                                                                                            jLabelClassementApareilConsoTotaleAppareil)
+                                                                                                                    .addGap(31,
+                                                                                                                            31,
+                                                                                                                            31)
+                                                                                                                    .addGroup(
+                                                                                                                            jPanelClassementApareilLayout
+                                                                                                                                    .createParallelGroup(
+                                                                                                                                            javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                                                    .addComponent(
+                                                                                                                                            jLabelClassementApareilMaisonAppareil)
+                                                                                                                                    .addComponent(
+                                                                                                                                            jTextFieldClassementApareilConsoTotale,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                            javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                                                    .addComponent(
+                                                                                                            jTextFieldClassementApareilMaison,
+                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                            javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     Short.MAX_VALUE))
         );
 
         jTabbedPaneRequest.addTab("Classement Appareil", jPanelClassementApareil);
@@ -756,49 +1093,117 @@ public class MainFrame extends JFrame {
         jPanelConsoMaisonTotal.setLayout(jPanelConsoMaisonTotalLayout);
         jPanelConsoMaisonTotalLayout.setHorizontalGroup(
                 jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelConsoMaisonTotalLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsoMaisonTotalLayout.createSequentialGroup()
-                                                .addGroup(jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabelClassementMaisonMaison)
-                                                        .addComponent(jLabelClassementMaisonNom))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(jTextFieldClassementMaisonNomMaison, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                                                        .addComponent(jTextFieldClassementMaisonConsoTotalMaison))
-                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsoMaisonTotalLayout.createSequentialGroup()
-                                                .addGroup(jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jLabelClassementMaisonTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jScrollPaneClassementMaisonRechercheMaison, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE))
-                                                .addGap(14, 14, 14))
-                                        .addGroup(jPanelConsoMaisonTotalLayout.createSequentialGroup()
-                                                .addGroup(jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabelClassementMaisonConsomation)
-                                                        .addComponent(jLabelClassementMaisonRechercheMaison))
-                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                            .addGroup(jPanelConsoMaisonTotalLayout.createSequentialGroup()
+                                                                                  .addContainerGap()
+                                                                                  .addGroup(jPanelConsoMaisonTotalLayout
+                                                                                                    .createParallelGroup(
+                                                                                                            javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                                              jPanelConsoMaisonTotalLayout
+                                                                                                                      .createSequentialGroup()
+                                                                                                                      .addGroup(
+                                                                                                                              jPanelConsoMaisonTotalLayout
+                                                                                                                                      .createParallelGroup(
+                                                                                                                                              javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                                      .addComponent(
+                                                                                                                                              jLabelClassementMaisonMaison)
+                                                                                                                                      .addComponent(
+                                                                                                                                              jLabelClassementMaisonNom))
+                                                                                                                      .addGap(18,
+                                                                                                                              18,
+                                                                                                                              18)
+                                                                                                                      .addGroup(
+                                                                                                                              jPanelConsoMaisonTotalLayout
+                                                                                                                                      .createParallelGroup(
+                                                                                                                                              javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                                                              false)
+                                                                                                                                      .addComponent(
+                                                                                                                                              jTextFieldClassementMaisonNomMaison,
+                                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                              74,
+                                                                                                                                              Short.MAX_VALUE)
+                                                                                                                                      .addComponent(
+                                                                                                                                              jTextFieldClassementMaisonConsoTotalMaison))
+                                                                                                                      .addContainerGap(
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              Short.MAX_VALUE))
+                                                                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                                              jPanelConsoMaisonTotalLayout
+                                                                                                                      .createSequentialGroup()
+                                                                                                                      .addGroup(
+                                                                                                                              jPanelConsoMaisonTotalLayout
+                                                                                                                                      .createParallelGroup(
+                                                                                                                                              javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                                                      .addComponent(
+                                                                                                                                              jLabelClassementMaisonTitle,
+                                                                                                                                              javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                              Short.MAX_VALUE)
+                                                                                                                                      .addComponent(
+                                                                                                                                              jScrollPaneClassementMaisonRechercheMaison,
+                                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                              536,
+                                                                                                                                              Short.MAX_VALUE))
+                                                                                                                      .addGap(14,
+                                                                                                                              14,
+                                                                                                                              14))
+                                                                                                    .addGroup(
+                                                                                                            jPanelConsoMaisonTotalLayout
+                                                                                                                    .createSequentialGroup()
+                                                                                                                    .addGroup(
+                                                                                                                            jPanelConsoMaisonTotalLayout
+                                                                                                                                    .createParallelGroup(
+                                                                                                                                            javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                                    .addComponent(
+                                                                                                                                            jLabelClassementMaisonConsomation)
+                                                                                                                                    .addComponent(
+                                                                                                                                            jLabelClassementMaisonRechercheMaison))
+                                                                                                                    .addGap(0,
+                                                                                                                            0,
+                                                                                                                            Short.MAX_VALUE))))
         );
         jPanelConsoMaisonTotalLayout.setVerticalGroup(
                 jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelConsoMaisonTotalLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelClassementMaisonTitle)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabelClassementMaisonRechercheMaison)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPaneClassementMaisonRechercheMaison, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabelClassementMaisonConsomation)
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelClassementMaisonNom)
-                                        .addComponent(jTextFieldClassementMaisonNomMaison, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanelConsoMaisonTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelClassementMaisonMaison)
-                                        .addComponent(jTextFieldClassementMaisonConsoTotalMaison, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap())
+                                            .addGroup(jPanelConsoMaisonTotalLayout.createSequentialGroup()
+                                                                                  .addContainerGap()
+                                                                                  .addComponent(
+                                                                                          jLabelClassementMaisonTitle)
+                                                                                  .addGap(18, 18, 18)
+                                                                                  .addComponent(
+                                                                                          jLabelClassementMaisonRechercheMaison)
+                                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                  .addComponent(
+                                                                                          jScrollPaneClassementMaisonRechercheMaison,
+                                                                                          javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                          479,
+                                                                                          Short.MAX_VALUE)
+                                                                                  .addGap(18, 18, 18)
+                                                                                  .addComponent(
+                                                                                          jLabelClassementMaisonConsomation)
+                                                                                  .addGap(18, 18, 18)
+                                                                                  .addGroup(jPanelConsoMaisonTotalLayout
+                                                                                                    .createParallelGroup(
+                                                                                                            javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                    .addComponent(
+                                                                                                            jLabelClassementMaisonNom)
+                                                                                                    .addComponent(
+                                                                                                            jTextFieldClassementMaisonNomMaison,
+                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                            javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                  .addGap(18, 18, 18)
+                                                                                  .addGroup(jPanelConsoMaisonTotalLayout
+                                                                                                    .createParallelGroup(
+                                                                                                            javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                    .addComponent(
+                                                                                                            jLabelClassementMaisonMaison)
+                                                                                                    .addComponent(
+                                                                                                            jTextFieldClassementMaisonConsoTotalMaison,
+                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                            javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                            javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                  .addContainerGap())
         );
 
         jTabbedPaneRequest.addTab("Conso Maison", jPanelConsoMaisonTotal);
@@ -823,21 +1228,34 @@ public class MainFrame extends JFrame {
         jPanelConsoSemaine.setLayout(jPanelConsoSemaineLayout);
         jPanelConsoSemaineLayout.setHorizontalGroup(
                 jPanelConsoSemaineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConsoSemaineLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelConsoSemaineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jScrollPaneConsoSemaine, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
-                                        .addComponent(jLabelConsoSemaineTitre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap())
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                  jPanelConsoSemaineLayout.createSequentialGroup()
+                                                                          .addContainerGap()
+                                                                          .addGroup(jPanelConsoSemaineLayout.createParallelGroup(
+                                                                                  javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                            .addComponent(
+                                                                                                                    jScrollPaneConsoSemaine,
+                                                                                                                    javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                    540,
+                                                                                                                    Short.MAX_VALUE)
+                                                                                                            .addComponent(
+                                                                                                                    jLabelConsoSemaineTitre,
+                                                                                                                    javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                    javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                    Short.MAX_VALUE))
+                                                                          .addContainerGap())
         );
         jPanelConsoSemaineLayout.setVerticalGroup(
                 jPanelConsoSemaineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelConsoSemaineLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelConsoSemaineTitre)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPaneConsoSemaine, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
-                                .addContainerGap())
+                                        .addGroup(jPanelConsoSemaineLayout.createSequentialGroup()
+                                                                          .addContainerGap()
+                                                                          .addComponent(jLabelConsoSemaineTitre)
+                                                                          .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                          .addComponent(jScrollPaneConsoSemaine,
+                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                        614,
+                                                                                        Short.MAX_VALUE)
+                                                                          .addContainerGap())
         );
 
         jTabbedPaneRequest.addTab("Conso semaine", jPanelConsoSemaine);
@@ -846,21 +1264,30 @@ public class MainFrame extends JFrame {
         jPanelRequest.setLayout(jPanelRequestLayout);
         jPanelRequestLayout.setHorizontalGroup(
                 jPanelRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelRequestLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabelTitlePanelRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jTabbedPaneRequest))
-                                .addContainerGap())
+                                   .addGroup(jPanelRequestLayout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addGroup(jPanelRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                             .addComponent(
+                                                                                                     jLabelTitlePanelRequest,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                     Short.MAX_VALUE)
+                                                                                             .addComponent(
+                                                                                                     jTabbedPaneRequest))
+                                                                .addContainerGap())
         );
         jPanelRequestLayout.setVerticalGroup(
                 jPanelRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRequestLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelTitlePanelRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTabbedPaneRequest)
-                                .addContainerGap())
+                                   .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                             jPanelRequestLayout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addComponent(jLabelTitlePanelRequest,
+                                                                              javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                              32,
+                                                                              javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(jTabbedPaneRequest)
+                                                                .addContainerGap())
         );
 
         jPanelParamètre.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -889,85 +1316,199 @@ public class MainFrame extends JFrame {
         jPanelParamètre.setLayout(jPanelParamètreLayout);
         jPanelParamètreLayout.setHorizontalGroup(
                 jPanelParamètreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelParamètreLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelParamètreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanelParamètreLayout.createSequentialGroup()
-                                                .addComponent(jLabelTitlePaneChrono1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addContainerGap())
-                                        .addGroup(jPanelParamètreLayout.createSequentialGroup()
-                                                .addGroup(jPanelParamètreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(jLabelOptDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jLabelOptZero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                .addGap(46, 46, 46)
-                                                .addGroup(jPanelParamètreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jCheckBoxZero)
-                                                        .addComponent(jCheckBoxDate))
-                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                     .addGroup(jPanelParamètreLayout.createSequentialGroup()
+                                                                    .addContainerGap()
+                                                                    .addGroup(jPanelParamètreLayout.createParallelGroup(
+                                                                            javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                   .addGroup(
+                                                                                                           jPanelParamètreLayout
+                                                                                                                   .createSequentialGroup()
+                                                                                                                   .addComponent(
+                                                                                                                           jLabelTitlePaneChrono1,
+                                                                                                                           javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                           javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                           Short.MAX_VALUE)
+                                                                                                                   .addContainerGap())
+                                                                                                   .addGroup(
+                                                                                                           jPanelParamètreLayout
+                                                                                                                   .createSequentialGroup()
+                                                                                                                   .addGroup(
+                                                                                                                           jPanelParamètreLayout
+                                                                                                                                   .createParallelGroup(
+                                                                                                                                           javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                                                           false)
+                                                                                                                                   .addComponent(
+                                                                                                                                           jLabelOptDate,
+                                                                                                                                           javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                           javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                           Short.MAX_VALUE)
+                                                                                                                                   .addComponent(
+                                                                                                                                           jLabelOptZero,
+                                                                                                                                           javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                           javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                           Short.MAX_VALUE))
+                                                                                                                   .addGap(46,
+                                                                                                                           46,
+                                                                                                                           46)
+                                                                                                                   .addGroup(
+                                                                                                                           jPanelParamètreLayout
+                                                                                                                                   .createParallelGroup(
+                                                                                                                                           javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                                   .addComponent(
+                                                                                                                                           jCheckBoxZero)
+                                                                                                                                   .addComponent(
+                                                                                                                                           jCheckBoxDate))
+                                                                                                                   .addGap(0,
+                                                                                                                           0,
+                                                                                                                           Short.MAX_VALUE))))
         );
         jPanelParamètreLayout.setVerticalGroup(
                 jPanelParamètreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelParamètreLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelTitlePaneChrono1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanelParamètreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanelParamètreLayout.createSequentialGroup()
-                                                .addComponent(jLabelOptZero)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jLabelOptDate))
-                                        .addGroup(jPanelParamètreLayout.createSequentialGroup()
-                                                .addComponent(jCheckBoxZero)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jCheckBoxDate)))
-                                .addContainerGap(18, Short.MAX_VALUE))
+                                     .addGroup(jPanelParamètreLayout.createSequentialGroup()
+                                                                    .addContainerGap()
+                                                                    .addComponent(jLabelTitlePaneChrono1)
+                                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                    .addGroup(jPanelParamètreLayout.createParallelGroup(
+                                                                            javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                   .addGroup(
+                                                                                                           jPanelParamètreLayout
+                                                                                                                   .createSequentialGroup()
+                                                                                                                   .addComponent(
+                                                                                                                           jLabelOptZero)
+                                                                                                                   .addPreferredGap(
+                                                                                                                           javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                                                                   .addComponent(
+                                                                                                                           jLabelOptDate))
+                                                                                                   .addGroup(
+                                                                                                           jPanelParamètreLayout
+                                                                                                                   .createSequentialGroup()
+                                                                                                                   .addComponent(
+                                                                                                                           jCheckBoxZero)
+                                                                                                                   .addPreferredGap(
+                                                                                                                           javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                                   .addComponent(
+                                                                                                                           jCheckBoxDate)))
+                                                                    .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabelTitleFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                        .addComponent(jPanelData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(jPanelArchive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(jPanelChrono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(jPanelParamètre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(jPanelRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                        .addComponent(jProgressBarBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                .addGap(104, 104, 104)
-                                                                .addComponent(jLabelProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                                .addContainerGap())))
+                      .addGroup(layout.createSequentialGroup()
+                                      .addContainerGap()
+                                      .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                      .addComponent(jLabelTitleFrame,
+                                                                    javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                    javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                    Short.MAX_VALUE)
+                                                      .addGroup(layout.createSequentialGroup()
+                                                                      .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                      .addGroup(layout.createSequentialGroup()
+                                                                                                      .addGroup(layout.createParallelGroup(
+                                                                                                              javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                              false)
+                                                                                                                      .addComponent(
+                                                                                                                              jPanelData,
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              Short.MAX_VALUE)
+                                                                                                                      .addComponent(
+                                                                                                                              jPanelArchive,
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              Short.MAX_VALUE)
+                                                                                                                      .addComponent(
+                                                                                                                              jPanelChrono,
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              Short.MAX_VALUE)
+                                                                                                                      .addComponent(
+                                                                                                                              jPanelParamètre,
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                              Short.MAX_VALUE))
+                                                                                                      .addGap(18,
+                                                                                                              18,
+                                                                                                              18)
+                                                                                                      .addComponent(
+                                                                                                              jPanelRequest,
+                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                              Short.MAX_VALUE))
+                                                                                      .addComponent(jProgressBarBottom,
+                                                                                                    javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                    javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                    Short.MAX_VALUE)
+                                                                                      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                                layout.createSequentialGroup()
+                                                                                                      .addGap(104,
+                                                                                                              104,
+                                                                                                              104)
+                                                                                                      .addComponent(
+                                                                                                              jLabelProgress,
+                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                              javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                              Short.MAX_VALUE)))
+                                                                      .addContainerGap())))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabelTitleFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jPanelArchive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jPanelData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jPanelChrono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jPanelParamètre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jPanelRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelProgress)
-                                .addGap(3, 3, 3)
-                                .addComponent(jProgressBarBottom, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
+                      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                                  .addContainerGap()
+                                                                                  .addComponent(jLabelTitleFrame,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                29,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                  .addGroup(layout.createParallelGroup(
+                                                                                          javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                          false)
+                                                                                                  .addGroup(layout.createSequentialGroup()
+                                                                                                                  .addComponent(
+                                                                                                                          jPanelArchive,
+                                                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                          javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                  .addGap(18,
+                                                                                                                          18,
+                                                                                                                          18)
+                                                                                                                  .addComponent(
+                                                                                                                          jPanelData,
+                                                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                          javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                  .addGap(18,
+                                                                                                                          18,
+                                                                                                                          18)
+                                                                                                                  .addComponent(
+                                                                                                                          jPanelChrono,
+                                                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                          javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                  .addGap(18,
+                                                                                                                          18,
+                                                                                                                          18)
+                                                                                                                  .addComponent(
+                                                                                                                          jPanelParamètre,
+                                                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                          javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                          javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                  .addComponent(
+                                                                                                          jPanelRequest,
+                                                                                                          javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                          javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                          Short.MAX_VALUE))
+                                                                                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                                                                   javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                   Short.MAX_VALUE)
+                                                                                  .addComponent(jLabelProgress)
+                                                                                  .addGap(3, 3, 3)
+                                                                                  .addComponent(jProgressBarBottom,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                23,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                  .addContainerGap())
         );
 
         jLabelProgress.getAccessibleContext().setAccessibleName("labelProgression");
@@ -1026,7 +1567,7 @@ public class MainFrame extends JFrame {
     }
     //</editor-fold>
 
-    private void initControllers(){
+    private void initControllers() {
         m_ControllerConsoAppareilParDate = new Controller_ConsoAppareilParDate();
     }
 
@@ -1041,7 +1582,9 @@ public class MainFrame extends JFrame {
         ChronoActionListener chronoActionListener = new ChronoActionListener();
         this.timer = new Timer(delais, chronoActionListener);
 
-        jLabelDisplayChrono = new JLabel(chronoActionListener.getHeure() + ":" + chronoActionListener.getMinute() + ":" + chronoActionListener.getSeconde());
+        jLabelDisplayChrono = new JLabel(String.format("%02d", chronoActionListener.getHeure()) + ":" + String.format(
+                "%02d",
+                chronoActionListener.getMinute()) + ":" + String.format("%02d", chronoActionListener.getSeconde()));
         jLabelDisplayChrono.setHorizontalAlignment(SwingConstants.CENTER);
         chronoActionListener.setjLabel(jLabelDisplayChrono);
 
@@ -1060,15 +1603,25 @@ public class MainFrame extends JFrame {
     }
 
     private void jButtonReadTenActionPerformed(java.awt.event.ActionEvent evt) {
-        RealdFilesAndInsertIntoDatabase(10);
+        RealdFilesAndInsertIntoDatabase(2);
     }
 
     private void RealdFilesAndInsertIntoDatabase(int iNbFilesToRead) {
         this.timer.start();
 
-        ReadAndInsertThreader readAndInsertThreader = new ReadAndInsertThreader(jTextFieldDestination.getText(), iNbFilesToRead, true, true, timer,jButtonReadAll,jButtonReadTen,jProgressBarBottom);
-        Thread thread = new Thread(readAndInsertThreader);
+//        if (null == readAndInsertThreader) {
+        readAndInsertThreader = new ReadAndInsertThreader(jTextFieldDestination.getText(),
+                                                          iNbFilesToRead,
+                                                          true,
+                                                          true,
+                                                          timer,
+                                                          jButtonReadAll,
+                                                          jButtonReadTen,
+                                                          jProgressBarBottom);
+        thread = new Thread(readAndInsertThreader);
+//        }
         thread.start();
+
 
 //        try {
 //            threader.join();
@@ -1082,11 +1635,17 @@ public class MainFrame extends JFrame {
 
     private void jButtonUnzipActionPerformed(java.awt.event.ActionEvent evt) {
         if (jTextFieldArchive.getText().isEmpty() || jTextFieldDestination.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "champs vides", "Le champs destination ou archive est vide ce qui n'est pas autorisé", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                                          "champs vides",
+                                          "Le champs destination ou archive est vide ce qui n'est pas autorisé",
+                                          JOptionPane.ERROR_MESSAGE);
             return;
         }
         System.out.println("-------------------------------- NIVEAU 1 ------------------------------------");
-        ProgressUnZipLevelOne progresserUnZipOne = new ProgressUnZipLevelOne(100, jProgressBarBottom, jTextFieldArchive.getText(), jTextFieldDestination.getText());
+        ProgressUnZipLevelOne progresserUnZipOne = new ProgressUnZipLevelOne(100,
+                                                                             jProgressBarBottom,
+                                                                             jTextFieldArchive.getText(),
+                                                                             jTextFieldDestination.getText());
         progresserUnZipOne.start();
     }
 
@@ -1101,7 +1660,9 @@ public class MainFrame extends JFrame {
 
     private void jButtonUnzipSousFichierActionPerformed(java.awt.event.ActionEvent evt) {
         System.out.println("-------------------------------- NIVEAU 2 ------------------------------------");
-        ProgressUnZipLevelTwo progresserUnZipTwo = new ProgressUnZipLevelTwo(100, jProgressBarBottom, jTextFieldDestination.getText());
+        ProgressUnZipLevelTwo progresserUnZipTwo = new ProgressUnZipLevelTwo(100,
+                                                                             jProgressBarBottom,
+                                                                             jTextFieldDestination.getText());
         progresserUnZipTwo.start();
     }
 
@@ -1115,8 +1676,9 @@ public class MainFrame extends JFrame {
         int iRowSelected = jTableRechercheAppareil.getSelectedRow();
 
         // If nothing is selected
-        if (iRowSelected == -1)
+        if (iRowSelected == -1) {
             return;
+        }
 
         this.jTextFieldNomAppareil2.setText("");
         this.jTextFieldTypeAppareil1.setText("");
@@ -1130,16 +1692,25 @@ public class MainFrame extends JFrame {
 
         String sConso = null;
         try {
-            sConso = m_ControllerConsoAppareilParDate.getConsommationOfItem(iModelIndexOfRowSelected, sJour, sMois, sAnnee);
+            sConso = m_ControllerConsoAppareilParDate.getConsommationOfItem(iModelIndexOfRowSelected,
+                                                                            sJour,
+                                                                            sMois,
+                                                                            sAnnee);
         } catch (ParseException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Syntaxe de la date incorrecte.", "Syntaxe incorrecte", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                                          "Syntaxe de la date incorrecte.",
+                                          "Syntaxe incorrecte",
+                                          JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        this.jTextFieldNomAppareil2.setText(m_ControllerConsoAppareilParDate.getItemSelected(iModelIndexOfRowSelected).getAppareilName());
-        this.jTextFieldTypeAppareil1.setText(m_ControllerConsoAppareilParDate.getItemSelected(iModelIndexOfRowSelected).getAppareilType());
-        this.jTextFieldMaisonAppareil1.setText(m_ControllerConsoAppareilParDate.getItemSelected(iModelIndexOfRowSelected).getAppareilMaison());
+        this.jTextFieldNomAppareil2.setText(m_ControllerConsoAppareilParDate.getItemSelected(iModelIndexOfRowSelected)
+                                                                            .getAppareilName());
+        this.jTextFieldTypeAppareil1.setText(m_ControllerConsoAppareilParDate.getItemSelected(iModelIndexOfRowSelected)
+                                                                             .getAppareilType());
+        this.jTextFieldMaisonAppareil1.setText(m_ControllerConsoAppareilParDate.getItemSelected(iModelIndexOfRowSelected)
+                                                                               .getAppareilMaison());
         this.jTextFieldConsoTotaleAppareil2.setText(sConso);
     }
 
@@ -1164,7 +1735,8 @@ public class MainFrame extends JFrame {
     }
 
     private void jPanelConsoAppareilComponentShown(java.awt.event.ComponentEvent evt) {
-        DefaultTableModel newModel = m_ControllerConsoAppareilParDate.getTableModel((DefaultTableModel) jTableRechercheAppareil.getModel());
+        DefaultTableModel newModel = m_ControllerConsoAppareilParDate.getTableModel((DefaultTableModel) jTableRechercheAppareil
+                .getModel());
         jTableRechercheAppareil.setModel(newModel);
     }
 
@@ -1183,11 +1755,13 @@ public class MainFrame extends JFrame {
 
     private void delete(File f) throws IOException {
         if (f.isDirectory()) {
-            for (File c : f.listFiles())
+            for (File c : f.listFiles()) {
                 delete(c);
+            }
         }
-        if (!f.delete())
+        if (!f.delete()) {
             throw new FileNotFoundException("Failed to delete file: " + f);
+        }
     }
     //</editor-fold>
 

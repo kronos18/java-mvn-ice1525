@@ -32,7 +32,7 @@ public class ChronoActionListener implements ActionListener {
             heure++;
         }
         /* on rafraichit le label */
-        jLabel.setText(heure + ":" + minute + ":" + seconde);
+        jLabel.setText(String.format("%02d", heure) + ":" + String.format("%02d", minute) + ":" + String.format("%02d", seconde));
     }
 
 

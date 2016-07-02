@@ -36,7 +36,9 @@ public class ButtonListener implements ActionListener {
     }
 
     private String getChronometerValue() {
-        return chronoActionListener.getHeure() + ":" + chronoActionListener.getMinute() + ":" + chronoActionListener.getSeconde();
+        return String.format("%02d", chronoActionListener.getHeure()) + ":" + String.format(
+                "%02d",
+                chronoActionListener.getMinute()) + ":" + String.format("%02d", chronoActionListener.getSeconde());
     }
 
     private void resetChronometer() {
