@@ -20,7 +20,7 @@ public class ReadAndInsertThreader extends Thread {
 
     public ReadAndInsertThreader(String sPathToParse, int iNbFilesToRead, boolean isOptimizeZero, boolean isOptimizeDate){
         super();
-
+ ;
         m_sPathToParse = sPathToParse;
         m_iNbFilesToRead = iNbFilesToRead;
         m_isOptimizeZero = isOptimizeZero;
