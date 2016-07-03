@@ -5,15 +5,12 @@ import com.uga.energie.Parse.Parser;
 import com.uga.energie.UnZip;
 import com.uga.energie.controllers.ButtonListener;
 import com.uga.energie.controllers.ChronoActionListener;
-import com.uga.energie.controlleursRestitutionDesDonnees.Controller_ConsoAppareilParDate;
-import com.uga.energie.dataSource.ConnectionClass;
-import com.uga.energie.model.Appareil;
+import com.uga.energie.controllers.restitutionData.Controller_ConsoAppareilParDate;
 import com.uga.energie.repository.*;
 import com.uga.energie.service.ReadAndInsertThreader;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -129,6 +126,7 @@ public class MainFrame extends JFrame {
     private Timer timer;
     private ReadAndInsertThreader readAndInsertThreader;
     private Thread thread;
+    private JButton jButtonReadWater;
 
 
     public MainFrame() {
@@ -166,6 +164,7 @@ public class MainFrame extends JFrame {
         jPanelData = new javax.swing.JPanel();
         jButtonReadAll = new javax.swing.JButton();
         jButtonReadTen = new javax.swing.JButton();
+        jButtonReadWater = new javax.swing.JButton();
         jLabelTitleManager = new javax.swing.JLabel();
         jButtonDeleteAll = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -411,9 +410,19 @@ public class MainFrame extends JFrame {
         jButtonReadTen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 disableInsertButton();
+                System.out.println("On lit les 10 premiers");
+
                 jButtonReadTenActionPerformed(evt);
             }
         });
+
+//        this.jButtonReadWater.setText("Simulation insertion au fil de l'eau");
+//        this.jButtonReadWater.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                disableInsertButton();
+//                RealdFilesAndInsertIntoDatabase(0,true);
+//            }
+//        });
 
         jLabelTitleManager.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabelTitleManager.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1043,6 +1052,7 @@ public class MainFrame extends JFrame {
 
         jTabbedPaneRequest.addTab("Classement Appareil", jPanelClassementApareil);
 
+        /*Consommation total par maison*/
         jPanelConsoMaisonTotal.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanelConsoMaisonTotal.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -1599,21 +1609,24 @@ public class MainFrame extends JFrame {
 
     //<editor-fold defaultstate="collapsed" desc=" Fonction associé aux boutons effectuant une action opérationnelle ">
     private void jButtonReadAllActionPerformed(java.awt.event.ActionEvent evt) {
-        RealdFilesAndInsertIntoDatabase(0);
+
+        System.out.println("On lit les tout");
+        RealdFilesAndInsertIntoDatabase(0, true);
     }
 
     private void jButtonReadTenActionPerformed(java.awt.event.ActionEvent evt) {
-        RealdFilesAndInsertIntoDatabase(2);
+        System.out.println("On lit les 10 premiers");
+        RealdFilesAndInsertIntoDatabase(1, false);
     }
 
-    private void RealdFilesAndInsertIntoDatabase(int iNbFilesToRead) {
-        this.timer.start();
-
+    private void RealdFilesAndInsertIntoDatabase(int iNbFilesToRead, boolean isWaterInsertion) {
+//        this.timer.start();
 //        if (null == readAndInsertThreader) {
-        readAndInsertThreader = new ReadAndInsertThreader(jTextFieldDestination.getText(),
+        readAndInsertThreader = new ReadAndInsertThreader(this, jTextFieldDestination.getText(),
                                                           iNbFilesToRead,
                                                           true,
                                                           true,
+                                                          isWaterInsertion,
                                                           timer,
                                                           jButtonReadAll,
                                                           jButtonReadTen,

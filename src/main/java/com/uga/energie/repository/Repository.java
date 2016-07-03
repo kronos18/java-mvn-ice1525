@@ -17,6 +17,7 @@ public class Repository {
     private static ConsommationRepository consommationRepository;
     private static DateRepository dateRepository;
     private static HeureRepository heureRepository;
+    private static DataBaseRepository dataBaseRepository;
 
     public Repository() {
         initRepository();
@@ -71,6 +72,13 @@ public class Repository {
         return typeAppareilRepository;
     }
 
+    public static DataBaseRepository getDataBaseRepository() {
+        if (null == dataBaseRepository) {
+            dataBaseRepository = new DataBaseRepository(connection);
+        }
+        return dataBaseRepository;
+    }
+
     private boolean isNotRepositoryInit() {
         return null == appareilRepository && null == quartierRepository && null == maisonRepository &&
                 null == typeAppareilRepository && null == consommationRepository && null == dateRepository &&
@@ -85,5 +93,6 @@ public class Repository {
         consommationRepository = new ConsommationRepository(connection);
         dateRepository = new DateRepository(connection);
         heureRepository = new HeureRepository(connection);
+        dataBaseRepository = new DataBaseRepository(connection);
     }
 }

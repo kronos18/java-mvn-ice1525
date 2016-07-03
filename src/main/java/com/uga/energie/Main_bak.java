@@ -32,14 +32,15 @@ public class Main_bak {
             System.out.println("=============================");
             s = mainBak.readLine();
 
-            if (Integer.parseInt(s) == 1)
+            if (Integer.parseInt(s) == 1) {
                 mainBak.Unzip();
-            else if (Integer.parseInt(s) == 2)
+            } else if (Integer.parseInt(s) == 2) {
                 mainBak.ReadAndInsert();
-            else if (Integer.parseInt(s) == 9)
+            } else if (Integer.parseInt(s) == 9) {
                 ;
-            else
+            } else {
                 System.out.println("Commande inconnue...");
+            }
 
             System.out.println("");
         } while (Integer.parseInt(s) != 9);
@@ -53,7 +54,7 @@ public class Main_bak {
 
         // parse le dossier dans lequel ont ete dezippees les donnees
         Parser parser = new Parser(sPathToRead);
-        List<p_Quartier> lsQuartier = parser.Parse(0);
+        List<p_Quartier> lsQuartier = parser.Parse(0, false, null);
 
         //todo : Executer des algos de compression de donnees
 

@@ -1,9 +1,7 @@
 package com.uga.energie.repository;
 
-import com.uga.energie.controlleursRestitutionDesDonnees.Controller_ConsoAppareilParDate;
-import com.uga.energie.controlleursRestitutionDesDonnees.itemToDisplay_ConsoAppareilParDate;
+import com.uga.energie.controllers.restitutionData.modelToDisplay.ItemToDisplay_ConsoAppareilParDate;
 import com.uga.energie.model.Appareil;
-import com.uga.energie.model.Date;
 import com.uga.energie.model.TypeAppareil;
 
 import java.sql.Connection;
@@ -19,8 +17,8 @@ import java.util.List;
 public class AppareilRepository implements CRUDInteface<Appareil> {
 
     private static final String INSERT = "insert into uga.appareil(id, name,idTypeAppareil,idMaison ) values( ? ,? ,? ,? )";
-    private static final String GetAppareilWithMaisonAndType = "select app.id as appid, app.name as appname, app.idmaison as maisonid, tapp.id as typeid, tapp.name as typename from uga.appareil app, uga.typeappareil tapp order by app.name;";
-    private static final String GetAppareilConsoOfTheDay_WithoutOpti = "select sum(energy_wh) as totalconso from uga.consommation c left join uga.\"date\" d on c.iddate = d.id where idappareil = ? and ddate = ?";
+    private static final String GET_APPAREIL_WITH_MAISON_AND_TYPE = "select app.id as appid, app.name as appname, app.idmaison as maisonid, tapp.id as typeid, tapp.name as typename from uga.appareil app, uga.typeappareil tapp order by app.name;";
+    private static final String GET_APPAREIL_CONSO_OF_THE_DAY_WITHOUT_OPTI = "select sum(energy_wh) as totalconso from uga.consommation c left join uga.\"date\" d on c.iddate = d.id where idappareil = ? and ddate = ?";
     private static final String FIND_BY_ID = "select * from uga.appareil where id = ?";
     private final Connection dataSource;
 
@@ -62,19 +60,19 @@ public class AppareilRepository implements CRUDInteface<Appareil> {
         return appareil;
     }
 
-    public List<itemToDisplay_ConsoAppareilParDate> GetAppareilWithMaisonAndType(){
-        List<itemToDisplay_ConsoAppareilParDate> lsRes = new ArrayList<itemToDisplay_ConsoAppareilParDate>();
+    public List<ItemToDisplay_ConsoAppareilParDate> GetAppareilWithMaisonAndType(){
+        List<ItemToDisplay_ConsoAppareilParDate> lsRes = new ArrayList<ItemToDisplay_ConsoAppareilParDate>();
         Connection connection = dataSource;
         try {
             ResultSet rs;
-            PreparedStatement preparedStatement = connection.prepareStatement(GetAppareilWithMaisonAndType);
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_APPAREIL_WITH_MAISON_AND_TYPE);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set
                 TypeAppareil type = new TypeAppareil(rs.getInt("typeid"), rs.getString("typename"));
                 Appareil app = new Appareil(rs.getInt("appid"), rs.getString("appname"), rs.getInt("typeid"), rs.getInt("maisonid"));
 
-                lsRes.add(new itemToDisplay_ConsoAppareilParDate(app, type));
+                lsRes.add(new ItemToDisplay_ConsoAppareilParDate(app, type));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,7 +94,7 @@ public class AppareilRepository implements CRUDInteface<Appareil> {
         Connection connection = dataSource;
         try {
             ResultSet rs;
-            PreparedStatement preparedStatement = connection.prepareStatement(GetAppareilConsoOfTheDay_WithoutOpti);
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_APPAREIL_CONSO_OF_THE_DAY_WITHOUT_OPTI);
             preparedStatement.setObject(1, appareilID);
             preparedStatement.setObject(2, selectedDate);
             rs = preparedStatement.executeQuery();

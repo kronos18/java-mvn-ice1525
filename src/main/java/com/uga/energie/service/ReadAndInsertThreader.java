@@ -1,9 +1,11 @@
 package com.uga.energie.service;
 
+import com.uga.energie.IHM.MainFrame;
 import com.uga.energie.IHM.ProgressInsertDB;
 import com.uga.energie.Parse.Parser;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by Max on 01-Jul-16.
@@ -17,18 +19,23 @@ public class ReadAndInsertThreader implements Runnable {
     private JButton jButtonReadAll;
     private JButton jButtonReadTen;
     private JProgressBar jProgressBarBottom;
+    private MainFrame mainFrame;
+    private boolean isWaterInsertion;
     private Timer timer;
     private Parser parser;
 
-    public ReadAndInsertThreader(String sPathToParse,
+    public ReadAndInsertThreader(MainFrame mainFrame, String sPathToParse,
                                  int iNbFilesToRead,
                                  boolean isOptimizeZero,
                                  boolean isOptimizeDate,
+                                 boolean isWaterInsertion,
                                  Timer timer,
                                  JButton jButtonReadAll,
                                  JButton jButtonReadTen,
                                  JProgressBar jProgressBarBottom) {
         super();
+        this.mainFrame = mainFrame;
+        this.isWaterInsertion = isWaterInsertion;
         this.timer = timer;
         m_sPathToParse = sPathToParse;
         m_iNbFilesToRead = iNbFilesToRead;
@@ -42,24 +49,46 @@ public class ReadAndInsertThreader implements Runnable {
 
 
     public void run() {
-//        this.timer.start();
+        JDialog dialog = initPleaseWaitJdialog();
+        this.mainFrame.setEnabled(false);
+        this.timer.start();
         this.parser = new Parser(m_sPathToParse);
         ProgressInsertDB progressInsert = new ProgressInsertDB(1000,
                                                                jProgressBarBottom,
                                                                this.parser);
-        progressInsert.start();
 //        List<p_Quartier> lsQuartier = parser.Parse(m_iNbFilesToRead);
-        this.parser.Parse(m_iNbFilesToRead);
+        progressInsert.start();
+        this.parser.Parse(m_iNbFilesToRead, isWaterInsertion, this.mainFrame);
         this.jButtonReadAll.setEnabled(true);
         this.jButtonReadTen.setEnabled(true);
+        this.timer.stop();
 
+        /*Enlevez le message pour patienter */
+        dialog.setVisible(false);
 
+        /*Reactivation de la MainFrame*/
+        this.mainFrame.setEnabled(true);
 //        //Execute des algos de compression de donnees. On peut choisir d'optimiser ou non en supprimant les zéro et/ou en utilisant ou non les tables Date et Heure
 //        Optimizer opt = new Optimizer(lsQuartier, m_isOptimizeZero, m_isOptimizeDate);
 //        opt.FromParserToJDBC();
 
         //Tu peux maintenant acceder aux objets à inserrer en base, par exemple la liste des appareils :
 //
+    }
+
+    private JDialog initPleaseWaitJdialog() {
+        JDialog dialog = new JDialog();
+        JLabel label = new JLabel("Veuillez patienter s'il vous plait ...");
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        dialog.setLocationRelativeTo(mainFrame);
+        dialog.setTitle("Please Wait...");
+        dialog.setSize(new Dimension(200, 100));
+        dialog.setResizable(false);
+        dialog.add(label);
+//        dialog.pack();
+        dialog.setVisible(true);
+        return dialog;
     }
 
     public Parser getParser() {

@@ -1,9 +1,11 @@
 package com.uga.energie.Parse;
 
+import com.uga.energie.IHM.MainFrame;
 import com.uga.energie.Optimizer;
 import com.uga.energie.model.*;
 import com.uga.energie.repository.Repository;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,17 +20,24 @@ public class Parser {
     private String m_sPathToParse;
     private int nbFilesToParse;
     private int nbFilesThreated;
+    private int currentSize;
+    private int initialeDBSize;
 
     public Parser(String sPathToParse) {
         m_sPathToParse = sPathToParse;
     }
 
-    public List<p_Quartier> Parse(int nbFilesToParse) {
+    public List<p_Quartier> Parse(int nbFilesToParse, boolean isWaterInsertion, MainFrame mainFrame) {
+        this.initialeDBSize = convertToKB(Repository.getDataBaseRepository().getCurrentSize());
         List<p_Quartier> lsRes = new ArrayList<p_Quartier>();
         List<File> lsTXTFiles = new ArrayList<File>();
 
         findFilesInDir(new File(m_sPathToParse), lsTXTFiles);
-        this.nbFilesToParse = lsTXTFiles.size();
+        if (nbFilesToParse == 0) {
+            this.nbFilesToParse = lsTXTFiles.size();
+        } else {
+            this.nbFilesToParse = nbFilesToParse;
+        }
 
         int iNbFileParsed = 0;
         this.nbFilesThreated = iNbFileParsed;
@@ -64,11 +73,25 @@ public class Parser {
             iNbFileParsed++;
             this.nbFilesThreated = iNbFileParsed;
 
-            if (nbFilesToParse == iNbFileParsed)
+            if (nbFilesToParse == iNbFileParsed) {
                 break;
+            }
         }
+        this.currentSize = convertToKB(Repository.getDataBaseRepository().getCurrentSize());
+        /*Lance une pop up avec message de succes avec la nouvelle taille de la base de donnée*/
+        int useSizeByNewInsertFiles = this.currentSize - this.initialeDBSize;
+        String successfulMessage = new StringBuilder().append(
+                "L'insertion en base s'est déroulé avec succes !\nEspace disque utilise : ")
+                                                      .append(useSizeByNewInsertFiles).append(" Ko")
+                                                      .toString();
+        JOptionPane.showMessageDialog(mainFrame,
+                                      successfulMessage);
 
         return lsRes;
+    }
+
+    private int convertToKB(int currentSize) {
+        return currentSize / 1024;
     }
 
     public String getM_sPathToParse() {
@@ -172,8 +195,9 @@ public class Parser {
     }
 
     private p_Quartier getQuartierFromTXTFile(File file) {
-        if (!file.isFile())
+        if (!file.isFile()) {
             return null;
+        }
 
         //File name = 1000080-200099-3000048.txt
         String sFileName = file.getName().replace(".txt", "");
@@ -217,8 +241,9 @@ public class Parser {
                     sLine.indexOf("HOUSEHOLD") >= 0 ||
                     sLine.indexOf("APPLIANCE") >= 0 ||
                     sLine.length() <= 1 ||
-                    sLine.indexOf("DATE(dd/mm/yy)") >= 0)
+                    sLine.indexOf("DATE(dd/mm/yy)") >= 0) {
                 continue;
+            }
 
             //      22/01/98	15:50	0	000000
             String[] line = sLine.split("\t");
@@ -263,8 +288,9 @@ public class Parser {
             e.printStackTrace();
         } finally {
             try {
-                if (br != null)
+                if (br != null) {
                     br.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

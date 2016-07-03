@@ -1,12 +1,13 @@
 package com.uga.energie.repository;
 
-import com.uga.energie.model.Consommation;
 import com.uga.energie.model.Maison;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Lenovo on 08/06/2016.
@@ -15,6 +16,7 @@ public class MaisonRepository implements CRUDInteface<Maison> {
 
     private static final String INSERT = "insert into uga.Maison(id, idquartier) values( ? ,? )";
     private static final String FIND_BY_ID = "select * from uga.Maison where id = ?";
+    private static final String FIND_ALL = "select * from uga.Maison";
     private final Connection dataSource;
 
     public MaisonRepository(Connection dataSource) {
@@ -61,4 +63,25 @@ public class MaisonRepository implements CRUDInteface<Maison> {
     public void delete(int id) {
 
     }
+
+    public List<Maison> findAll() {
+        Maison maison = null;
+        Connection connection = dataSource;
+        List<Maison> maisonList = null;
+
+        try {
+            ResultSet rs;
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
+            rs = preparedStatement.executeQuery();
+            maisonList = new LinkedList<Maison>();
+            while (rs.next()) {
+                // read the result set
+                maisonList.add(new Maison(rs.getInt("id"), rs.getInt("idquartier")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maisonList;
+    }
+
 }

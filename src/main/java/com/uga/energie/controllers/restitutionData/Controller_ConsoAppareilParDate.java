@@ -1,11 +1,9 @@
-package com.uga.energie.controlleursRestitutionDesDonnees;
+package com.uga.energie.controllers.restitutionData;
 
-import com.uga.energie.model.Appareil;
-import com.uga.energie.model.TypeAppareil;
+import com.uga.energie.controllers.restitutionData.modelToDisplay.ItemToDisplay_ConsoAppareilParDate;
 import com.uga.energie.repository.Repository;
 
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,10 +14,10 @@ import java.util.List;
  */
 public class Controller_ConsoAppareilParDate {
 
-    List<itemToDisplay_ConsoAppareilParDate> m_itemsToDisplay;
+    List<ItemToDisplay_ConsoAppareilParDate> m_itemsToDisplay;
 
     public Controller_ConsoAppareilParDate(){
-        m_itemsToDisplay = new ArrayList<itemToDisplay_ConsoAppareilParDate>();
+        m_itemsToDisplay = new ArrayList<ItemToDisplay_ConsoAppareilParDate>();
     }
 
     public DefaultTableModel getTableModel(DefaultTableModel model){
@@ -34,7 +32,7 @@ public class Controller_ConsoAppareilParDate {
         int _ColumnNomAppareil = 2;
         int _ColumnTypeAppareil = 3;
 
-        for (itemToDisplay_ConsoAppareilParDate item: m_itemsToDisplay) {
+        for (ItemToDisplay_ConsoAppareilParDate item: m_itemsToDisplay) {
             model.addRow(new Object[]
                 {
                         item.getAppareilMaison(),
@@ -46,14 +44,14 @@ public class Controller_ConsoAppareilParDate {
         return model;
     }
 
-    public itemToDisplay_ConsoAppareilParDate getItemSelected(int idRawSelected){
+    public ItemToDisplay_ConsoAppareilParDate getItemSelected(int idRawSelected){
         return m_itemsToDisplay.get(idRawSelected);
     }
 
     public String getConsommationOfItem(int idRawSelected, String sJour, String sMois, String sAnnee) throws ParseException {
         int iRes = 0;
 
-        itemToDisplay_ConsoAppareilParDate itemSelected = getItemSelected(idRawSelected);
+        ItemToDisplay_ConsoAppareilParDate itemSelected = getItemSelected(idRawSelected);
 
         //TODO : utiliser le repository pour calculer
         SimpleDateFormat parserSDF = new SimpleDateFormat("dd/MM/yyyy");
