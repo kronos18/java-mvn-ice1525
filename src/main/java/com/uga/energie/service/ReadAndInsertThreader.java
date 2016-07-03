@@ -85,6 +85,7 @@ public class ReadAndInsertThreader implements Runnable {
         dialog.setTitle("Please Wait...");
         dialog.setSize(new Dimension(200, 100));
         dialog.setResizable(false);
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         dialog.add(label);
 //        dialog.pack();
         dialog.setVisible(true);
