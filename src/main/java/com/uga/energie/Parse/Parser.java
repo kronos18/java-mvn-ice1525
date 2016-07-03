@@ -81,7 +81,7 @@ public class Parser {
         /*Lance une pop up avec message de succes avec la nouvelle taille de la base de donnée*/
         int useSizeByNewInsertFiles = this.currentSize - this.initialeDBSize;
         String successfulMessage = new StringBuilder().append(
-                "L'insertion en base s'est déroulé avec succes !\nEspace disque utilise : ")
+                "L'insertion en base s'est deroulee avec succes !\nEspace disque utilise : ")
                                                       .append(useSizeByNewInsertFiles).append(" Ko")
                                                       .toString();
         JOptionPane.showMessageDialog(mainFrame,

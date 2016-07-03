@@ -5,12 +5,15 @@ import com.uga.energie.Parse.Parser;
 import com.uga.energie.UnZip;
 import com.uga.energie.controllers.ButtonListener;
 import com.uga.energie.controllers.ChronoActionListener;
+import com.uga.energie.controllers.restitutionData.ConsoMaisonTotalDerniereHeureController;
 import com.uga.energie.controllers.restitutionData.Controller_ConsoAppareilParDate;
 import com.uga.energie.repository.*;
 import com.uga.energie.service.ReadAndInsertThreader;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -127,6 +130,7 @@ public class MainFrame extends JFrame {
     private ReadAndInsertThreader readAndInsertThreader;
     private Thread thread;
     private JButton jButtonReadWater;
+    private ConsoMaisonTotalDerniereHeureController consoMaisonTotalDerniereHeureController;
 
 
     public MainFrame() {
@@ -1087,7 +1091,7 @@ public class MainFrame extends JFrame {
             jTableClassementMaisonListeMaison.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jLabelClassementMaisonNom.setText("Nom");
+        jLabelClassementMaisonNom.setText("Identifiant");
 
         jTextFieldClassementMaisonNomMaison.setEnabled(false);
         jTextFieldClassementMaisonNomMaison.setFocusable(false);
@@ -1097,7 +1101,7 @@ public class MainFrame extends JFrame {
         jTextFieldClassementMaisonConsoTotalMaison.setEnabled(false);
         jTextFieldClassementMaisonConsoTotalMaison.setFocusable(false);
 
-        jLabelClassementMaisonConsomation.setText("Consomation durant la dernière heure :");
+        jLabelClassementMaisonConsomation.setText("Consommation durant la dernière heure (en KWh):");
 
         javax.swing.GroupLayout jPanelConsoMaisonTotalLayout = new javax.swing.GroupLayout(jPanelConsoMaisonTotal);
         jPanelConsoMaisonTotal.setLayout(jPanelConsoMaisonTotalLayout);
@@ -1579,6 +1583,7 @@ public class MainFrame extends JFrame {
 
     private void initControllers() {
         m_ControllerConsoAppareilParDate = new Controller_ConsoAppareilParDate();
+        consoMaisonTotalDerniereHeureController = new ConsoMaisonTotalDerniereHeureController();
     }
 
     private void initCheckboxOpti() {
@@ -1616,7 +1621,7 @@ public class MainFrame extends JFrame {
 
     private void jButtonReadTenActionPerformed(java.awt.event.ActionEvent evt) {
         System.out.println("On lit les 10 premiers");
-        RealdFilesAndInsertIntoDatabase(1, false);
+        RealdFilesAndInsertIntoDatabase(10, false);
     }
 
     private void RealdFilesAndInsertIntoDatabase(int iNbFilesToRead, boolean isWaterInsertion) {
@@ -1759,6 +1764,43 @@ public class MainFrame extends JFrame {
 
     private void jPanelConsoMaisonTotalComponentShown(java.awt.event.ComponentEvent evt) {
         // TODO add your handling code here:
+
+        DefaultTableModel newModel = new ConsoMaisonTotalDerniereHeureController().getTableModel((DefaultTableModel) jTableClassementMaisonListeMaison
+                .getModel());
+        jTableClassementMaisonListeMaison.setModel(newModel);
+        jTableClassementMaisonListeMaison.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int selectedRow = jTableClassementMaisonListeMaison.getSelectedRow();
+                int valueAt = (Integer) jTableClassementMaisonListeMaison.getValueAt(selectedRow, 0);
+                Integer consommationTotalByMaisonId = Repository.getConsommationRepository()
+                                                                .getConsommationTotalByMaisonId(
+                                                                        valueAt);
+                jTextFieldClassementMaisonConsoTotalMaison.setText(String.valueOf(consommationTotalByMaisonId.doubleValue() / 1000d));
+                jTextFieldClassementMaisonNomMaison.setText(String.valueOf(valueAt));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
     }
 
     private void jPanelConsoSemaineComponentShown(java.awt.event.ComponentEvent evt) {

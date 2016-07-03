@@ -15,48 +15,47 @@ public class ConsoMaisonTotalDerniereHeureController {
 
     List<Maison> maisonList;
 
-    public ConsoMaisonTotalDerniereHeureController(){
+    public ConsoMaisonTotalDerniereHeureController() {
         maisonList = new ArrayList<Maison>();
     }
 
-    public DefaultTableModel getTableModel(DefaultTableModel model){
+    public DefaultTableModel getTableModel(DefaultTableModel model) {
         maisonList = Repository.getMaisonRepository().findAll();
 
         //VIDER LA TABLE
-        while(model.getRowCount() != 0){
+        while (model.getRowCount() != 0) {
             model.removeRow(0);
         }
 
-        int _ColumnNumMaison = 1;
-        int _ColumnNomAppareil = 2;
-        int _ColumnTypeAppareil = 3;
-
-        for (Maison maison: maisonList) {
+        for (Maison maison : maisonList) {
             model.addRow(new Object[]
-                {
-                        maison.getId()
-                });
+                                 {
+                                         maison.getId()
+                                 });
         }
-
         return model;
     }
 
-    public Maison getItemSelected(int idRawSelected){
+    public Maison getItemSelected(int idRawSelected) {
         return maisonList.get(idRawSelected);
     }
 
     public String getConsommationOfMaisonForLastHour(int idRowSelected) throws ParseException {
-        int iRes = 0;
+        int consommationTotalValue = 0;
 
         Maison itemSelected = getItemSelected(idRowSelected);
 
 //        //TODO : utiliser le repository pour calculer
-//        SimpleDateFormat parserSDF = new SimpleDateFormat("dd/MM/yyyy");
-//        java.util.Date d = parserSDF.parse(sJour + "/" + sMois + "/" + sAnnee);
-//        java.sql.Date selectedDate = new java.sql.Date(d.getTime());
+        consommationTotalValue = Repository.getConsommationRepository().getConsommationTotalByMaisonId(itemSelected.getId());
 
-        iRes = Repository.getConsommationRepository().getConsommationTotalByMaisonId(itemSelected.getId());
+        return String.valueOf(consommationTotalValue);
+    }
 
-        return String.valueOf(iRes);
+    public List<Maison> getMaisonList() {
+        return maisonList;
+    }
+
+    public void setMaisonList(List<Maison> maisonList) {
+        this.maisonList = maisonList;
     }
 }

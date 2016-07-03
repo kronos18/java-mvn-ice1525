@@ -43,21 +43,21 @@ create
 create
 	table
 		uga.Date(
-			id bigint primary key not null,
+			id BIGSERIAL primary key not null,
 			ddate date not null
 		);
 
 create
 	table
 		uga.Heure(
-			id bigint primary key not null,
+			id BIGSERIAL primary key not null,
 			heure time not null
 		);
 
 create
 	table
 		uga.TypeAppareil(
-			id bigint primary key not null,
+			id BIGSERIAL primary key not null,
 			name varchar(30)
 		);
 
@@ -65,7 +65,7 @@ create
 	table
 		uga.Appareil(
 			id bigint primary key not null,
-			name varchar(30),
+			name varchar(60),
 			idTypeAppareil bigint references uga.TypeAppareil(id),
 			idMaison bigint references uga.Maison(id)
 		);
@@ -84,3 +84,31 @@ create
 				idAppareil
 			)
 		);
+
+truncate
+	table
+		uga.appareil cascade;
+
+truncate
+	table
+		uga.consommation cascade;
+
+truncate
+	table
+		uga.date cascade;
+
+truncate
+	table
+		uga.heure cascade;
+
+truncate
+	table
+		uga.maison cascade;
+
+truncate
+	table
+		uga.quartier cascade;
+
+truncate
+	table
+		uga.typeappareil cascade;

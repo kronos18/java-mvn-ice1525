@@ -16,7 +16,43 @@ public class ConsommationRepository implements CRUDInteface<Consommation> {
 
     private static final String INSERT = "insert into uga.Consommation(iddate, idheure, idappareil, etat, energy_wh ) values( ? ,? ,? ,?, ? )";
     private static final String FIND_BY_ID = "select * from uga.Consommation where id = ?";
-    private static final String GET_CONSO_TOTAL_BY_MAISON_ID = "select energy_wh as conso_totale from uga.Consommation where id = ?";
+    private static final String GET_CONSO_TOTAL_BY_MAISON_ID = new StringBuilder().append(
+            "SELECT sum(conso_totale) AS conso_totale,")
+                                                                                  .append(" a.last_date,")
+                                                                                  .append(" a.last_heure,")
+                                                                                  .append(" a.idmaison,")
+                                                                                  .append(" a.id_date ")
+                                                                                  .append("FROM")
+                                                                                  .append("  ( SELECT distinct( max(uga.date.ddate) ) AS last_date,")
+                                                                                  .append("    max(extract(hour")
+                                                                                  .append("    FROM uga.heure.heure)) AS last_heure,")
+                                                                                  .append("energy_wh AS conso_totale,")
+                                                                                  .append(" uga.appareil.idmaison,")
+                                                                                  .append(" uga.date.id AS id_date")
+                                                                                  .append("   FROM uga.Consommation")
+                                                                                  .append("   JOIN uga.appareil ON ( uga.appareil.id = uga.consommation.idappareil )")
+                                                                                  .append("   JOIN uga.maison ON ( uga.maison.id = uga.appareil.idmaison )")
+                                                                                  .append("   JOIN uga.date ON ( uga.date.id = uga.consommation.iddate )")
+                                                                                  .append("   JOIN uga.heure ON ( uga.heure.id = uga.consommation.idheure )")
+                                                                                  .append("   WHERE uga.appareil.idmaison = ?")
+                                                                                  .append("     AND uga.date.ddate IN")
+                                                                                  .append(" ( SELECT distinct( max(uga.date.ddate) ) AS last_date")
+                                                                                  .append("  FROM uga.Consommation")
+                                                                                  .append("  JOIN uga.appareil ON ( uga.appareil.id = uga.consommation.idappareil )")
+                                                                                  .append("  LEFT OUTER JOIN uga.maison ON ( uga.maison.id = uga.appareil.idmaison )")
+                                                                                  .append("  LEFT OUTER JOIN uga.date ON ( uga.date.id = uga.consommation.iddate )")
+                                                                                  .append("  LEFT OUTER JOIN uga.heure ON ( uga.heure.id = uga.consommation.idheure )")
+                                                                                  .append("  WHERE uga.appareil.idmaison = ? )")
+                                                                                  .append("   GROUP BY uga.appareil.idmaison,")
+                                                                                  .append("uga.date.id,")
+                                                                                  .append("uga.consommation.energy_wh")
+                                                                                  .append("   ORDER BY last_heure DESC ) A")
+                                                                                  .append(" GROUP BY a.last_date,")
+                                                                                  .append("   a.idmaison,")
+                                                                                  .append("   a.last_heure,")
+                                                                                  .append("   a.id_date ")
+                                                                                  .append("ORDER BY last_heure DESC LIMIT 1")
+                                                                                  .toString();
     private final Connection connection;
 
     public ConsommationRepository(Connection dataSource) {
@@ -90,19 +126,20 @@ public class ConsommationRepository implements CRUDInteface<Consommation> {
     }
 
     public int getConsommationTotalByMaisonId(int maisonId) {
-        int consommation = 0;
+        int consommationTotalValue = 0;
         try {
             ResultSet rs;
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_CONSO_TOTAL_BY_MAISON_ID);
             preparedStatement.setObject(1, maisonId);
+            preparedStatement.setObject(2, maisonId);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 // read the result set
-                consommation = rs.getInt("conso_total");
+                consommationTotalValue = rs.getInt("conso_totale");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return consommation;
+        return consommationTotalValue;
     }
 }
