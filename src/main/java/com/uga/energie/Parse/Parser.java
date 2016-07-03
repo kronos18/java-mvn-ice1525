@@ -22,12 +22,14 @@ public class Parser {
     private int nbFilesThreated;
     private int currentSize;
     private int initialeDBSize;
+    private Timer timer;
 
     public Parser(String sPathToParse) {
         m_sPathToParse = sPathToParse;
     }
 
-    public List<p_Quartier> Parse(int nbFilesToParse, boolean isWaterInsertion, MainFrame mainFrame) {
+    public List<p_Quartier> Parse(int nbFilesToParse, boolean isWaterInsertion, MainFrame mainFrame, Timer timer) {
+        this.timer = timer;
         this.initialeDBSize = convertToKB(Repository.getDataBaseRepository().getCurrentSize());
         List<p_Quartier> lsRes = new ArrayList<p_Quartier>();
         List<File> lsTXTFiles = new ArrayList<File>();
@@ -77,6 +79,7 @@ public class Parser {
                 break;
             }
         }
+        this.timer.stop();
         this.currentSize = convertToKB(Repository.getDataBaseRepository().getCurrentSize());
         /*Lance une pop up avec message de succes avec la nouvelle taille de la base de donnée*/
         int useSizeByNewInsertFiles = this.currentSize - this.initialeDBSize;

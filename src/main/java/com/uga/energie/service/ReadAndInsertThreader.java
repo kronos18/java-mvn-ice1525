@@ -58,10 +58,10 @@ public class ReadAndInsertThreader implements Runnable {
                                                                this.parser);
 //        List<p_Quartier> lsQuartier = parser.Parse(m_iNbFilesToRead);
         progressInsert.start();
-        this.parser.Parse(m_iNbFilesToRead, isWaterInsertion, this.mainFrame);
+        this.parser.Parse(m_iNbFilesToRead, isWaterInsertion, this.mainFrame,this.timer);
         this.jButtonReadAll.setEnabled(true);
         this.jButtonReadTen.setEnabled(true);
-        this.timer.stop();
+
 
         /*Enlevez le message pour patienter */
         dialog.setVisible(false);
