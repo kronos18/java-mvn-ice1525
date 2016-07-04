@@ -2,11 +2,13 @@ package com.uga.energie.Parse;
 
 import com.uga.energie.IHM.MainFrame;
 import com.uga.energie.Optimizer;
+import com.uga.energie.dataSource.ConnectionClass;
 import com.uga.energie.model.*;
 import com.uga.energie.repository.Repository;
 
 import javax.swing.*;
 import java.io.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -28,7 +30,12 @@ public class Parser {
         m_sPathToParse = sPathToParse;
     }
 
-    public List<p_Quartier> Parse(int nbFilesToParse, boolean isWaterInsertion, MainFrame mainFrame, Timer timer) {
+    public List<p_Quartier> Parse(int nbFilesToParse,
+                                  boolean isWaterInsertion,
+                                  boolean isOptZeroEnable,
+                                  boolean isOptDateEnable,
+                                  MainFrame mainFrame,
+                                  Timer timer) {
         this.timer = timer;
         this.initialeDBSize = convertToKB(Repository.getDataBaseRepository().getCurrentSize());
         List<p_Quartier> lsRes = new ArrayList<p_Quartier>();
@@ -48,7 +55,7 @@ public class Parser {
             p_Quartier quartierFromTXTFile = getQuartierFromTXTFile(file);
 
             //Execute des algos de compression de donnees. On peut choisir d'optimiser ou non en supprimant les zéro et/ou en utilisant ou non les tables Date et Heure
-            Optimizer opt = new Optimizer(quartierFromTXTFile, true, true);
+            Optimizer opt = new Optimizer(quartierFromTXTFile, isOptZeroEnable, isOptDateEnable);
             opt.FromParserToJDBC();
 
             /*Respect des insertions en base*/
@@ -79,6 +86,8 @@ public class Parser {
                 break;
             }
         }
+        commit();
+
         this.timer.stop();
         this.currentSize = convertToKB(Repository.getDataBaseRepository().getCurrentSize());
         /*Lance une pop up avec message de succes avec la nouvelle taille de la base de donnée*/
@@ -91,6 +100,15 @@ public class Parser {
                                       successfulMessage);
 
         return lsRes;
+    }
+
+    private void commit() {
+    /*Commit result*/
+        try {
+            ConnectionClass.getDataSource().commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private int convertToKB(int currentSize) {
