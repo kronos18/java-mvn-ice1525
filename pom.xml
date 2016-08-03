@@ -15,32 +15,7 @@
         <exec-maven-plugin.version>1.5.0</exec-maven-plugin.version>
     </properties>
 
-
-    <!--<build>-->
-    <!--<plugins>-->
-    <!--<plugin>-->
-    <!--<groupId>org.codehaus.mojo</groupId>-->
-    <!--<artifactId>exec-maven-plugin</artifactId>-->
-    <!--<version>${exec-maven-plugin.version}</version>-->
-    <!--<executions>-->
-    <!--<execution>-->
-    <!--<phase>test</phase>-->
-    <!--<goals>-->
-    <!--<goal>java</goal>-->
-    <!--</goals>-->
-    <!--<configuration>-->
-    <!--<mainClass>com.uga.energie.UnZip</mainClass>-->
-    <!--<arguments>-->
-    <!--<argument>/home/jack/SyncUSBFile/UGA/M2 MIAGE/Semestre4/Système d'information energie/Projet/BDD</argument>-->
-    <!--<argument>/home/jack/SyncUSBFile/UGA/M2 MIAGE/Semestre4/Système d'information energie/Projet/BDD/tmp</argument>-->
-    <!--</arguments>-->
-    <!--</configuration>-->
-    <!--</execution>-->
-    <!--</executions>-->
-    <!--</plugin>-->
-    <!--</plugins>-->
-    <!--</build>-->
-
+    
     <!-- - See more at: http://www.vineetmanohar.com/2009/11/3-ways-to-run-java-mainBak-from-maven/#sthash.WAaDBs46.dpuf-->
     <dependencies>
         <dependency>
