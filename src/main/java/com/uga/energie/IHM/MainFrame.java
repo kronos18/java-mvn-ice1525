@@ -1692,7 +1692,7 @@ public class MainFrame extends JFrame {
             System.out.println(result.get(i).get(0) + " | " + result.get(i).get(1) + " | " + result.get(i).get(2));
         }
 
-        // on enlève les lignes sans zero mais sans enregistrements
+        // on enlève les lignes sans zero mais sans enregistrement
         ArrayList<String> fichiersATraiter = new ArrayList<String>();
         int cpt = 0;
         boolean ok = false;
