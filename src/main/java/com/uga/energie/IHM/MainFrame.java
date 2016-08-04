@@ -14,11 +14,12 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainFrame extends JFrame {
     private JButton jButtonTest;
@@ -1621,7 +1622,98 @@ public class MainFrame extends JFrame {
 
     private void jButtonReadTenActionPerformed(java.awt.event.ActionEvent evt) {
         System.out.println("On lit les 10 premiers");
-        RealdFilesAndInsertIntoDatabase(10, false);
+        getTenBestFiles();
+        //RealdFilesAndInsertIntoDatabase(10, false);
+    }
+
+    private void getTenBestFiles(){
+        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+
+        String pathFolder = OUTPUT_FOLDER + "\\Enertech\\Campagnes\\Remodece\\Travail\\Files";
+        File folder = new File(pathFolder);
+        File[] listOfFiles = folder.listFiles();
+        int numberOfFile = 1;
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                int nbZero = 0;
+                int nbEnregistrement = 0;
+                ArrayList<String> newLine = new ArrayList<String>();
+
+                BufferedReader br = null;
+                try {
+                    br = new BufferedReader(new FileReader(pathFolder + "\\" + listOfFiles[i].getName()));
+                    String line = br.readLine();
+                    int nbLigneToIgnore = 5;
+                    int cpt = 0;
+                    while (line != null || cpt < 5) {
+                        if(cpt > nbLigneToIgnore) {
+                            String[] temp = line.split("\t");
+                            if(temp[3].equals("000000")){
+                                nbZero++;
+                            }
+                            nbEnregistrement++;
+                        }
+                        cpt++;
+                        line = br.readLine();
+                    }
+
+                    br.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                newLine.add(nbZero + "");
+                newLine.add(nbEnregistrement + "");
+                newLine.add(pathFolder + "\\" + listOfFiles[i].getName());
+                result.add(newLine);
+            }
+            numberOfFile++;
+        }
+
+        Collections.sort(result, new Comparator<ArrayList<String>>() {
+            @Override
+            public int compare(ArrayList<String> o1, ArrayList<String> o2) {
+                int zero1 = Integer.parseInt(o1.get(0));
+                int nbEnr1 = Integer.parseInt(o1.get(1));
+
+                int zero2 = Integer.parseInt(o2.get(0));
+                int nbEnr2 = Integer.parseInt(o2.get(1));
+
+                return zero1 - zero2;
+            }
+
+        });
+
+        System.out.println("-----------------------------------------------------------------");
+        System.out.println("----------------------------APRES TRI----------------------------");
+        System.out.println("-----------------------------------------------------------------");
+
+        System.out.println("ZERO | NB ENR | PATH");
+        for(int i = 0 ; i<result.size(); i++){
+            System.out.println(result.get(i).get(0) + " | " + result.get(i).get(1) + " | " + result.get(i).get(2));
+        }
+
+        // on enlève les lignes sans zero mais sans enregistrements
+        ArrayList<String> fichiersATraiter = new ArrayList<String>();
+        int cpt = 0;
+        boolean ok = false;
+        while(!ok){
+            int nbEnre = Integer.parseInt(result.get(cpt).get(1));
+            if(nbEnre != 0){
+                fichiersATraiter.add(result.get(cpt).get(2));
+                if(fichiersATraiter.size() == 10)
+                    ok = true;
+            }
+            cpt++;
+        }
+
+        System.out.println("-------------------------------------------------------------------------");
+        System.out.println("---------------------------- LA LIGUE DES 10 ----------------------------");
+        System.out.println("-------------------------------------------------------------------------");
+
+        for(int i = 0 ; i<fichiersATraiter.size(); i++){
+            System.out.println(fichiersATraiter.get(i) );
+        }
+
     }
 
     private void RealdFilesAndInsertIntoDatabase(int iNbFilesToRead, boolean isWaterInsertion) {
