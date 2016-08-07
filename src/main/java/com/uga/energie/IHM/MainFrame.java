@@ -1852,8 +1852,26 @@ public class MainFrame extends JFrame {
     }
 
     private void jPanelClassementApareilComponentShown(java.awt.event.ComponentEvent evt) {
-        // TODO add your handling code here:
+        jTextFieldClassementApareilTypeAppareil.setText("");
+        jTextFieldClassementApareilConsoTotale.setText("");
+        jTextFieldClassementApareilNomAppareil.setText("");
+        jTextFieldClassementApareilMaison.setText("");
+
+        ArrayList<String> consotop1Appareil = Repository.getConsommationRepository().getTop1ConsoAppareil();
+        if(consotop1Appareil.size() == 0){
+            System.out.println(" ---------------------------------- ");
+            System.out.println(" ATTENTION : AUCUNE LIGNE RETOURNEE ");
+            System.out.println("       getTop1ConsoAppareil()       ");
+            System.out.println(" ---------------------------------- ");
+        }
+        else{
+            jTextFieldClassementApareilNomAppareil.setText(consotop1Appareil.get(0));
+            jTextFieldClassementApareilTypeAppareil.setText(consotop1Appareil.get(1));
+            jTextFieldClassementApareilConsoTotale.setText(consotop1Appareil.get(2));
+            jTextFieldClassementApareilMaison.setText(consotop1Appareil.get(3));
+        }
     }
+
 
     private void jPanelConsoMaisonTotalComponentShown(java.awt.event.ComponentEvent evt) {
         // TODO add your handling code here:
