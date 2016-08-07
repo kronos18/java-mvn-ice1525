@@ -3,6 +3,7 @@ package com.uga.energie.service;
 import com.uga.energie.IHM.MainFrame;
 import com.uga.energie.IHM.ProgressInsertDB;
 import com.uga.energie.Parse.Parser;
+import com.uga.energie.controllers.restitutionData.UpdaterProgressBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,12 +54,13 @@ public class ReadAndInsertThreader implements Runnable {
         this.mainFrame.setEnabled(false);
         this.timer.start();
         this.parser = new Parser(m_sPathToParse);
-        ProgressInsertDB progressInsert = new ProgressInsertDB(1000,
-                                                               jProgressBarBottom,
-                                                               this.parser);
-//        List<p_Quartier> lsQuartier = parser.Parse(m_iNbFilesToRead);
-        progressInsert.start();
-        this.parser.Parse(m_iNbFilesToRead, isWaterInsertion, this.mainFrame,this.timer);
+        new Thread(new UpdaterProgressBar(this.mainFrame, this.jProgressBarBottom, this.parser)).start();
+        this.parser.Parse(m_iNbFilesToRead,
+                          isWaterInsertion,
+                          isM_isOptimizeZero(),
+                          isM_isOptimizeDate(),
+                          this.mainFrame,
+                          this.timer);
         this.jButtonReadAll.setEnabled(true);
         this.jButtonReadTen.setEnabled(true);
 

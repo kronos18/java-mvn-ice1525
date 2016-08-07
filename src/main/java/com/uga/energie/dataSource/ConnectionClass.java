@@ -42,6 +42,7 @@ public class ConnectionClass {
                 fileProperty = new FileInputStream(ConnectionClass.class.getClassLoader().getResource("db.properties").getFile());
                 props.load(fileProperty);
                 dataSource = DriverManager.getConnection(props.getProperty("postgresql.url"), props.getProperty("postgresql.username"), props.getProperty("postgresql.password"));
+                dataSource.setAutoCommit(false);
 
             } catch (IOException e) {
                 e.printStackTrace();

@@ -46,6 +46,7 @@ public class MainFrame extends JFrame {
     private javax.swing.JButton jButtonUnzipSousFichier;
     private javax.swing.JCheckBox jCheckBoxDate;
     private javax.swing.JCheckBox jCheckBoxZero;
+    private javax.swing.JCheckBox jCheckBoxKWh;
     private javax.swing.JLabel jLabelArchive;
     private javax.swing.JLabel jLabelChrono;
     private javax.swing.JLabel jLabelClassementApareilConsoTotaleAppareil;
@@ -1721,8 +1722,8 @@ public class MainFrame extends JFrame {
 //        if (null == readAndInsertThreader) {
         readAndInsertThreader = new ReadAndInsertThreader(this, jTextFieldDestination.getText(),
                                                           iNbFilesToRead,
-                                                          true,
-                                                          true,
+                                                          isOptimizeZero,
+                                                          isOptimizeDate,
                                                           isWaterInsertion,
                                                           timer,
                                                           jButtonReadAll,
